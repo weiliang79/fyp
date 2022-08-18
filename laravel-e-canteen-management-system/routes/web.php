@@ -6,6 +6,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -37,7 +39,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 //register routes
-Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
 //reset password routes
@@ -54,3 +56,26 @@ Route::post('/password/confirm', [ConfirmPasswordController::class, 'confirm']);
 Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
 Route::post('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
+
+Route::get('/admin/user_management', [UserController::class, 'index'])->name('admin.user');
+
+Route::group(['middleware' => ['guest']], function () {
+
+});
+
+Route::group(['middleware' => ['auth']], function () {
+
+    Route::group(['middleware' => ['can:isAdmin']], function () {
+
+        //home
+        Route::get('/admin/home', [HomeController::class, 'index'])->name('admin.home');
+
+        // user management
+        Route::get('/admin/user_management', [UserManagementController::class, 'index'])->name('admin.user_management');
+    });
+
+    Route::group(['middleware' => ['can:isFoodSeller']], function () {
+
+    });
+
+});

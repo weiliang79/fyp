@@ -22,7 +22,9 @@
     <div id="app">
         <main>
             <div class="d-flex" id="wrapper">
+                @if(!Route::is('login'))
                 @include('layouts.sidenavbar')
+                @endif
                 <div id="page-content-wrapper">
                     @include('layouts.topnavbar')
                     <div id="content">
@@ -32,6 +34,20 @@
             </div>
         </main>
     </div>
+
+    @if(Session::get('swal-success'))
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            Swal.fire({
+                title: 'Success',
+                html: '{{ Session::get("swal-success") }}',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1000,
+            });
+        })
+    </script>
+    @endif
 </body>
 
 </html>
