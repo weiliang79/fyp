@@ -53,4 +53,12 @@ class User extends Authenticatable
     public function store(){
         return $this->hasOne(Store::class);
     }
+
+    public function isAdmin(){
+        return $this->role->id == Role::ROLE_ADMIN;
+    }
+
+    public function isFoodSeller(){
+        return $this->role->id == Role::ROLE_SELLER;
+    }
 }
