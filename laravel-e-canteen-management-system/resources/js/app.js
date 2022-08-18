@@ -1,4 +1,17 @@
+// Bootstrap
 import './bootstrap';
+
+// jQuery
+import jQuery from 'jquery';
+window.$ = jQuery;
+
+// DataTables
+import DataTable from 'datatables.net-bs5';
+DataTable(window, window.$);
+
+//sweetalert2
+import Swal from 'sweetalert2';
+window.Swal = Swal;
 
 window.addEventListener('DOMContentLoaded', event => {
 
@@ -10,5 +23,7 @@ window.addEventListener('DOMContentLoaded', event => {
                   //localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
             });
       }
+
+      $('.dataTable').DataTable();
 
 })
