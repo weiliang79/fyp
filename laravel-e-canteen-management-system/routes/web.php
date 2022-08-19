@@ -72,6 +72,9 @@ Route::group(['middleware' => ['auth']], function () {
 
         // user management
         Route::get('/admin/user_management', [UserManagementController::class, 'index'])->name('admin.user_management');
+        Route::get('/admin/user_management/create', [UserManagementController::class, 'showCreateForm'])->name('admin.user_management.create');
+        Route::post('/admin/user_management/save', [UserManagementController::class, 'save'])->name('admin.user_management.save');
+        Route::post('/admin/user_management/delete', [UserManagementController::class, 'delete'])->name('admin.user_management.delete');
     });
 
     Route::group(['middleware' => ['can:isFoodSeller']], function () {

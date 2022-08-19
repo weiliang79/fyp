@@ -15,7 +15,7 @@
                   </a>
             </li>
             <li class="nav-item">
-                  <a href="{{ route('admin.user_management') }}" class="nav-link {{ Route::currentRouteName() == 'admin.user_management' ? 'active' : 'link-dark' }}">
+                  <a href="{{ route('admin.user_management') }}" class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'admin.user_management') ? 'active' : 'link-dark' }}">
                         <i class="fa-solid fa-users"></i>
                         User Management
                   </a>
