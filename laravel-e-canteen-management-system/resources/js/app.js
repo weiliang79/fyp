@@ -24,6 +24,13 @@ window.addEventListener('DOMContentLoaded', event => {
             });
       }
 
-      $('.dataTable').DataTable();
+      $('.dataTable').DataTable({
+            language: {
+                  paginate: {
+                        previous: '<i class="fa-solid fa-angle-left"></i>',
+                        next: '<i class="fa-solid fa-angle-right"></i>',
+                  }
+            }
+      });
 
 })

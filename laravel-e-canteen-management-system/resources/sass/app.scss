@@ -14,6 +14,9 @@ $fa-font-path: "@fortawesome/fontawesome-free/webfonts";
 @import '@fortawesome/fontawesome-free/scss/regular';
 @import '@fortawesome/fontawesome-free/scss/solid';
 
+// DataTables
+@import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
+
 hr:not([size]) {
       height: 1px;
 }
