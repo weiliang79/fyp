@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
       <div class="container-fluid">
             @if(Route::is('login'))
-                  <span class="fs-4">{{ config('app_name', 'Laravel') }}</span>
+                  <span class="fs-4">{{ config('app.name', 'Laravel') }}</span>
             @else
                   <button class="btn btn-primary" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>

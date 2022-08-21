@@ -2,7 +2,7 @@
 <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" id="sidebar-wrapper">
       <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none sidebar-heading">
             <i class="fa-solid fa-house fa-xl me-2"></i>
-            <span class="fs-3">{{ config('app_name', 'Laravel') }}</span>
+            <span class="fs-3">{{ config('app.name', 'Laravel') }}</span>
       </a>
       <hr>
 
@@ -39,7 +39,7 @@
                   </a>
             </li>
             <li class="nav-item">
-                  <a href="#" class="nav-link link-dark">
+                  <a href="{{ route('admin.settings') }}" class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'admin.settings') ? 'active' : 'link-dark' }}">
                         <i class="fa-solid fa-sliders"></i>
                         Settings
                   </a>
