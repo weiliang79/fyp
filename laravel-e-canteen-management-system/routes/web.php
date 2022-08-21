@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -67,7 +68,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['middleware' => ['can:isAdmin']], function () {
 
-        //home
+        // home
         Route::get('/admin/home', [HomeController::class, 'index'])->name('admin.home');
 
         // user management
@@ -75,6 +76,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/admin/user_management/create', [UserManagementController::class, 'showCreateForm'])->name('admin.user_management.create');
         Route::post('/admin/user_management/save', [UserManagementController::class, 'save'])->name('admin.user_management.save');
         Route::post('/admin/user_management/delete', [UserManagementController::class, 'delete'])->name('admin.user_management.delete');
+
+        // settings
+        Route::get('/admin/settings', [SettingsController::class, 'index'])->name('admin.settings');
+        Route::post('/admin/settings/save', [SettingsController::class, 'save'])->name('admin.settings.save');
     });
 
     Route::group(['middleware' => ['can:isFoodSeller']], function () {
