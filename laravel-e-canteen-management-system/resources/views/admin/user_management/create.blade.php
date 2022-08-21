@@ -15,8 +15,6 @@
                               <form method="POST" action="{{ route('admin.user_management.save') }}">
                                     @csrf
 
-
-
                                     <div class="row mb-3">
                                           <label for="" class="col-md-3 col-form-label text-md-end">{{ __('First and Last Name') }}</label>
 
