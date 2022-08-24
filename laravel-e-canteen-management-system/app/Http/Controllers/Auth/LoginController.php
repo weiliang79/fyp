@@ -60,12 +60,11 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        if($user->isAdmin()){
+        if ($user->isAdmin()) {
             return redirect()->route('admin.home')->with('swal-success', 'Login Successful.');
-        } else {
-            return redirect()->route('home')->with('swal-success', 'Login Successful.');
+        } else if ($user->isFoodSeller()) {
+            return redirect()->route('food_seller.home')->with('swal-success', 'Login Successful.');
         }
-        
     }
 
     /**
@@ -78,5 +77,4 @@ class LoginController extends Controller
     {
         return redirect()->route('login')->with('swal-success', 'Logout Successful.');
     }
-    
 }

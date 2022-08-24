@@ -9,7 +9,7 @@
       <ul class="nav nav-pills flex-column mb-auto">
             @can('isAdmin')
             <li class="nav-item">
-                  <a href="{{ route('admin.home') }}" class="nav-link {{ Route::currentRouteName() == 'admin.home' ? 'active' : 'link-dark' }}">
+                  <a href="{{ route('admin.home') }}" class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'admin.home') ? 'active' : 'link-dark' }}">
                         <i class="fa-solid fa-house me-2"></i>
                         Home
                   </a>
@@ -47,7 +47,36 @@
             @endcan
 
             @can('isFoodSeller')
-
+            <li class="nav-item">
+                  <a href="{{ route('food_seller.home') }}" class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'food_seller.home') ? 'active' : 'link-dark' }}">
+                        <i class="fa-solid fa-house me-2"></i>
+                        Home
+                  </a>
+            </li>
+            <li class="nav-item">
+                  <a href="{{ route('food_seller.store') }}" class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'food_seller.store') ? 'active' : 'link-dark' }}">
+                        <i class="fa-solid fa-shop"></i>
+                        Store
+                  </a>
+            </li>
+            <li class="nav-item">
+                  <a href="#" class="nav-link link-dark">
+                        <i class="fa-solid fa-bowl-food"></i>
+                        Menus
+                  </a>
+            </li>
+            <li class="nav-item">
+                  <a href="#" class="nav-link link-dark">
+                        <i class="fa-solid fa-list-check"></i>
+                        Orders
+                  </a>
+            </li>
+            <li class="nav-item">
+                  <a href="#" class="nav-link link-dark">
+                        <i class="fa-solid fa-file-pen"></i>
+                        Reports
+                  </a>
+            </li>
             @endcan
       </ul>
 

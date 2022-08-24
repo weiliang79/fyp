@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -83,6 +84,12 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::group(['middleware' => ['can:isFoodSeller']], function () {
+
+        // home
+        Route::get('/food_seller/home', [HomeController::class, 'index'])->name('food_seller.home');
+
+        // store
+        Route::get('/food_seller/store', [StoreController::class, 'index'])->name('food_seller.store');
 
     });
 
