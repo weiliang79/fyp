@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UserManagementController;
@@ -78,6 +79,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/admin/user_management/save', [UserManagementController::class, 'save'])->name('admin.user_management.save');
         Route::post('/admin/user_management/delete', [UserManagementController::class, 'delete'])->name('admin.user_management.delete');
 
+        // media manager
+        Route::get('/admin/media_manager', [MediaController::class, 'index'])->name('admin.media_manager');
+
         // settings
         Route::get('/admin/settings', [SettingsController::class, 'index'])->name('admin.settings');
         Route::post('/admin/settings/save', [SettingsController::class, 'save'])->name('admin.settings.save');
@@ -90,7 +94,14 @@ Route::group(['middleware' => ['auth']], function () {
 
         // store
         Route::get('/food_seller/store', [StoreController::class, 'index'])->name('food_seller.store');
+        Route::post('/food_seller/store/save', [StoreController::class, 'save'])->name('food_seller.store.save');
 
+        Route::get('/food_seller/media_manager', [MediaController::class, 'index'])->name('food_seller.media_manager');
+
+    });
+
+    Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web']], function () {
+        \UniSharp\LaravelFilemanager\Lfm::routes();
     });
 
 });
