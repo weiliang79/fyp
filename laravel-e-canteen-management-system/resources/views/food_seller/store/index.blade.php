@@ -12,7 +12,7 @@
 
                         <div class="card-body">
 
-                              <form method="POST" action="">
+                              <form method="POST" action="{{ route('food_seller.store.save') }}">
                                     @csrf
 
                                     <div class="row mb-3">
@@ -24,7 +24,7 @@
                                                             <i class="fa-solid fa-server"></i>
                                                       </div>
 
-                                                      <input type="text" class="form-control @error('store_name') is-invalid @enderror" name="store_name" value="{{ old('store_name', '') }}" placeholder="Application Name">
+                                                      <input type="text" class="form-control @error('store_name') is-invalid @enderror" name="store_name" value="{{ old('store_name', '') }}" placeholder="Store Name">
 
                                                       @error('store_name')
                                                       <span class="invalid-feedback" role="alert">
@@ -41,17 +41,26 @@
                                           <div class="col-md-8">
                                                 <div class="input-group">
                                                       <div class="input-group-text" style="width: 6%;">
-                                                            <i class="fa-solid fa-dollar-sign"></i>
+                                                            <i class="fa-solid fa-tag"></i>
                                                       </div>
 
-            
+                                                      <input id="logo_path" class="form-control" type="text" name="logo_path">
 
-                                                      @error('store_logo')
+                                                      <a class="btn btn-primary" id="lfm" data-input="logo_path" data-preview="holder">Choose Image</a>
+
+                                                      @error('logo_path')
                                                       <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
                                                       </span>
                                                       @enderror
                                                 </div>
+                                          </div>
+                                    </div>
+
+                                    {{-- image preview --}}
+                                    <div class="row mb-3 justify-content-center">
+                                          <div class="col-1 " id="holder">
+
                                           </div>
                                     </div>
 

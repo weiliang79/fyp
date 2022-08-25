@@ -14,6 +14,12 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- laravel file manager select button -->
+    <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
+
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -48,6 +54,10 @@
         })
     </script>
     @endif
+
+    <script>
+        $('#lfm').filemanager('file');
+    </script>
 </body>
 
 </html>

@@ -39,6 +39,12 @@
                   </a>
             </li>
             <li class="nav-item">
+                  <a href="{{ route('admin.media_manager') }}" class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'admin.media_manager') ? 'active' : 'link-dark' }}">
+                        <i class="fa-solid fa-images"></i>
+                        Media Manager
+                  </a>
+            </li>
+            <li class="nav-item">
                   <a href="{{ route('admin.settings') }}" class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'admin.settings') ? 'active' : 'link-dark' }}">
                         <i class="fa-solid fa-sliders"></i>
                         Settings
@@ -75,6 +81,12 @@
                   <a href="#" class="nav-link link-dark">
                         <i class="fa-solid fa-file-pen"></i>
                         Reports
+                  </a>
+            </li>
+            <li class="nav-item">
+                  <a href="{{ route('food_seller.media_manager') }}" class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'food_seller.media_manager') ? 'active' : 'link-dark' }}">
+                        <i class="fa-solid fa-images"></i>
+                        Media Manager
                   </a>
             </li>
             @endcan
