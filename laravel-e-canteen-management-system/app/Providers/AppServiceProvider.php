@@ -39,8 +39,6 @@ class AppServiceProvider extends ServiceProvider
             config([
                 'settings' => $settings
             ]);
-
-            config(['app.name' => config('settings.app_name')]);
         }
     }
 }

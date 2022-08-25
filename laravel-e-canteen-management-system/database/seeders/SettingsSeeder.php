@@ -16,7 +16,6 @@ class SettingsSeeder extends Seeder
     public function run()
     {
         $datas = [
-            ['key' => 'app_name', 'value' => 'E-Canteen Management System'],
             ['key' => 'currency_symbol', 'value' => '$']
         ];
 

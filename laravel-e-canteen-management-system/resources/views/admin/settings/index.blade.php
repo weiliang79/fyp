@@ -16,26 +16,6 @@
                                     @csrf
 
                                     <div class="row mb-3">
-                                          <label for="" class="col-md-3 col-form-label text-md-end">{{ __('Application Name') }}</label>
-
-                                          <div class="col-md-8">
-                                                <div class="input-group">
-                                                      <div class="input-group-text" style="width: 6%;">
-                                                            <i class="fa-solid fa-server"></i>
-                                                      </div>
-
-                                                      <input type="text" class="form-control @error('app_name') is-invalid @enderror" name="app_name" value="{{ old('app_name', $settings->where('key', 'app_name')->first()->value) }}" placeholder="Application Name">
-
-                                                      @error('app_name')
-                                                      <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                      </span>
-                                                      @enderror
-                                                </div>
-                                          </div>
-                                    </div>
-
-                                    <div class="row mb-3">
                                           <label for="" class="col-md-3 col-form-label text-md-end">{{ __('Currency Symbol') }}</label>
 
                                           <div class="col-md-8">
