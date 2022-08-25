@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('logo')->nullable();
+            $table->string('logo_path')->nullable();
             $table->text('description')->nullable();
             $table->foreignId('user_id');
             $table->timestamps();

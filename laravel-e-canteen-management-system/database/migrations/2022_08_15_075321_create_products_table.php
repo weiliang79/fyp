@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->string('image')->nullable();
+            $table->string('media_path')->nullable();
             $table->string('barcode')->nullable();
             $table->decimal('price');
             $table->boolean('status')->default(true);
