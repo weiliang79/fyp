@@ -94,6 +94,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         // store
         Route::get('/food_seller/store', [StoreController::class, 'index'])->name('food_seller.store');
+        Route::get('/food_seller/store/edit', [StoreController::class, 'showEditForm'])->name('food_seller.store.edit');
         Route::post('/food_seller/store/save', [StoreController::class, 'save'])->name('food_seller.store.save');
 
         Route::get('/food_seller/media_manager', [MediaController::class, 'index'])->name('food_seller.media_manager');

@@ -55,6 +55,19 @@
     </script>
     @endif
 
+    @if(Session::get('swal-warning'))
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            Swal.fire({
+                title: 'Warning',
+                html: '{{ Session::get("swal-warning") }}',
+                icon: 'warning',
+                showConfirmButton: true,
+            });
+        })
+    </script>
+    @endif
+
     <script>
         $('#lfm').filemanager('file');
     </script>
