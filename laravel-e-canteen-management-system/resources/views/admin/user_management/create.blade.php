@@ -20,8 +20,8 @@
 
                                           <div class="col-md-8">
                                                 <div class="input-group">
-                                                      <div class="input-group-text" style="width: 6%;">
-                                                            <i class="fa-solid fa-id-card"></i>
+                                                      <div class="input-group-text justify-content-center" style="width: 6%;">
+                                                            <i class="fa-solid fa-id-card fa-fw"></i>
                                                       </div>
 
                                                       <input type="text" class="form-control @error('first_name') is-invalid @enderror" name="first_name" value="{{ old('first_name') }}" placeholder="First Name">
@@ -47,8 +47,8 @@
 
                                           <div class="col-md-8">
                                                 <div class="input-group">
-                                                      <div class="input-group-text" style="width: 6%;">
-                                                            <i class="fa-solid fa-id-card"></i>
+                                                      <div class="input-group-text justify-content-center" style="width: 6%;">
+                                                            <i class="fa-solid fa-id-card fa-fw"></i>
                                                       </div>
 
                                                       <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Username">
@@ -67,8 +67,8 @@
 
                                           <div class="col-md-8">
                                                 <div class="input-group">
-                                                      <div class="input-group-text" style="width: 6%;">
-                                                            <i class="fa-solid fa-at"></i>
+                                                      <div class="input-group-text justify-content-center" style="width: 6%;">
+                                                            <i class="fa-solid fa-at fa-fw"></i>
                                                       </div>
 
                                                       <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Email">
@@ -88,8 +88,8 @@
 
                                           <div class="col-md-8">
                                                 <div class="input-group">
-                                                      <div class="input-group-text" style="width: 6%;">
-                                                            <i class="fa-solid fa-key"></i>
+                                                      <div class="input-group-text justify-content-center" style="width: 6%;">
+                                                            <i class="fa-solid fa-key fa-fw"></i>
                                                       </div>
 
                                                       <input type="text" class="form-control @error('password') is-invalid @enderror" name="password" id="password" value="{{ old('password') }}" placeholder="Password">
@@ -109,8 +109,8 @@
 
                                           <div class="col-md-8">
                                                 <div class="input-group">
-                                                      <div class="input-group-text" style="width: 6%;">
-                                                            <i class="fa-solid fa-user-tag"></i>
+                                                      <div class="input-group-text justify-content-center" style="width: 6%;">
+                                                            <i class="fa-solid fa-user-tag fa-fw"></i>
                                                       </div>
 
                                                       <select class="form-select @error('role') is-invalid @enderror" name="role">
