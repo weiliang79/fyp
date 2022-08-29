@@ -8,6 +8,8 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UserManagementController;
@@ -79,6 +81,22 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/admin/user_management/save', [UserManagementController::class, 'save'])->name('admin.user_management.save');
         Route::post('/admin/user_management/delete', [UserManagementController::class, 'delete'])->name('admin.user_management.delete');
 
+        // menus - category
+        Route::get('/admin/menus/category', [MenuController::class, 'categoryIndex'])->name('admin.menus.category');
+        Route::get('/admin/menus/category/create', [MenuController::class, 'showCategoryCreateForm'])->name('admin.menus.category.create');
+        Route::post('/admin/menus/category/save', [MenuController::class, 'saveCategory'])->name('admin.menus.category.save');
+        Route::get('/admin/menus/category/{id}/edit', [MenuController::class, 'showCategoryEditForm'])->name('admin.menus.category.edit');
+        Route::post('/admin/menus/category/update', [MenuController::class, 'updateCategory'])->name('admin.menus.category.update');
+        Route::post('/admin/menus/category/delete', [MenuController::class, 'deleteCategory'])->name('admin.menus.category.delete');
+
+        // payment
+        Route::get('/admin/payment', [PaymentController::class, 'index'])->name('admin.payment');
+        Route::get('/admin/payment/create', [PaymentController::class, 'showCreateForm'])->name('admin.payment.create');
+        Route::post('/admin/payment/save', [PaymentController::class, 'save'])->name('admin.payment.save');
+        Route::get('/admin/payment/{id}/edit', [PaymentController::class, 'showEditForm'])->name('admin.payment.edit');
+        Route::post('/admin/payment/update', [PaymentController::class, 'update'])->name('admin.payment.update');
+        Route::post('/admin/payment/delete', [PaymentController::class, 'delete'])->name('admin.payment.delete');
+
         // media manager
         Route::get('/admin/media_manager', [MediaController::class, 'index'])->name('admin.media_manager');
 
@@ -97,6 +115,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/food_seller/store/edit', [StoreController::class, 'showEditForm'])->name('food_seller.store.edit');
         Route::post('/food_seller/store/save', [StoreController::class, 'save'])->name('food_seller.store.save');
 
+        // menu - category
+        Route::get('/food_seller/menus/category', [MenuController::class, 'categoryIndex'])->name('food_seller.menus.category');
+
+        // menu - product
+        Route::get('/food_seller/menus/product', [MenuController::class, 'foodIndex'])->name('food_seller.menus.product');
+
+        // media manager
         Route::get('/food_seller/media_manager', [MediaController::class, 'index'])->name('food_seller.media_manager');
 
     });
