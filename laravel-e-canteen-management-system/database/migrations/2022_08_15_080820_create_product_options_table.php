@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('product_options', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->foreignId('product_id');
             $table->timestamps();
             $table->softDeletes();
