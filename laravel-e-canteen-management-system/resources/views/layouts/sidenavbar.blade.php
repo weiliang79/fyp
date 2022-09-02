@@ -26,6 +26,28 @@
                         Store
                   </a>
             </li>
+            <li class="nav-item dropdown">
+                  <a href="#" class="nav-link dropdown-toggle link-dark" id="menuDropdown" data-bs-toggle="collapse" data-bs-target="#menu-collapse" aria-expanded="false">
+                        <i class="fa-solid fa-bowl-food"></i>
+                        Menus
+                  </a>
+                  <div class="collapse {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'admin.menus') ? 'show' : '' }}" id="menu-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                              <li>
+                                    <a class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'admin.menus.category') ? 'active' : 'link-dark' }} mx-4" href="{{ route('admin.menus.category') }}">Product Category</a>
+                              </li>
+                              <li>
+                                    <a class="nav-link link-dark mx-4" href="#">Product List</a>
+                              </li>
+                        </ul>
+                  </div>
+            </li>
+            <li class="nav-item">
+                  <a href="{{ route('admin.payment') }}" class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'admin.payment') ? 'active' : 'link-dark' }}">
+                        <i class="fa-solid fa-credit-card"></i>
+                        Payment
+                  </a>
+            </li>
             <li class="nav-item">
                   <a href="#" class="nav-link link-dark">
                         <i class="fa-solid fa-ruler-combined"></i>
@@ -65,11 +87,21 @@
                         Store
                   </a>
             </li>
-            <li class="nav-item">
-                  <a href="#" class="nav-link link-dark">
+            <li class="nav-item dropdown">
+                  <a href="#" class="nav-link dropdown-toggle link-dark" id="menuDropdown" data-bs-toggle="collapse" data-bs-target="#menu-collapse" aria-expanded="false">
                         <i class="fa-solid fa-bowl-food"></i>
                         Menus
                   </a>
+                  <div class="collapse {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'food_seller.menus') ? 'show' : '' }}" id="menu-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                              <li>
+                                    <a class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'food_seller.menus.category') ? 'active' : 'link-dark' }} mx-4" href="{{ route('food_seller.menus.category') }}">Product Category</a>
+                              </li>
+                              <li>
+                                    <a class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'food_seller.menus.product') ? 'active' : 'link-dark' }} mx-4" href="{{ route('food_seller.menus.product') }}">Product List</a>
+                              </li>
+                        </ul>
+                  </div>
             </li>
             <li class="nav-item">
                   <a href="#" class="nav-link link-dark">

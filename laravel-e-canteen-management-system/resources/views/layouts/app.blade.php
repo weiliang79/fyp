@@ -60,7 +60,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             Swal.fire({
                 title: 'Warning',
-                html: '{{ Session::get("swal-warning") }}',
+                html: '{{ Session::pull("swal-warning") }}',
                 icon: 'warning',
                 showConfirmButton: true,
             });

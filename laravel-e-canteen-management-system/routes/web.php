@@ -119,7 +119,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/food_seller/menus/category', [MenuController::class, 'categoryIndex'])->name('food_seller.menus.category');
 
         // menu - product
-        Route::get('/food_seller/menus/product', [MenuController::class, 'foodIndex'])->name('food_seller.menus.product');
+        Route::get('/food_seller/menus/product', [MenuController::class, 'productIndex'])->name('food_seller.menus.product');
+        Route::get('/food_seller/menus/product/create', [MenuController::class, 'showProductCreateForm'])->name('food_seller.menus.product.create');
+        Route::post('/food_seller/menus/product/save', [MenuController::class, 'saveProduct'])->name('food_seller.menus.product.save');
+        Route::post('/food_seller/menus/product/delete', [MenuController::class, 'deleteProduct'])->name('food_seller.menus.product.delete');
 
         // media manager
         Route::get('/food_seller/media_manager', [MediaController::class, 'index'])->name('food_seller.media_manager');
