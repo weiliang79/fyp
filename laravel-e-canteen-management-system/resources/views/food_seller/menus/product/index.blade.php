@@ -31,7 +31,7 @@
                                                 <td>{{ config('settings.currency_symbol') }}{{ $product->price }}</td>
                                                 <td>{{ $product->status ? 'Available' : 'Not Available' }}</td>
                                                 <td>
-                                                      <button class="btn btn-primary" type="button">Edit</button>
+                                                      <a class="btn btn-primary" href="{{ route('food_seller.menus.product.edit', ['id' => $product->id]) }}">Edit</a>
                                                       <button class="btn btn-danger" type="button" onclick="promptDeleteWarning(this)" data-id="{{ $product->id }}">Delete</button>
                                                 </td>
                                           </tr>

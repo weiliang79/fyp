@@ -13,6 +13,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UserManagementController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +41,6 @@ Route::get('/login', [LoginController::class, 'showloginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 
 //logout routes
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 //register routes
@@ -122,6 +122,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/food_seller/menus/product', [MenuController::class, 'productIndex'])->name('food_seller.menus.product');
         Route::get('/food_seller/menus/product/create', [MenuController::class, 'showProductCreateForm'])->name('food_seller.menus.product.create');
         Route::post('/food_seller/menus/product/save', [MenuController::class, 'saveProduct'])->name('food_seller.menus.product.save');
+        Route::get('/food_seller/menus/product/{id}/edit', [MenuController::class, 'showProductEditForm'])->name('food_seller.menus.product.edit');
+        Route::post('/food_seller/menus/product/update', [MenuController::class, 'updateProduct'])->name('food_seller.menus.product.update');
         Route::post('/food_seller/menus/product/delete', [MenuController::class, 'deleteProduct'])->name('food_seller.menus.product.delete');
 
         // media manager

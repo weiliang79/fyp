@@ -39,7 +39,7 @@ class StoreController extends Controller
 
         $request->validate([
             'store_name' => 'required',
-            'logo_path' => 'required|url',
+            'logo_path' => 'nullable|url',
         ]);
 
         $user = User::find(Auth::user()->id);

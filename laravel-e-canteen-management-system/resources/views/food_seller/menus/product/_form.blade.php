@@ -19,7 +19,10 @@
                                     <i class="fa-solid fa-bowl-food fa-fw"></i>
                               </div>
 
-                              <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', '') }}" placeholder="Product Name">
+                              @if($product)
+                              <input type="hidden" name="productId" value="{{ $product->id }}">
+                              @endif
+                              <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $product !== null ? $product->name : '') }}" placeholder="Product Name">
 
                               @error('name')
                               <span class="invalid-feedback" role="alert">
@@ -43,7 +46,7 @@
                               <select class="form-control @error('category_id') is-invalid @enderror" name="category_id" id="">
                                     <option value="0">Select a category</option>
                                     @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                    <option value="{{ $category->id }}" {{ old('category_id', $product !== null ? $product->category_id : '') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                     @endforeach
                               </select>
 
@@ -65,7 +68,7 @@
                                     <i class="fa-solid fa-barcode fa-fw"></i>
                               </div>
 
-                              <input type="text" class="form-control @error('barcode') is-invalid @enderror" name="barcode" value="{{ old('barcode', '') }}" placeholder="Barcode">
+                              <input type="text" class="form-control @error('barcode') is-invalid @enderror" name="barcode" value="{{ old('barcode', $product !== null ? $product->barcode : '') }}" placeholder="Barcode">
 
                               @error('barcode')
                               <span class="invalid-feedback" role="alert">
@@ -86,7 +89,7 @@
                                     <i class="fa-solid fa-dollar-sign fa-fw"></i>
                               </div>
 
-                              <input type="text" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price', '') }}" placeholder="Price">
+                              <input type="text" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price', $product !== null ? $product->price : '') }}" placeholder="Price">
 
                               @error('price')
                               <span class="invalid-feedback" role="alert">
@@ -107,7 +110,7 @@
                                     <i class="fa-solid fa-image fa-fw"></i>
                               </div>
 
-                              <input id="image_path" class="form-control @error('image_path') is-invalid @enderror" type="text" name="image_path" value="{{ old('image_path', '') }}">
+                              <input id="image_path" class="form-control @error('image_path') is-invalid @enderror" type="text" name="image_path" value="{{ old('image_path', $product !== null ? $product->media_path : '') }}">
                               <button class="btn btn-primary" id="lfm" data-input="image_path" data-preview="holder">Choose Image</button>
 
                               @error('image_path')
@@ -130,7 +133,7 @@
                               </div>
 
                               <div class="form-check form-switch form-switch-md" style="margin: 0.3rem 0 0.3rem 0.5rem;">
-                                    <input type="checkbox" class="form-check-input" role="switch" id="statusSwitch" name="status" {{ old('status') == 'on' ? 'checked' : '' }}>
+                                    <input type="checkbox" class="form-check-input" role="switch" id="statusSwitch" name="status" {{ old('status', $product !== null ? ($product->status == true ? 'on' : '') : '') == 'on' ? 'checked' : '' }}>
                               </div>
 
                               @error('status')
@@ -152,7 +155,7 @@
                                     <i class="fa-solid fa-quote-right fa-fw"></i>
                               </div>
 
-                              <textarea class="form-control" name="description" id="" cols="30" rows="10">{{ old('description') }}</textarea>
+                              <textarea class="form-control" name="description" id="" cols="30" rows="10">{{ old('description', $product !== null ? $product->description : '') }}</textarea>
 
                               @error('name')
                               <span class="invalid-feedback" role="alert">
@@ -170,10 +173,167 @@
 
             <div id="options">
                   <?php
+                  $optionsId = session()->getOldInput('optionId');
                   $options = session()->getOldInput('optionName');
                   $descriptions = session()->getOldInput('optionDescription');
+                  $optionDetailId = session()->getOldInput('optionDetailId');
                   $optionDetail = session()->getOldInput('optionDetail');
                   $additionalPrices = session()->getOldInput('additionalPrice');
+
+                  if ($product !== null) {
+                        if ($product->productOptions && $options === null) {
+                              $count = 0;
+                              foreach ($product->productOptions as $option) {
+                                    echo '<div class="row mb-3 justify-content-center optionGroup">
+                              <div class="col-md-10">
+                                    <div class="card">
+                                          <div class="card-header">
+                                                <div class="row mb-3">
+                                                      <label for="" class="col-md-3 col-form-label text-md-end">Option Name</label>
+                  
+                                                      <div class="col-md-8">
+                                                            <div class="input-group">
+                                                                  <div class="input-group-text justify-content-center" style="width: 6%;">
+                                                                        <i class="fa-solid fa-utensils fa-fw"></i>
+                                                                  </div>
+                  
+                                                                  <input type="hidden" name="optionId[]" value="' . $option->id . '"> 
+                                                                  <input class="form-control" type="text" name="optionName[]" placeholder="Option Name" value="' . $option->name . '">
+                                                            </div>
+                                                      </div>
+                                                </div>
+                  
+                                                <div class="row mb-3">
+                                                      <label for="" class="col-md-3 col-form-label text-md-end">Description</label>
+                  
+                                                      <div class="col-md-8">
+                                                            <div class="input-group">
+                                                                  <div class="input-group-text justify-content-center" style="width: 6%;">
+                                                                        <i class="fa-solid fa-quote-right fa-fw"></i>
+                                                                  </div>
+                  
+                                                                  <textarea class="form-control") is-invalid @enderror" name="optionDescription[]" id="" cols="30" rows="3">' . $option->description . '</textarea>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                  
+                                                <div class="row">
+                                                      <div class="col-md-8 offset-md-10">
+                                                            <button type="button" class="btn btn-danger" onclick="delOptions(this);"><i class="fa-solid fa-minus"></i></button>
+                                                      </div>
+                                                </div>
+                                          </div>
+                  
+                                          <div class="card-body">
+                                                <div id="optionDetail' . $count . '">';
+
+                                    foreach ($option->optionDetails as $detail) {
+                                          if ($detail->name == 'None') {
+                                                echo '<div class="row mb-3 justify-content-center optionDetailGroup">
+                                                            <div class="col-md-10">
+                                                                  <div class="card">
+                                                                        <div class="card-body">
+                  
+                                                                              <div class="row mb-3">
+                                                                                    <label for="" class=" col-md-3 col-form-label text-md-end">Option</label>
+                  
+                                                                                    <div class="col-md-8">
+                                                                                          <div class="input-group">
+                                                                                                <div class="input-group-text justify-content-center" style="width: 6%;">
+                                                                                                      <i class="fa-solid fa-wheat-awn-circle-exclamation fa-fw"></i>
+                                                                                                </div>
+                  
+                                                                                                <input class="form-control" type="text" name="optionDetail" placeholder="Option" value="None" disabled>
+                                                                                                <input type="hidden" name="optionDetailId[' . $count . '][]" value="' . $detail->id . '"> 
+                                                                                                <input type="hidden" name="optionDetail[' . $count . '][]" value="None">
+                                                                                          </div>
+                                                                                    </div>
+                                                                              </div>
+                  
+                                                                              <div class="row mb-3">
+                                                                                    <label for="" class=" col-md-3 col-form-label text-md-end">Additional Price</label>
+                  
+                                                                                    <div class="col-md-8">
+                                                                                          <div class="input-group">
+                                                                                                <div class="input-group-text justify-content-center" style="width: 6%;">
+                                                                                                      <i class="fa-solid fa-money-bill-wheat fa-fw"></i>
+                                                                                                </div>
+                  
+                                                                                                <input class="form-control" type="text" name="additionalPrice" placeholder="Additional Price" value="0.00" disabled>
+                                                                                                <input type="hidden" name="additionalPrice[' . $count . '][]" value="0.00">
+                                                                                          </div>
+                                                                                    </div>
+                                                                              </div>
+                  
+                                                                        </div>
+                                                                  </div>
+                                                            </div>
+                                                      </div>';
+                                          } else {
+                                                echo '<div class="row mb-3 justify-content-center optionDetailGroup">
+                                          <div class="col-md-10">
+                                                <div class="card">
+                                                      <div class="card-body">
+                              
+                                                            <div class="row mb-3">
+                                                                  <label for="" class=" col-md-3 col-form-label text-md-end">Option</label>
+                              
+                                                                  <div class="col-md-8">
+                                                                        <div class="input-group">
+                                                                              <div class="input-group-text justify-content-center" style="width: 6%;">
+                                                                                    <i class="fa-solid fa-wheat-awn-circle-exclamation fa-fw"></i>
+                                                                              </div>
+                              
+                                                                              <input type="hidden" name="optionDetailId[' . $count . '][]" value="' . $detail->id . '">
+                                                                              <input class="form-control" type="text" name="optionDetail[' . $count . '][]" placeholder="Option" value="' . $detail->name . '">
+                                                                        </div>
+                                                                  </div>
+                                                            </div>
+                              
+                                                            <div class="row mb-3">
+                                                                  <label for="" class=" col-md-3 col-form-label text-md-end">Additional Price</label>
+                              
+                                                                  <div class="col-md-8">
+                                                                        <div class="input-group">
+                                                                              <div class="input-group-text justify-content-center" style="width: 6%;">
+                                                                                    <i class="fa-solid fa-money-bill-wheat fa-fw"></i>
+                                                                              </div>
+                              
+                                                                              <input class="form-control" type="text" name="additionalPrice[' . $count . '][]" placeholder="Additional Price" value="' . $detail->extra_price . '">
+                                                                        </div>
+                                                                  </div>
+                                                            </div>
+                              
+                                                            <div class="row">
+                                                                  <div class="col-md-8 offset-md-10">
+                                                                        <button type="button" class="btn btn-danger" onclick="delOptionDetail(this);" data-count=""><i class="fa-solid fa-minus"></i></button>
+                                                                  </div>
+                                                            </div>
+                              
+                                                      </div>
+                                                </div>
+                                          </div>
+                                    </div>';
+                                          }
+                                    }
+
+                                    echo '</div>
+
+                                                <div class="row mb-0">
+                                                      <div class="col-md-8 offset-md-10">
+                                                            <button type="button" class="btn btn-primary" onclick="addOptionDetail(this);" data-count="' . $count . '"><i class="fas fa-plus"></i></button>
+                                                      </div>
+                                                </div>
+                  
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>';
+                                    $count++;
+                              }
+                        }
+                  }
+
                   if ($options) {
                         foreach ($options as $key => $value) {
                               echo '<div class="row mb-3 justify-content-center optionGroup">
@@ -199,6 +359,12 @@
                                           </span>';
                               } else {
                                     echo '<input class="form-control" type="text" name="optionName[' . $key . ']" placeholder="Option Name" value="' . $value . '">';
+                              }
+
+                              if ($optionsId !== null) {
+                                    if (array_key_exists($key, $optionsId)) {
+                                          echo '<input type="hidden" name="optionNameId[' . $key . ']" value="' . $optionsId[$key] . '">';
+                                    }
                               }
 
                               echo '</div>
@@ -228,50 +394,58 @@
                         
                                                 <div class="card-body">
                         
-                                                      <div id="optionDetail' . $key . '">
-                                                            <div class="row mb-3 justify-content-center optionDetailGroup">
-                                                                  <div class="col-md-10">
-                                                                        <div class="card">
-                                                                              <div class="card-body">
-                        
-                                                                                    <div class="row mb-3">
-                                                                                          <label for="" class=" col-md-3 col-form-label text-md-end">Option</label>
-                        
-                                                                                          <div class="col-md-8">
-                                                                                                <div class="input-group">
-                                                                                                      <div class="input-group-text justify-content-center" style="width: 6%;">
-                                                                                                            <i class="fa-solid fa-wheat-awn-circle-exclamation fa-fw"></i>
-                                                                                                      </div>
-                        
-                                                                                                      <input class="form-control" type="text" name="optionDetail" placeholder="Option" value="None" disabled>
-                                                                                                      <input type="hidden" name="optionDetail[][]" value="None">
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </div>
-                        
-                                                                                    <div class="row mb-3">
-                                                                                          <label for="" class=" col-md-3 col-form-label text-md-end">Additional Price</label>
-                        
-                                                                                          <div class="col-md-8">
-                                                                                                <div class="input-group">
-                                                                                                      <div class="input-group-text justify-content-center" style="width: 6%;">
-                                                                                                            <i class="fa-solid fa-money-bill-wheat fa-fw"></i>
-                                                                                                      </div>
-                        
-                                                                                                      <input class="form-control" type="text" name="additionalPrice" placeholder="Additional Price" value="0.00" disabled>
-                                                                                                      <input type="hidden" name="additionalPrice[][]" value="0.00">
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </div>
-                        
-                                                                              </div>
-                                                                        </div>
-                                                                  </div>
-                                                            </div>';
+                                                      <div id="optionDetail' . $key . '">';
 
                               if ($optionDetail[$key]) {
                                     foreach ($optionDetail[$key] as $key1 => $value1) {
-                                          if ($value1 != 'None') {
+                                          if ($value1 == 'None') {
+                                                echo '<div class="row mb-3 justify-content-center optionDetailGroup">
+                                                <div class="col-md-10">
+                                                      <div class="card">
+                                                            <div class="card-body">
+      
+                                                                  <div class="row mb-3">
+                                                                        <label for="" class=" col-md-3 col-form-label text-md-end">Option</label>
+      
+                                                                        <div class="col-md-8">
+                                                                              <div class="input-group">
+                                                                                    <div class="input-group-text justify-content-center" style="width: 6%;">
+                                                                                          <i class="fa-solid fa-wheat-awn-circle-exclamation fa-fw"></i>
+                                                                                    </div>
+      
+                                                                                    <input class="form-control" type="text" name="optionDetail" placeholder="Option" value="None" disabled>
+                                                                                    <input type="hidden" name="optionDetail[' . $key . '][]" value="None">';
+
+                                                if ($optionDetailId !== null) {
+                                                      if (array_key_exists($key1, $optionDetailId[$key])) {
+                                                            echo '<input type="hidden" name="optionDetailId[' . $key . '][]" value="' . $optionDetailId[$key][$key1] . '">';
+                                                      }
+                                                }
+
+                                                echo '</div>
+                                                                        </div>
+                                                                  </div>
+      
+                                                                  <div class="row mb-3">
+                                                                        <label for="" class=" col-md-3 col-form-label text-md-end">Additional Price</label>
+      
+                                                                        <div class="col-md-8">
+                                                                              <div class="input-group">
+                                                                                    <div class="input-group-text justify-content-center" style="width: 6%;">
+                                                                                          <i class="fa-solid fa-money-bill-wheat fa-fw"></i>
+                                                                                    </div>
+      
+                                                                                    <input class="form-control" type="text" name="additionalPrice" placeholder="Additional Price" value="0.00" disabled>
+                                                                                    <input type="hidden" name="additionalPrice[' . $key . '][]" value="0.00">
+                                                                              </div>
+                                                                        </div>
+                                                                  </div>
+      
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>';
+                                          } else {
                                                 echo '<div class="row mb-3 justify-content-center optionDetailGroup">
                                           <div class="col-md-10">
                                                 <div class="card">
@@ -296,6 +470,12 @@
                                                       echo '<input class="form-control" type="text" name="optionDetail[' . $key . '][]" placeholder="Option" value="' . $value1 . '">';
                                                 }
 
+                                                if ($optionDetailId !== null) {
+                                                      if (array_key_exists($key1, $optionDetailId[$key])) {
+                                                            echo '<input type="hidden" name="optionDetailId[' . $key . '][]" value="' . $optionDetailId[$key][$key1] . '">';
+                                                      }
+                                                }
+
                                                 echo '</div>
                                                                   </div>
                                                             </div>
@@ -309,17 +489,17 @@
                                                                                     <i class="fa-solid fa-money-bill-wheat fa-fw"></i>
                                                                               </div>';
 
-                                                                              if($errors->has('additionalPrice.' . strval($key) . '.' . strval($key1))){
-                                                                                    echo '<input class="form-control is-invalid" type="text" name="additionalPrice[' . $key . '][]" placeholder="Additional Price">
+                                                if ($errors->has('additionalPrice.' . strval($key) . '.' . strval($key1))) {
+                                                      echo '<input class="form-control is-invalid" type="text" name="additionalPrice[' . $key . '][]" placeholder="Additional Price">
                                                                                     
                                                                                     <span class="invalid-feedback" role="alert">
                                                                                           <strong>' . $errors->first('additionalPrice.' . strval($key) . '.' . strval($key1)) . '</strong>
                                                                                     </span>';
-                                                                              } else {
-                                                                                    echo '<input class="form-control" type="text" name="additionalPrice[' . $key . '][]" placeholder="Additional Price" value="' . $additionalPrices[$key][$key1] . '">';
-                                                                              }
-                              
-                                                                              echo '</div>
+                                                } else {
+                                                      echo '<input class="form-control" type="text" name="additionalPrice[' . $key . '][]" placeholder="Additional Price" value="' . $additionalPrices[$key][$key1] . '">';
+                                                }
+
+                                                echo '</div>
                                                                   </div>
                                                             </div>
                               
@@ -356,7 +536,7 @@
 
             <div class="row mb-0">
                   <div class="col-md-8 offset-md-10">
-                        <a href="#" class="btn btn-primary" onclick="addOptions(this);" data-init="{{ session()->getOldInput('optionName') ? count(session()->getOldInput('optionName')) : '0' }}"><i class="fa-solid fa-plus"></i></a>
+                        <a href="#" class="btn btn-primary" onclick="addOptions(this);" data-init="{{ session()->getOldInput('optionName') ? count(session()->getOldInput('optionName')) : ($product !== null ? count($product->productOptions) : '0') }}"><i class="fa-solid fa-plus"></i></a>
                   </div>
             </div>
 
