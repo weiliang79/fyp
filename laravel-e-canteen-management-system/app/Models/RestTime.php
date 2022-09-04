@@ -33,6 +33,6 @@ class RestTime extends Model
     ];
 
     public function students(){
-        return $this->belongsToMany(Student::class, 'student_rest_time');
+        return $this->belongsToMany(Student::class, 'student_rest_time')->withTimestamps();
     }
 }
