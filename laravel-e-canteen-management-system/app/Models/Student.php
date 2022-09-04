@@ -54,4 +54,8 @@ class Student extends Model
     public function orders(){
         return $this->hasMany(Order::class);
     }
+
+    public function restTimes(){
+        return $this->belongsToMany(RestTime::class, 'student_rest_time');
+    }
 }
