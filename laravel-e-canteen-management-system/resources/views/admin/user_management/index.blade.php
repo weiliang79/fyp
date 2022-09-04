@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container py-4">
-      <div class="row justify-content-center">
+      <div class="row justify-content-center mb-4">
             <div class="col-md-20">
                   <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
@@ -42,6 +42,54 @@
                                                 <td>{{ $user->created_at->format('Y/m/d H:ia') }}</td>
                                                 <td>{{ $user->updated_at->format('Y/m/d H:ia') }}</td>
                                                 <td><button type="button" class="btn btn-danger" onclick="promptDeleteWarning(this)" data-user-id="{{ $user->id }}">Delete</button></td>
+                                          </tr>
+                                          @endforeach
+                                    </tbody>
+                              </table>
+                        </div>
+                  </div>
+            </div>
+      </div>
+
+      <div class="row justify-content-center">
+            <div class="col-md-20">
+                  <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                              Student Management
+                              <div>
+                                    <a href="{{ route('admin.user_management.student.rest_time') }}" class="btn btn-primary">Manage Rest Time</a>
+                                    <a href="{{ route('admin.user_management.student.create') }}" class="btn btn-primary">New Student</a>
+                              </div>
+                        </div>
+
+                        <div class="card-body">
+                              <table class="dataTable table table-striped" style="width: 100%;">
+                                    <thead>
+                                          <tr>
+                                                <th>Name</th>
+                                                <th>Username</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+                                                <th>Address</th>
+                                                <th>Created At</th>
+                                                <th>Updated At</th>
+                                                <th>Action</th>
+                                          </tr>
+                                    </thead>
+                                    <tbody>
+                                          @foreach($students as $student)
+                                          <tr>
+                                                <td>{{ $student->first_name }} {{ $student->last_name }}</td>
+                                                <td>{{ $student->username }}</td>
+                                                <td>{{ $student->email }}</td>
+                                                <td>{{ $student->phone }}</td>
+                                                <td>{{ $student->address }}</td>
+                                                <td>{{ $student->created_at }}</td>
+                                                <td>{{ $student->updated_at }}</td>
+                                                <td>
+                                                      <a href="#" class="btn btn-primary">Edit</a>
+                                                      <button type="button" class="btn btn-danger" onclick="promptDeleteStudentWarning(this)" data-id="{{ $student->id }}">Delete</button>
+                                                </td>
                                           </tr>
                                           @endforeach
                                     </tbody>

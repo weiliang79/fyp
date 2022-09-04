@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\RestTimeController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UserManagementController;
@@ -41,7 +42,7 @@ Route::get('/login', [LoginController::class, 'showloginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 
 //logout routes
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 //register routes
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -80,6 +81,14 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/admin/user_management/create', [UserManagementController::class, 'showCreateForm'])->name('admin.user_management.create');
         Route::post('/admin/user_management/save', [UserManagementController::class, 'save'])->name('admin.user_management.save');
         Route::post('/admin/user_management/delete', [UserManagementController::class, 'delete'])->name('admin.user_management.delete');
+
+        // user management - student
+        Route::get('/admin/user_management/student/create', [UserManagementController::class, 'showStudentCreateForm'])->name('admin.user_management.student.create');
+        Route::post('admin/user_management/student/save', [UserManagementController::class, 'saveStudent'])->name('admin.user_management.student.save');
+
+        // user management - student - rest time
+        Route::get('/admin/user_management/student/rest_time', [RestTimeController::class, 'index'])->name('admin.user_management.student.rest_time');
+        Route::post('/admin/user_management/student/rest_time/update', [RestTimeController::class, 'update'])->name('admin.user_management.student.rest_time.update');
 
         // menus - category
         Route::get('/admin/menus/category', [MenuController::class, 'categoryIndex'])->name('admin.menus.category');
