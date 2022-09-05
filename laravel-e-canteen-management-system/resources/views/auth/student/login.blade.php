@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.student.app_public')
 
 @section('content')
 
@@ -6,10 +6,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Admin/Food Seller Login') }}</div>
+                <div class="card-header">{{ __('Student Login') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('student.login') }}">
                         @csrf
 
                         <div class="row mb-3">

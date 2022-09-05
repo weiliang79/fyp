@@ -7,12 +7,14 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RestTimeController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\studentAuth\StudentLoginController;
 use App\Http\Controllers\UserManagementController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
@@ -29,24 +31,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [LandingController::class, 'index'])->name('landing');
 
 //Auth::routes();       //laravel UI default routes
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+// student login routes
+Route::get('/student/login', [StudentLoginController::class, 'showLoginForm'])->name('student.login');
+Route::post('/student/login', [StudentLoginController::class, 'login']);
+
 //login routes
-Route::get('/login', [LoginController::class, 'showloginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
+Route::get('/admin/login', [LoginController::class, 'showloginForm'])->name('login');
+Route::post('/admin/login', [LoginController::class, 'login']);
 
 //logout routes
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/admin/logout', [LoginController::class, 'logout'])->name('logout');
+
+// student logout routes
+Route::get('/student/logout', [StudentLoginController::class, 'logout'])->name('student.logout');
 
 //register routes
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register']);
+//Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+//Route::post('/register', [RegisterController::class, 'register']);
 
 //reset password routes
 Route::get('/password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
@@ -144,4 +151,8 @@ Route::group(['middleware' => ['auth']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
 
+});
+
+Route::get('/test', function () {
+    dd(auth()->guard('student')->attempt(['username' => 'ccc', 'password' => 'ccc123']));
 });

@@ -1,17 +1,40 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
       <div class="container-fluid">
-            @if(Route::is('login'))
             <a class="navbar-brand" href="{{ Route('landing') }}">{{ config('app.name', 'Laravel') }}</a>
-            @else
-            <button class="btn btn-primary" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            @endif
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <!-- Left Side Of Navbar -->
+                  <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                              <a class="nav-link" href="#">Menu</a>
+                        </li>
+                  </ul>
+
+                  <!-- Right Side Of Navbar -->
                   <!-- Right Side Of Navbar -->
                   <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
-                        @guest
+
+                        @Auth
+                        <li class="nav-item dropdown">
+                              <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
+                              </a>
+
+                              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}">
+                                          {{ __('Logout') }}
+                                    </a>
+
+                                    {{--
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                    </form>
+                                    --}}
+                              </div>
+                        </li>
+                        @else
+                        @guest('student')
                         @if(Route::has('student.login'))
                         <li class="nav-item">
                               <a class="nav-link" href="{{ route('student.login') }}">{{ __('Student Login') }}</a>
@@ -32,11 +55,11 @@
                         @else
                         <li class="nav-item dropdown">
                               <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                                    {{ auth('student')->user()->first_name }} {{ auth('student')->user()->last_name }}
                               </a>
 
                               <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}">
+                                    <a class="dropdown-item" href="{{ route('student.logout') }}">
                                           {{ __('Logout') }}
                                     </a>
 
@@ -48,6 +71,7 @@
                               </div>
                         </li>
                         @endguest
+                        @endauth
                   </ul>
             </div>
       </div>
