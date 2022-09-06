@@ -6,7 +6,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Admin/Food Seller Reset Password') }}</div>
+                <div class="card-header">{{ __('Student Reset Password') }}</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -15,7 +15,7 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('admin.password.email') }}">
+                    <form method="POST" action="{{ route('student.password.email') }}">
                         @csrf
 
                         <div class="row mb-3">
