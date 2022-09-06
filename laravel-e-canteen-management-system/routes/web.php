@@ -11,6 +11,7 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestTimeController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StoreController;
@@ -82,6 +83,11 @@ Route::group(['middleware' => ['auth']], function () {
 
         // home
         Route::get('/admin/home', [HomeController::class, 'index'])->name('admin.home');
+
+        // profile
+        Route::get('/admin/profile', [ProfileController::class, 'index'])->name('admin.profile');
+        Route::post('/admin/profile/update_name', [ProfileController::class, 'updateName'])->name('admin.profile.update_name');
+        Route::post('/admin/profile/update_password', [ProfileController::class, 'updatePassword'])->name('admin.profile.update_password');
 
         // user management
         Route::get('/admin/user_management', [UserManagementController::class, 'index'])->name('admin.user_management');
