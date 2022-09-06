@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 
 class ProfileController extends Controller
 {
@@ -26,7 +27,12 @@ class ProfileController extends Controller
         $user->last_name = $request->last_name;
         $user->save();
 
-        return redirect()->route('admin.profile')->with('swal-success', 'Profile update successful.');
+        if($user->isAdmin()){
+            return redirect()->route('admin.profile')->with('swal-success', 'Profile update successful.');
+        } else {
+            return redirect()->route('food_seller.profile')->with('swal-success', 'Profile update successful.');
+        }
+        
     }
 
     public function updateEmail(Request $request){
@@ -36,8 +42,7 @@ class ProfileController extends Controller
     public function updatePassword(Request $request){
 
         $request->validate([
-            'password' => 'required|min:6',
-            'confirm_password' => 'required|same:password',
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         //dd($request);
@@ -46,7 +51,12 @@ class ProfileController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return redirect()->route('admin.profile')->with('swal-success', 'Password update successful.');
+        if($user->isAdmin()){
+            return redirect()->route('admin.profile')->with('swal-success', 'Password update successful.');
+        } else {
+            return redirect()->route('food_seller.profile')->with('swal-success', 'Password update successful.');
+        }
+        
 
     }
 }

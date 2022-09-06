@@ -43,7 +43,7 @@
                                     @endcan
 
                                     @can('isFoodSeller')
-                                    <a class="dropdown-item" href="{{ route('admin.profile') }}">
+                                    <a class="dropdown-item" href="{{ route('food_seller.profile') }}">
                                           {{ __('test') }}
                                     </a>
                                     @endcan

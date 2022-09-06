@@ -20,6 +20,7 @@ use App\Http\Controllers\UserManagementController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\controllers\studentAuth;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,19 +58,25 @@ Route::get('/student/logout', [StudentLoginController::class, 'logout'])->name('
 //Route::post('/register', [RegisterController::class, 'register']);
 
 //reset password routes
-Route::get('/password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-Route::post('/password/email', [ForgotPasswordController::class, 'sendResetLinkEnail'])->name('password.email');
-Route::get('/password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
-Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+Route::get('/admin/password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('admin.password.request');
+Route::post('/admin/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('admin.password.email');
+Route::get('/admin/password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('admin.password.reset');
+Route::post('/admin/password/reset', [ResetPasswordController::class, 'reset'])->name('admin.password.update');
+
+// student reset password routes
+Route::get('/student/password/reset', [studentAuth\ForgotPasswordController::class, 'showLinkRequestForm'])->name('student.password.request');
+Route::post('/student/password/email', [studentAuth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('student.password.email');
+Route::get('/student/password/reset/{token}', [studentAuth\ResetPasswordController::class, 'showResetForm'])->name('student.password.reset');
+Route::post('/student/password/reset', [studentAuth\ResetPasswordController::class, 'reset'])->name('student.password.update');
 
 //password confirmation routes
-Route::get('/password/confirm', [ConfirmPasswordController::class, 'showConfirmForm'])->name('password.confirm');
-Route::post('/password/confirm', [ConfirmPasswordController::class, 'confirm']);
+//Route::get('/password/confirm', [ConfirmPasswordController::class, 'showConfirmForm'])->name('password.confirm');
+//Route::post('/password/confirm', [ConfirmPasswordController::class, 'confirm']);
 
 //email verification routes
-Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
-Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
-Route::post('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
+//Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
+//Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+//Route::post('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 
 Route::get('/admin/user_management', [UserController::class, 'index'])->name('admin.user');
 
@@ -131,6 +138,11 @@ Route::group(['middleware' => ['auth']], function () {
 
         // home
         Route::get('/food_seller/home', [HomeController::class, 'index'])->name('food_seller.home');
+
+        // profile
+        Route::get('/food_seller/profile', [ProfileController::class, 'index'])->name('food_seller.profile');
+        Route::post('/food_seller/profile/update_name', [ProfileController::class, 'updateName'])->name('food_seller.profile.update_name');
+        Route::post('/food_seller/profile/update_password', [ProfileController::class, 'updatePassword'])->name('food_seller.profile.update_password');
 
         // store
         Route::get('/food_seller/store', [StoreController::class, 'index'])->name('food_seller.store');

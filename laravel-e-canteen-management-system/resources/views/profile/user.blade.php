@@ -21,7 +21,7 @@
 
                                                 <div class="card-body">
 
-                                                      <form method="POST" action="{{ route('admin.profile.update_name') }}">
+                                                      <form method="POST" action="{{ auth()->user()->isAdmin() ? route('admin.profile.update_name') : route('food_seller.profile.update_name') }}">
                                                             @csrf
 
                                                             <div class="row mb-3">
@@ -81,7 +81,7 @@
 
                                                 <div class="card-body">
 
-                                                      <form method="POST" action="{{ route('admin.profile.update_password') }}">
+                                                      <form method="POST" action="{{ auth()->user()->isAdmin() ? route('admin.profile.update_password') : route('food_seller.profile.update_password') }}">
                                                             @csrf
 
                                                             <div class="row mb-3">
@@ -113,9 +113,9 @@
                                                                                     <i class="fa-solid fa-key fa-fw"></i>
                                                                               </div>
 
-                                                                              <input type="password" class="form-control @error('confirm_password') is-invalid @enderror" name="confirm_password" placeholder="Confirm Password">
+                                                                              <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" placeholder="Confirm Password">
 
-                                                                              @error('confirm_password')
+                                                                              @error('password_confirmation')
                                                                               <span class="invalid-feedback" role="alert">
                                                                                     <strong>{{ $message }}</strong>
                                                                               </span>
