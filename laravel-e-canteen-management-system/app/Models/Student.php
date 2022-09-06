@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\StudentResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -48,15 +49,29 @@ class Student extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function carts(){
+    public function carts()
+    {
         return $this->hasMany(Cart::class);
     }
 
-    public function orders(){
+    public function orders()
+    {
         return $this->hasMany(Order::class);
     }
 
-    public function restTimes(){
+    public function restTimes()
+    {
         return $this->belongsToMany(RestTime::class, 'student_rest_time')->withTimestamps();
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new StudentResetPasswordNotification($token));
     }
 }
