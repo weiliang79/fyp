@@ -16,10 +16,12 @@ class StudentSeeder extends Seeder
     public function run()
     {
         // student1
-        Student::factory()->create([
+        $student = Student::factory()->create([
             'username' => 'student1',
             'email' => null,
             'email_verified_at' => null,
         ]);
+
+        $student->restTimes()->attach(1);
     }
 }

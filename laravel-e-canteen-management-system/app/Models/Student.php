@@ -64,6 +64,18 @@ class Student extends Authenticatable
         return $this->belongsToMany(RestTime::class, 'student_rest_time')->withTimestamps();
     }
 
+    public function isAdmin(){
+        return false;
+    }
+
+    public function isFoodSeller(){
+        return false;
+    }
+
+    public function isStudent(){
+        return true;
+    }
+
     /**
      * Send the password reset notification.
      *

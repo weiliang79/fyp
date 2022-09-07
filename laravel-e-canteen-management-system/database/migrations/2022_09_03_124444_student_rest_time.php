@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('student_id');
             $table->foreignId('rest_time_id');
             $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->foreign('rest_time_id')->references('id')->on('rest_times')->onDelete('cascade');

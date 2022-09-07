@@ -64,6 +64,10 @@ class User extends Authenticatable
         return $this->role->id == Role::ROLE_SELLER;
     }
 
+    public function isStudent(){
+        return false;
+    }
+
     /**
      * Send the password reset notification.
      *
