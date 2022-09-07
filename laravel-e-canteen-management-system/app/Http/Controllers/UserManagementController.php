@@ -103,4 +103,11 @@ class UserManagementController extends Controller
 
         return redirect()->route('admin.user_management')->with('swal-success', 'New Student Details save successful.');
     }
+
+    public function deleteStudent(Request $request){
+        $student = Student::find($request->student_id);
+        $student->restTimes()->detach();
+        $student->delete();
+        return response()->json('Student delete successful.');
+    }
 }

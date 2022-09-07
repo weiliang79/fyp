@@ -87,7 +87,6 @@
                                                 <td>{{ $student->created_at }}</td>
                                                 <td>{{ $student->updated_at }}</td>
                                                 <td>
-                                                      <a href="#" class="btn btn-primary">Edit</a>
                                                       <button type="button" class="btn btn-danger" onclick="promptDeleteStudentWarning(this)" data-id="{{ $student->id }}">Delete</button>
                                                 </td>
                                           </tr>
@@ -140,6 +139,51 @@
                               }
 
                         });
+                  } else if (result.dismiss === Swal.DismissReason.cancel) {
+
+                  }
+            });
+      }
+
+      function promptDeleteStudentWarning(item) {
+            Swal.fire({
+                  title: 'Warning',
+                  html: 'Delete this student?',
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonText: 'Confirm',
+                  cancelButtonText: 'Cancel',
+                  reverseButtons: true,
+            }).then((result) => {
+                  if (result.isConfirmed) {
+
+                        $.ajaxSetup({
+                              headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                              }
+                        });
+
+                        $.ajax({
+                              url: '{{ route("admin.user_management.student.delete") }}',
+                              method: 'POST',
+                              dataType: 'json',
+                              data: {
+                                    student_id: $(item).data('id'),
+                              },
+                              success: function (result) {
+                                    Swal.fire({
+                                          title: 'Success',
+                                          html: result,
+                                          icon: 'success',
+                                    }).then((result) => {
+                                          window.location.reload();
+                                    });
+                              },
+                              error: function (error) {
+                                    console.log(error);
+                              }
+                        });
+
                   } else if (result.dismiss === Swal.DismissReason.cancel) {
 
                   }
