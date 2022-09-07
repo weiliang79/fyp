@@ -22,7 +22,8 @@ class UserSeeder extends Seeder
             'last_name' => 'Admin',
             'username' => 'admin',
             'role_id' => Role::ROLE_ADMIN,
-            'email' => 'admin@isp.com',
+            'email' => null,
+            'email_verified_at' => null,
         ]);
 
         // food seller
@@ -31,7 +32,8 @@ class UserSeeder extends Seeder
             'last_name' => 'Seller',
             'username' => 'foodseller',
             'role_id' => Role::ROLE_SELLER,
-            'email' => 'foodseller@isp.com',
+            'email' => null,
+            'email_verified_at' => null,
         ]);
     }
 }
