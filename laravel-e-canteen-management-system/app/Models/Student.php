@@ -64,6 +64,10 @@ class Student extends Authenticatable
         return $this->belongsToMany(RestTime::class, 'student_rest_time')->withTimestamps();
     }
 
+    public function emailVerify(){
+        return $this->hasOne(StudentEmailVerify::class);
+    }
+
     public function isAdmin(){
         return false;
     }

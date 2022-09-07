@@ -55,6 +55,10 @@ class User extends Authenticatable
     public function store(){
         return $this->hasOne(Store::class);
     }
+    
+    public function emailVerify(){
+        return $this->hasOne(UserEmailVerify::class);
+    }
 
     public function isAdmin(){
         return $this->role->id == Role::ROLE_ADMIN;
