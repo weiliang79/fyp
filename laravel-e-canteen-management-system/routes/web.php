@@ -81,94 +81,98 @@ Route::post('/student/password/reset', [studentAuth\ResetPasswordController::cla
 Route::get('/admin/user_management', [UserController::class, 'index'])->name('admin.user');
 
 Route::group(['middleware' => ['guest']], function () {
-
 });
 
 Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['middleware' => ['can:isAdmin']], function () {
 
-        // home
-        Route::get('/admin/home', [HomeController::class, 'index'])->name('admin.home');
-
         // profile
         Route::get('/admin/profile', [ProfileController::class, 'index'])->name('admin.profile');
         Route::post('/admin/profile/update_name', [ProfileController::class, 'updateName'])->name('admin.profile.update_name');
         Route::post('/admin/profile/update_password', [ProfileController::class, 'updatePassword'])->name('admin.profile.update_password');
 
-        // user management
-        Route::get('/admin/user_management', [UserManagementController::class, 'index'])->name('admin.user_management');
-        Route::get('/admin/user_management/create', [UserManagementController::class, 'showCreateForm'])->name('admin.user_management.create');
-        Route::post('/admin/user_management/save', [UserManagementController::class, 'save'])->name('admin.user_management.save');
-        Route::post('/admin/user_management/delete', [UserManagementController::class, 'delete'])->name('admin.user_management.delete');
+        Route::group(['middleware' => 'emailVerified'], function () {
 
-        // user management - student
-        Route::get('/admin/user_management/student/create', [UserManagementController::class, 'showStudentCreateForm'])->name('admin.user_management.student.create');
-        Route::post('admin/user_management/student/save', [UserManagementController::class, 'saveStudent'])->name('admin.user_management.student.save');
+            // home
+            Route::get('/admin/home', [HomeController::class, 'index'])->name('admin.home');
 
-        // user management - student - rest time
-        Route::get('/admin/user_management/student/rest_time', [RestTimeController::class, 'index'])->name('admin.user_management.student.rest_time');
-        Route::post('/admin/user_management/student/rest_time/update', [RestTimeController::class, 'update'])->name('admin.user_management.student.rest_time.update');
+            // user management
+            Route::get('/admin/user_management', [UserManagementController::class, 'index'])->name('admin.user_management');
+            Route::get('/admin/user_management/create', [UserManagementController::class, 'showCreateForm'])->name('admin.user_management.create');
+            Route::post('/admin/user_management/save', [UserManagementController::class, 'save'])->name('admin.user_management.save');
+            Route::post('/admin/user_management/delete', [UserManagementController::class, 'delete'])->name('admin.user_management.delete');
 
-        // menus - category
-        Route::get('/admin/menus/category', [MenuController::class, 'categoryIndex'])->name('admin.menus.category');
-        Route::get('/admin/menus/category/create', [MenuController::class, 'showCategoryCreateForm'])->name('admin.menus.category.create');
-        Route::post('/admin/menus/category/save', [MenuController::class, 'saveCategory'])->name('admin.menus.category.save');
-        Route::get('/admin/menus/category/{id}/edit', [MenuController::class, 'showCategoryEditForm'])->name('admin.menus.category.edit');
-        Route::post('/admin/menus/category/update', [MenuController::class, 'updateCategory'])->name('admin.menus.category.update');
-        Route::post('/admin/menus/category/delete', [MenuController::class, 'deleteCategory'])->name('admin.menus.category.delete');
+            // user management - student
+            Route::get('/admin/user_management/student/create', [UserManagementController::class, 'showStudentCreateForm'])->name('admin.user_management.student.create');
+            Route::post('admin/user_management/student/save', [UserManagementController::class, 'saveStudent'])->name('admin.user_management.student.save');
+            Route::post('/admin/user_management/student/delete', [UserManagementController::class, 'deleteStudent'])->name('admin.user_management.student.delete');
 
-        // payment
-        Route::get('/admin/payment', [PaymentController::class, 'index'])->name('admin.payment');
-        Route::get('/admin/payment/create', [PaymentController::class, 'showCreateForm'])->name('admin.payment.create');
-        Route::post('/admin/payment/save', [PaymentController::class, 'save'])->name('admin.payment.save');
-        Route::get('/admin/payment/{id}/edit', [PaymentController::class, 'showEditForm'])->name('admin.payment.edit');
-        Route::post('/admin/payment/update', [PaymentController::class, 'update'])->name('admin.payment.update');
-        Route::post('/admin/payment/delete', [PaymentController::class, 'delete'])->name('admin.payment.delete');
+            // user management - student - rest time
+            Route::get('/admin/user_management/student/rest_time', [RestTimeController::class, 'index'])->name('admin.user_management.student.rest_time');
+            Route::post('/admin/user_management/student/rest_time/update', [RestTimeController::class, 'update'])->name('admin.user_management.student.rest_time.update');
 
-        // media manager
-        Route::get('/admin/media_manager', [MediaController::class, 'index'])->name('admin.media_manager');
+            // menus - category
+            Route::get('/admin/menus/category', [MenuController::class, 'categoryIndex'])->name('admin.menus.category');
+            Route::get('/admin/menus/category/create', [MenuController::class, 'showCategoryCreateForm'])->name('admin.menus.category.create');
+            Route::post('/admin/menus/category/save', [MenuController::class, 'saveCategory'])->name('admin.menus.category.save');
+            Route::get('/admin/menus/category/{id}/edit', [MenuController::class, 'showCategoryEditForm'])->name('admin.menus.category.edit');
+            Route::post('/admin/menus/category/update', [MenuController::class, 'updateCategory'])->name('admin.menus.category.update');
+            Route::post('/admin/menus/category/delete', [MenuController::class, 'deleteCategory'])->name('admin.menus.category.delete');
 
-        // settings
-        Route::get('/admin/settings', [SettingsController::class, 'index'])->name('admin.settings');
-        Route::post('/admin/settings/save', [SettingsController::class, 'save'])->name('admin.settings.save');
+            // payment
+            Route::get('/admin/payment', [PaymentController::class, 'index'])->name('admin.payment');
+            Route::get('/admin/payment/create', [PaymentController::class, 'showCreateForm'])->name('admin.payment.create');
+            Route::post('/admin/payment/save', [PaymentController::class, 'save'])->name('admin.payment.save');
+            Route::get('/admin/payment/{id}/edit', [PaymentController::class, 'showEditForm'])->name('admin.payment.edit');
+            Route::post('/admin/payment/update', [PaymentController::class, 'update'])->name('admin.payment.update');
+            Route::post('/admin/payment/delete', [PaymentController::class, 'delete'])->name('admin.payment.delete');
+
+            // media manager
+            Route::get('/admin/media_manager', [MediaController::class, 'index'])->name('admin.media_manager');
+
+            // settings
+            Route::get('/admin/settings', [SettingsController::class, 'index'])->name('admin.settings');
+            Route::post('/admin/settings/save', [SettingsController::class, 'save'])->name('admin.settings.save');
+        });
     });
 
     Route::group(['middleware' => ['can:isFoodSeller']], function () {
-
-        // home
-        Route::get('/food_seller/home', [HomeController::class, 'index'])->name('food_seller.home');
 
         // profile
         Route::get('/food_seller/profile', [ProfileController::class, 'index'])->name('food_seller.profile');
         Route::post('/food_seller/profile/update_name', [ProfileController::class, 'updateName'])->name('food_seller.profile.update_name');
         Route::post('/food_seller/profile/update_password', [ProfileController::class, 'updatePassword'])->name('food_seller.profile.update_password');
 
-        // store
-        Route::get('/food_seller/store', [StoreController::class, 'index'])->name('food_seller.store');
-        Route::get('/food_seller/store/edit', [StoreController::class, 'showEditForm'])->name('food_seller.store.edit');
-        Route::post('/food_seller/store/save', [StoreController::class, 'save'])->name('food_seller.store.save');
+        Route::group(['middleware' => ['emailVerified']], function () {
+            // home
+            Route::get('/food_seller/home', [HomeController::class, 'index'])->name('food_seller.home');
 
-        // menu - category
-        Route::get('/food_seller/menus/category', [MenuController::class, 'categoryIndex'])->name('food_seller.menus.category');
+            // store
+            Route::get('/food_seller/store', [StoreController::class, 'index'])->name('food_seller.store');
+            Route::get('/food_seller/store/edit', [StoreController::class, 'showEditForm'])->name('food_seller.store.edit');
+            Route::post('/food_seller/store/save', [StoreController::class, 'save'])->name('food_seller.store.save');
 
-        // menu - product
-        Route::get('/food_seller/menus/product', [MenuController::class, 'productIndex'])->name('food_seller.menus.product');
-        Route::get('/food_seller/menus/product/create', [MenuController::class, 'showProductCreateForm'])->name('food_seller.menus.product.create');
-        Route::post('/food_seller/menus/product/save', [MenuController::class, 'saveProduct'])->name('food_seller.menus.product.save');
-        Route::get('/food_seller/menus/product/{id}/edit', [MenuController::class, 'showProductEditForm'])->name('food_seller.menus.product.edit');
-        Route::post('/food_seller/menus/product/update', [MenuController::class, 'updateProduct'])->name('food_seller.menus.product.update');
-        Route::post('/food_seller/menus/product/delete', [MenuController::class, 'deleteProduct'])->name('food_seller.menus.product.delete');
+            // menu - category
+            Route::get('/food_seller/menus/category', [MenuController::class, 'categoryIndex'])->name('food_seller.menus.category');
 
-        // media manager
-        Route::get('/food_seller/media_manager', [MediaController::class, 'index'])->name('food_seller.media_manager');
+            // menu - product
+            Route::get('/food_seller/menus/product', [MenuController::class, 'productIndex'])->name('food_seller.menus.product');
+            Route::get('/food_seller/menus/product/create', [MenuController::class, 'showProductCreateForm'])->name('food_seller.menus.product.create');
+            Route::post('/food_seller/menus/product/save', [MenuController::class, 'saveProduct'])->name('food_seller.menus.product.save');
+            Route::get('/food_seller/menus/product/{id}/edit', [MenuController::class, 'showProductEditForm'])->name('food_seller.menus.product.edit');
+            Route::post('/food_seller/menus/product/update', [MenuController::class, 'updateProduct'])->name('food_seller.menus.product.update');
+            Route::post('/food_seller/menus/product/delete', [MenuController::class, 'deleteProduct'])->name('food_seller.menus.product.delete');
+
+            // media manager
+            Route::get('/food_seller/media_manager', [MediaController::class, 'index'])->name('food_seller.media_manager');
+        });
 
     });
 
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
-
 });
 
 Route::get('/test', function () {
