@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 
 use function PHPSTORM_META\map;
 
@@ -31,7 +32,7 @@ class UserManagementController extends Controller
             'last_name' => 'required',
             'username' => 'required',
             'email' => 'unique:users,email|unique:students,email',
-            'password' => 'required|min:8',
+            'password' => ['required', Rules\Password::defaults()],
             'role' => 'required|integer|gt:0'
         ],
         [
@@ -75,7 +76,7 @@ class UserManagementController extends Controller
             'last_name' => 'required',
             'username' => 'required',
             'email' => 'nullable|unique:users,email|unique:students,email',
-            'password' => 'required',
+            'password' => ['required', Rules\Password::defaults()],
             'rest_id.*' => 'integer|gt:0',
         ],
         [
