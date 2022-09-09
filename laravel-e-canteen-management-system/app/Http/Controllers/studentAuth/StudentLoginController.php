@@ -30,7 +30,7 @@ class StudentLoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('auth/student/login');
+        return view('auth.student.login');
     }
 
     /**

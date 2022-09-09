@@ -15,13 +15,19 @@
                   <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
 
-                        @Auth
+                        @if(Auth::guard('web')->check())
                         <li class="nav-item dropdown">
                               <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
                               </a>
 
                               <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                              <a class="dropdown-item" href="{{ route('admin.profile') }}">
+                                          {{ __('Profile') }}
+                                    </a>
+
+                                    <hr class="dropdown-divider">
+
                                     <a class="dropdown-item" href="{{ route('logout') }}">
                                           {{ __('Logout') }}
                                     </a>
@@ -33,8 +39,31 @@
                                     --}}
                               </div>
                         </li>
+                        @elseif(Auth::guard('student')->check())
+                        <li class="nav-item dropdown">
+                              <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ auth('student')->user()->first_name }} {{ auth('student')->user()->last_name }}
+                              </a>
+
+                              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('student.profile') }}">
+                                          {{ __('Profile') }}
+                                    </a>
+
+                                    <hr class="dropdown-divider">
+
+                                    <a class="dropdown-item" href="{{ route('student.logout') }}">
+                                          {{ __('Logout') }}
+                                    </a>
+
+                                    {{--
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                    </form>
+                                    --}}
+                              </div>
+                        </li>
                         @else
-                        @guest('student')
                         @if(Route::has('student.login'))
                         <li class="nav-item">
                               <a class="nav-link" href="{{ route('student.login') }}">{{ __('Student Login') }}</a>
@@ -52,26 +81,7 @@
                               <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
                         @endif
-                        @else
-                        <li class="nav-item dropdown">
-                              <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ auth('student')->user()->first_name }} {{ auth('student')->user()->last_name }}
-                              </a>
-
-                              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('student.logout') }}">
-                                          {{ __('Logout') }}
-                                    </a>
-
-                                    {{--
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                    </form>
-                                    --}}
-                              </div>
-                        </li>
-                        @endguest
-                        @endauth
+                        @endif
                   </ul>
             </div>
       </div>

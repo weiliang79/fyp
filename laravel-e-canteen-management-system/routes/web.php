@@ -21,6 +21,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\controllers\studentAuth;
+use App\Http\Controllers\StudentProfileController;
 use App\Models\User;
 
 /*
@@ -47,12 +48,6 @@ Route::post('/student/login', [StudentLoginController::class, 'login']);
 //login routes
 Route::get('/admin/login', [LoginController::class, 'showloginForm'])->name('login');
 Route::post('/admin/login', [LoginController::class, 'login']);
-
-//logout routes
-Route::get('/admin/logout', [LoginController::class, 'logout'])->name('logout');
-
-// student logout routes
-Route::get('/student/logout', [StudentLoginController::class, 'logout'])->name('student.logout');
 
 //register routes
 //Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -82,6 +77,19 @@ Route::post('/student/password/reset', [studentAuth\ResetPasswordController::cla
 Route::get('/admin/user_management', [UserController::class, 'index'])->name('admin.user');
 
 Route::group(['middleware' => ['guest']], function () {
+});
+
+Route::group(['middleware' => ['auth:student']], function () {
+
+    // profile
+    Route::get('/student/profile', [StudentProfileController::class, 'index'])->name('student.profile');
+    Route::post('/student/profile/update_profile', [StudentProfileController::class, 'updateProfile'])->name('student.profile.update_profile');
+    Route::post('/student/profile/email_verify', [StudentLoginController::class, 'verifyEmail'])->name('student.profile.email_verify');
+    Route::post('student/profile/update_email', [StudentLoginController::class, 'updateEmail'])->name('student.profile.update_email');
+    Route::post('/student/profile/update_password', [StudentProfileController::class, 'updatePassword'])->name('student.profile.update_password');
+
+    // student logout routes
+Route::get('/student/logout', [StudentLoginController::class, 'logout'])->name('student.logout');
 });
 
 Route::group(['middleware' => ['auth']], function () {
@@ -172,9 +180,12 @@ Route::group(['middleware' => ['auth']], function () {
             // media manager
             Route::get('/food_seller/media_manager', [MediaController::class, 'index'])->name('food_seller.media_manager');
         });
-
     });
 
+    //logout routes
+    Route::get('/admin/logout', [LoginController::class, 'logout'])->name('logout');
+
+    // LaravelFileManager defined routes
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
