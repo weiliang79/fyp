@@ -71,7 +71,7 @@
 
                                                 <div class="card-body">
 
-                                                      <form id="email_form" action="{{ route('admin.profile.update_email') }}" method="post" onkeydown="return event.key != 'Enter';">
+                                                      <form id="email_form" action="{{ auth()->user()->isAdmin() ? route('admin.profile.update_email') : route('food_seller.profile.update_email') }}" method="post" onkeydown="return event.key != 'Enter';">
                                                             @csrf
 
                                                             <div class="row mb-3">
@@ -292,7 +292,7 @@
                   });
 
                   $.ajax({
-                        url: '{{ route("admin.profile.email_verify") }}',
+                        url: '{{ auth()->user()->isAdmin() ? route("admin.profile.email_verify") : route("food_seller.profile.email_verify") }}',
                         method: 'POST',
                         dataType: 'json',
                         data: {

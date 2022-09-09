@@ -145,6 +145,8 @@ Route::group(['middleware' => ['auth']], function () {
         // profile
         Route::get('/food_seller/profile', [ProfileController::class, 'index'])->name('food_seller.profile');
         Route::post('/food_seller/profile/update_name', [ProfileController::class, 'updateName'])->name('food_seller.profile.update_name');
+        Route::post('/food_seller/profile/email_verify', [ProfileController::class, 'verifyEmail'])->name('food_seller.profile.email_verify');
+        Route::post('/food_seller/profile/update_email', [ProfileController::class, 'updateEmail'])->name('food_seller.profile.update_email');
         Route::post('/food_seller/profile/update_password', [ProfileController::class, 'updatePassword'])->name('food_seller.profile.update_password');
 
         Route::group(['middleware' => ['emailVerified']], function () {
