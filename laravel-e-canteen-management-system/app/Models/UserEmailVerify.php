@@ -9,6 +9,8 @@ class UserEmailVerify extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -19,6 +21,10 @@ class UserEmailVerify extends Model
         'email',
         'token',
         'created_at',
+    ];
+
+    protected $dates = [
+        'created_at'
     ];
 
     public function user(){

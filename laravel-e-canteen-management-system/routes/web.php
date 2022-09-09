@@ -21,6 +21,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\controllers\studentAuth;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,6 +91,8 @@ Route::group(['middleware' => ['auth']], function () {
         // profile
         Route::get('/admin/profile', [ProfileController::class, 'index'])->name('admin.profile');
         Route::post('/admin/profile/update_name', [ProfileController::class, 'updateName'])->name('admin.profile.update_name');
+        Route::post('/admin/profile/email_verify', [ProfileController::class, 'verifyEmail'])->name('admin.profile.email_verify');
+        Route::post('/admin/profile/update_email', [ProfileController::class, 'updateEmail'])->name('admin.profile.update_email');
         Route::post('/admin/profile/update_password', [ProfileController::class, 'updatePassword'])->name('admin.profile.update_password');
 
         Route::group(['middleware' => 'emailVerified'], function () {
@@ -176,5 +179,6 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::get('/test', function () {
-    dd(auth()->guard('student')->attempt(['username' => 'ccc', 'password' => 'ccc123']));
+    $user = User::find(1);
+    $user->emailVerify()->delete();
 });
