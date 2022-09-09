@@ -83,7 +83,7 @@
                                                                                     <i class="fa-solid fa-at fa-fw"></i>
                                                                               </div>
 
-                                                                              <input type="text" class="form-control" name="email" id="email_field" placeholder="Email Address" value="{{ old('email', auth()->user()->email) }}">
+                                                                              <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" id="email_field" placeholder="Email Address" value="{{ old('email', auth()->user()->email) }}">
                                                                               <button type="button" class="btn btn-primary" onclick="sendVerifyEmail();">Send Verification Code</button>
 
                                                                               @error('email')
@@ -324,6 +324,7 @@
                         },
                         error: function(error) {
                               console.log(error);
+
                               if (error.responseJSON.message === 'The email has already been taken.') {
 
                                     if ($('#email_field').hasClass('is-valid')) {
@@ -335,7 +336,9 @@
                                           $('#email_group').children('.invalid-feedback').remove();
                                     }
                                     $('#email_group').append('<span class="invalid-feedback" role="alert"><strong>The email has already been taken.</strong></span>');
+
                               } else {
+
                                     if ($('#email_field').hasClass('is-valid')) {
                                           $('#email_field').removeClass('is-valid');
                                     }
@@ -345,6 +348,7 @@
                                           $('#email_group').children('.invalid-feedback').remove();
                                     }
                                     $('#email_group').append('<span class="invalid-feedback" role="alert"><strong>We couldn\'t send verification email to the specified email address.</strong></span>');
+                              
                               }
                         }
                   });
