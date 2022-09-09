@@ -22,8 +22,9 @@ class UserVerifyEmailNotification extends Notification
     /**
      * The user model
      * 
-     * @var App\Models\User::class
+     * @var App\Models\User
      */
+    public $user;
 
     /**
      * Create a new notification instance.
