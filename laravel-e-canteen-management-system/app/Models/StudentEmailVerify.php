@@ -9,16 +9,22 @@ class StudentEmailVerify extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
+        'student_id',
         'email',
         'token',
         'created_at',
+    ];
+
+    protected $dates = [
+        'created_at'
     ];
 
     public function student(){

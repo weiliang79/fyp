@@ -84,8 +84,8 @@ Route::group(['middleware' => ['auth:student']], function () {
     // profile
     Route::get('/student/profile', [StudentProfileController::class, 'index'])->name('student.profile');
     Route::post('/student/profile/update_profile', [StudentProfileController::class, 'updateProfile'])->name('student.profile.update_profile');
-    Route::post('/student/profile/email_verify', [StudentLoginController::class, 'verifyEmail'])->name('student.profile.email_verify');
-    Route::post('student/profile/update_email', [StudentLoginController::class, 'updateEmail'])->name('student.profile.update_email');
+    Route::post('/student/profile/email_verify', [StudentProfileController::class, 'verifyEmail'])->name('student.profile.email_verify');
+    Route::post('student/profile/update_email', [StudentProfileController::class, 'updateEmail'])->name('student.profile.update_email');
     Route::post('/student/profile/update_password', [StudentProfileController::class, 'updatePassword'])->name('student.profile.update_password');
 
     // student logout routes
