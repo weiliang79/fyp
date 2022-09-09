@@ -256,7 +256,7 @@
 <script>
       function sendVerifyEmail() {
             event.preventDefault();
-            console.log($('#email_field').val());
+
             var email = $('#email_field').val();
             if (email === null || email === undefined || email === '') {
                   if ($('#email_field').hasClass('is-valid')) {
@@ -299,7 +299,7 @@
                               email: email,
                         },
                         success: function(result) {
-                              console.log(result);
+
                               if (result.status === 'success') {
                                     if ($('#email_field').hasClass('is-invalid')) {
                                           $('#email_field').removeClass('is-invalid');
