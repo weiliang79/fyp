@@ -45,7 +45,7 @@ class ProfileController extends Controller
     public function verifyEmail(Request $request)
     {
         $request->validate([
-            'email' => 'required|unique:users,email|unique:students,email',
+            'email' => 'required|email|unique:users,email|unique:students,email',
         ]);
 
         //dd($request);
@@ -77,7 +77,7 @@ class ProfileController extends Controller
     public function updateEmail(Request $request)
     {
         $request->validate([
-            'email' => 'required',
+            'email' => 'required|email',
             'code' => 'required',
         ]);
 
@@ -97,9 +97,9 @@ class ProfileController extends Controller
         $user->emailVerify()->delete();
 
         if ($user->isAdmin()) {
-            return redirect()->route('admin.profile')->with('swal-success', 'Profile update successful.');
+            return redirect()->route('admin.profile')->with('swal-success', 'Email address update successful.');
         } else {
-            return redirect()->route('food_seller.profile')->with('swal-success', 'Profile update successful.');
+            return redirect()->route('food_seller.profile')->with('swal-success', 'Email address update successful.');
         }
     }
 
