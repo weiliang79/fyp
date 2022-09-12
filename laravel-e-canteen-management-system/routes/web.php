@@ -21,6 +21,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\controllers\studentAuth;
+use App\Http\Controllers\StudentMenuController;
 use App\Http\Controllers\StudentProfileController;
 use App\Models\User;
 
@@ -74,8 +75,6 @@ Route::post('/student/password/reset', [studentAuth\ResetPasswordController::cla
 //Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
 //Route::post('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 
-Route::get('/admin/user_management', [UserController::class, 'index'])->name('admin.user');
-
 Route::group(['middleware' => ['guest']], function () {
 });
 
@@ -87,6 +86,9 @@ Route::group(['middleware' => ['auth:student']], function () {
     Route::post('/student/profile/email_verify', [StudentProfileController::class, 'verifyEmail'])->name('student.profile.email_verify');
     Route::post('student/profile/update_email', [StudentProfileController::class, 'updateEmail'])->name('student.profile.update_email');
     Route::post('/student/profile/update_password', [StudentProfileController::class, 'updatePassword'])->name('student.profile.update_password');
+
+    // menus
+    Route::get('/menus', [StudentMenuController::class, 'index'])->name('student.menus');
 
     // student logout routes
 Route::get('/student/logout', [StudentLoginController::class, 'logout'])->name('student.logout');
