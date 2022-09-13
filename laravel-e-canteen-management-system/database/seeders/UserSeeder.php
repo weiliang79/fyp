@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'first_name' => 'Admin',
             'last_name' => 'Admin',
-            'username' => 'admin',
+            'username' => 'admin1',
             'role_id' => Role::ROLE_ADMIN,
             'email' => 'admin@isp.com',
             'email_verified_at' => Carbon::now(),
@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'first_name' => 'Admin',
             'last_name' => 'Admin',
-            'username' => 'admin',
+            'username' => 'admin2',
             'role_id' => Role::ROLE_ADMIN,
             'email' => null,
             'email_verified_at' => null,
