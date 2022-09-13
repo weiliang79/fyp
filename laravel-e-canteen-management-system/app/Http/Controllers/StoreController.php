@@ -47,7 +47,7 @@ class StoreController extends Controller
         if($user->store()->count() == 0){
             $user->store()->create([
                 'name' => $request->store_name,
-                'logo_path' => $request->logo_path,
+                'logo_path' => $request->logo_path ? substr(parse_url($request->logo_path, PHP_URL_PATH), 1) : null,
                 'description' => $request->description,
             ]);
         } else {

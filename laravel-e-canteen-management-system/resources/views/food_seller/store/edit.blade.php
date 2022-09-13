@@ -52,7 +52,7 @@
                                                             <i class="fa-solid fa-tag fa-fw"></i>
                                                       </div>
 
-                                                      <input id="logo_path" class="form-control @error('logo_path') is-invalid @enderror" type="text" name="logo_path" value="{{ old('logo_path', $store !== null ? $store->logo_path : '') }}">
+                                                      <input id="logo_path" class="form-control @error('logo_path') is-invalid @enderror" type="text" name="logo_path" value="{{ old('logo_path', $store !== null ? ($store->logo_path !== null ? Request::root() . '/' . $store->logo_path : '') : '') }}">
                                                       <button class="btn btn-primary" id="lfm" data-input="logo_path" data-preview="holder">Choose Image</button>
 
                                                       @error('logo_path')

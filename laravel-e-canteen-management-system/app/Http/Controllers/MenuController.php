@@ -105,8 +105,6 @@ class MenuController extends Controller
     public function saveProduct(Request $request)
     {
 
-        //dd($request);
-
         $request->validate(
             [
                 'name' => 'required',
@@ -125,12 +123,14 @@ class MenuController extends Controller
             ]
         );
 
+        dd($request);
+
         $user = User::find(Auth::user()->id);
 
         $product = Product::create([
             'name' => $request->name,
             'description' => $request->description,
-            'media_path' => $request->image_path,
+            'media_path' => $request->image_path ? substr(parse_url($request->image_path, PHP_URL_PATH), 1) : null,
             'barcode' => $request->barcode,
             'price' => $request->price,
             'status' => $request->status == 'on' ? true : false,
@@ -193,7 +193,7 @@ class MenuController extends Controller
             'category_id' => $request->category_id,
             'barcode' => $request->barcode,
             'price' => $request->price,
-            'media_path' => $request->image_path,
+            'media_path' => $request->image_path ? substr(parse_url($request->image_path, PHP_URL_PATH), 1) : null,
             'description' => $request->description,
             'status' => $request->status == 'on' ? true : false,
         ]);

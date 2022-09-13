@@ -110,7 +110,7 @@
                                     <i class="fa-solid fa-image fa-fw"></i>
                               </div>
 
-                              <input id="image_path" class="form-control @error('image_path') is-invalid @enderror" type="text" name="image_path" value="{{ old('image_path', $product !== null ? $product->media_path : '') }}">
+                              <input id="image_path" class="form-control @error('image_path') is-invalid @enderror" type="text" name="image_path" value="{{ old('image_path', $product !== null ? ($product->image_path !== null ? Request::root() . '/' . $product->media_path : '') : '') }}">
                               <button class="btn btn-primary" id="lfm" data-input="image_path" data-preview="holder">Choose Image</button>
 
                               @error('image_path')
