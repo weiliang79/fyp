@@ -91,6 +91,28 @@ class ProductSeeder extends Seeder
             'extra_price' => 4,
         ]);
 
+        $product = Product::factory()->create([
+            'name' => 'Pasta',
+            'description' => 'This is Pasta.',
+            'store_id' => $fastFoodStoreId,
+            'category_id' => $noodlesCategoryId,
+        ]);
+
+        $option = $product->productOptions()->create([
+            'name' => 'Size',
+            'description' => 'Size of pasta',
+        ]);
+
+        $option->optionDetails()->create([
+            'name' => 'None',
+            'extra_price' => 0,
+        ]);
+
+        $option->optionDetails()->create([
+            'name' => 'Large',
+            'extra_price' => 5,
+        ]);
+
         //products in store 2
         $product = Product::factory()->create([
             'name' => 'Penang Laksa',
@@ -156,6 +178,28 @@ class ProductSeeder extends Seeder
         $option->optionDetails()->create([
             'name' => 'Large',
             'extra_price' => 4,
+        ]);
+
+        $product = Product::factory()->create([
+            'name' => 'French Fries',
+            'description' => 'This is french fries.',
+            'store_id' => $noodlesStoreId,
+            'category_id' => $fastFoodCategoryId,
+        ]);
+
+        $option = $product->productOptions()->create([
+            'name' => 'Size',
+            'description' => 'Size of french fries',
+        ]);
+
+        $option->optionDetails()->create([
+            'name' => 'None',
+            'extra_price' => 0,
+        ]);
+
+        $option->optionDetails()->create([
+            'name' => 'Large',
+            'extra_price' => 5,
         ]);
 
         //products in store 3
