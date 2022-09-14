@@ -41,7 +41,7 @@
     @if(Session::get('swal-success'))
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            Swal.fire({
+            SwalWithBootstrap.fire({
                 title: 'Success',
                 html: '{{ Session::get("swal-success") }}',
                 icon: 'success',
@@ -55,7 +55,7 @@
     @if(Session::get('swal-warning'))
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            Swal.fire({
+            SwalWithBootstrap.fire({
                 title: 'Warning',
                 html: '{{ Session::pull("swal-warning") }}',
                 icon: 'warning',

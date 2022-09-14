@@ -101,7 +101,7 @@
 
 <script>
       function promptDeleteWarning(item) {
-            Swal.fire({
+            SwalWithBootstrap.fire({
                   title: 'Warning',
                   html: 'Delete this user?',
                   icon: 'warning',
@@ -126,7 +126,7 @@
                                     user_id: $(item).data('user-id'),
                               },
                               success: function(result) {
-                                    Swal.fire({
+                                    SwalWithBootstrap.fire({
                                           title: 'Success',
                                           html: result,
                                           icon: 'success',
@@ -146,7 +146,7 @@
       }
 
       function promptDeleteStudentWarning(item) {
-            Swal.fire({
+            SwalWithBootstrap.fire({
                   title: 'Warning',
                   html: 'Delete this student?',
                   icon: 'warning',
@@ -171,7 +171,7 @@
                                     student_id: $(item).data('id'),
                               },
                               success: function (result) {
-                                    Swal.fire({
+                                    SwalWithBootstrap.fire({
                                           title: 'Success',
                                           html: result,
                                           icon: 'success',

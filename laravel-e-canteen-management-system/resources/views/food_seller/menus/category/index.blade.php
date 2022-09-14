@@ -37,7 +37,7 @@
 
 <script>
       function promptDeleteWarning(item) {
-            Swal.fire({
+            SwalWithBootstrap.fire({
                   title: 'Warning',
                   html: 'Delete this category?',
                   icon: 'warning',
@@ -63,7 +63,7 @@
                                     id: $(item).data('id'),
                               },
                               success: function(result) {
-                                    Swal.fire({
+                                    SwalWithBootstrap.fire({
                                           title: 'Success',
                                           html: result,
                                           icon: 'success',

@@ -13,6 +13,15 @@ DataTable(window, window.$);
 import Swal from 'sweetalert2';
 window.Swal = Swal;
 
+//sweetalert2 bootstrap theme
+window.SwalWithBootstrap = Swal.mixin({
+      customClass: {
+            confirmButton: 'btn btn-primary mx-3',
+            cancelButton: 'btn btn-danger mx-3',
+      },
+      buttonsStyling: false,
+});
+
 // flatpickr
 import flatpickr from 'flatpickr';
 window.flatpickr = flatpickr;
