@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->foreignId('student_id');
             $table->foreignId('product_id');
-            $table->integer('quantity');
             $table->json('product_options')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
