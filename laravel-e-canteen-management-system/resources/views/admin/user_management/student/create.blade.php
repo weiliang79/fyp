@@ -186,7 +186,7 @@
                                                             <div id="days">
                                                                   @if(session()->getOldInput('rest_id'))
                                                                   @foreach(session()->getOldInput('rest_id') as $key => $value)
-                                                                  <div class="row mb-3">
+                                                                  <div class="row mb-3 day-group">
                                                                         <label for="" class="col-md-3 col-form-label text-md-end">{{ __('Rest Time') }}</label>
 
                                                                         <div class="col-md-8">
@@ -201,6 +201,8 @@
                                                                                           <option value="{{ $restTime->id }}" {{ $restTime->id == $value ? 'selected' : '' }}>{{ $restTime->start_time }} - {{ $restTime->end_time }}{{ $restTime->description ? ' - [' . $restTime->description . ' ]' : '' }}</option>
                                                                                           @endforeach
                                                                                     </select>
+
+                                                                                    <button type="button" class="btn btn-danger" onclick="delDays(this);"><i class="fa-solid fa-minus"></i></button>
 
                                                                                     @if($errors->has('rest_id.'.$key))
                                                                                     <span class="invalid-feedback" role="alert">
@@ -241,7 +243,7 @@
 </div>
 
 <template id="day_templates">
-      <div class="row mb-3">
+      <div class="row mb-3 day-group">
             <label for="" class="col-md-3 col-form-label text-md-end">{{ __('Rest Time') }}</label>
 
             <div class="col-md-8">
@@ -256,6 +258,8 @@
                               <option value="{{ $restTime->id }}">{{ $restTime->start_time }} - {{ $restTime->end_time }}{{ $restTime->description ? ' - [' . $restTime->description . ' ]' : '' }}</option>
                               @endforeach
                         </select>
+
+                        <button type="button" class="btn btn-danger" onclick="delDays(this);"><i class="fa-solid fa-minus"></i></button>
                   </div>
             </div>
       </div>
@@ -270,6 +274,10 @@
       function addDays() {
             html = $('#day_templates').html();
             item = $('#days').append(html);
+      }
+
+      function delDays(item) {
+            $(item).parents('.day-group').remove();
       }
 </script>
 
