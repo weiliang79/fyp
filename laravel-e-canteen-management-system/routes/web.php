@@ -89,6 +89,8 @@ Route::group(['middleware' => ['auth:student']], function () {
 
     // menus
     Route::get('/menus', [StudentMenuController::class, 'index'])->name('student.menus');
+    Route::post('/menus/get_food_options', [StudentMenuController::class, 'getFoodOptions'])->name('student.menus.get_food_options');
+    Route::post('/menus/add_cart', [StudentMenuController::class, 'addCart'])->name('student.menus.add_cart');
 
     // student logout routes
 Route::get('/student/logout', [StudentLoginController::class, 'logout'])->name('student.logout');
