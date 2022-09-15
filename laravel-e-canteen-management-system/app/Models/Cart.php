@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Cart extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -19,6 +19,7 @@ class Cart extends Model
         'student_id',
         'product_id',
         'product_options',
+        'price',
         'notes',
     ];
     

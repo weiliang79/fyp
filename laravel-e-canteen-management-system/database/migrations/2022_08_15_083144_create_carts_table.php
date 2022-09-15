@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('product_id');
             $table->json('product_options')->nullable();
             $table->text('notes')->nullable();
+            $table->decimal('price');
             $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
