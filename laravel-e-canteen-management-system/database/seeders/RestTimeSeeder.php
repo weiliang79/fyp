@@ -16,7 +16,7 @@ class RestTimeSeeder extends Seeder
     public function run()
     {
         RestTime::create([
-            'day_id' => 0,
+            'day_id' => 1,
             'start_time' => '12:00 PM',
             'end_time' => '12:10 PM',
         ]);
