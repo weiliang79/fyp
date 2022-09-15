@@ -285,7 +285,7 @@
                                     };
 
                                     for (i = 0; i < result.options.length; i++) {
-                                          input = SwalWithBootstrap.getPopup().querySelector('#option' + result.options[i].id).value;
+                                          input = SwalWithBootstrap.getPopup().querySelector('#option' + result.options[i].id + ':checked').value;
                                           data.options.push({
                                                 [result.options[i].id]: input,
                                           });

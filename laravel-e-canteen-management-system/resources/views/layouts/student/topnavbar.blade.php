@@ -22,7 +22,7 @@
                               </a>
 
                               <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                              <a class="dropdown-item" href="{{ route('admin.profile') }}">
+                                    <a class="dropdown-item" href="{{ route('admin.profile') }}">
                                           {{ __('Profile') }}
                                     </a>
 
@@ -40,6 +40,17 @@
                               </div>
                         </li>
                         @elseif(Auth::guard('student')->check())
+                        <li class="nav-item">
+                              <a class="nav-link" href="{{ route('student.menus.cart') }}">
+                                    Carts
+                                    @if(auth()->guard('student')->user()->carts()->count() !== 0)
+                                    <sup>
+                                          <span class="badge bg-danger">{{ auth()->guard('student')->user()->carts()->count() > 99 ? '99+' : auth()->guard('student')->user()->carts()->count() }}</span>
+                                    </sup>
+                                    @endif
+                              </a>
+                        </li>
+                        
                         <li class="nav-item dropdown">
                               <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ auth('student')->user()->first_name }} {{ auth('student')->user()->last_name }}

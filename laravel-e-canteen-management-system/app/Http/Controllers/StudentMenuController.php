@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\OptionDetail;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Store;
+use App\Models\Student;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -67,13 +71,70 @@ class StudentMenuController extends Controller
             'product_id' => 'required',
         ]);
 
+        $totalPrice = Product::find($request->product_id)->price;
+
+        foreach($request->options as $value){
+            foreach($value as $key1 => $value1){
+                $totalPrice = $totalPrice + OptionDetail::find($value1)->extra_price;
+            }
+        }
+
         Cart::create([
             'student_id' => Auth::guard('student')->user()->id,
             'product_id' => $request->product_id,
             'product_options' => $request->options,
+            'price' => $totalPrice,
             'notes' => $request->notes,
         ]);
 
         return response()->json('Add to cart successful.');
     }
+
+    public function cartIndex(){
+        $carts = Cart::where('student_id', Auth::guard('student')->user()->id)->get();
+
+        $userRestTimes = Student::find(Auth::guard('student')->user()->id)->restTimes()->get();
+        
+        //select the dates within two weeks
+        $startDate = Carbon::now();
+        $endDate = Carbon::now()->addWeeks(2);
+
+        $restDates = array();
+
+        while($startDate->lt($endDate)){
+
+            foreach($userRestTimes as $rest){
+                if($rest->day_id === $startDate->dayOfWeek){
+                    
+                    $startTime = Carbon::createFromFormat('Y-m-d H:i A', $startDate->format('Y-m-d') . $rest->start_time);
+                    $endTime = Carbon::createFromFormat('Y-m-d H:i A', $startDate->format('Y-m-d') . $rest->end_time);
+
+                    $string = $startTime->format('Y-m-d') . ' ' . $rest->start_time . ' to ' . $rest->end_time;
+
+                    $restDates[$startTime->timestamp . '->' . $endTime->timestamp] = $string;
+
+                }
+            }
+
+            $startDate->addDay();
+        }
+
+        return view('menu.cart', compact('carts', 'restDates'));
+    }
+
+    public function deleteCartItem(Request $request){
+
+        $request->validate([
+            'product_id' => 'required',
+            'time_created' => 'required',
+        ]);
+
+        Cart::where('student_id', Auth::guard('student')->user()->id)
+            ->where('product_id', $request->product_id)
+            ->where('created_at', $request->time_created)
+            ->delete();
+
+        return response()->json('The product has successful removed from cart.');
+    }
+
 }
