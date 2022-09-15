@@ -46,6 +46,15 @@ window.addEventListener('DOMContentLoaded', event => {
             }
       });
 
+      $('.dataTable-cart').DataTable({
+            searching: false,
+            ordering: false,
+            paging: false,
+            language: {
+                  emptyTable: 'No product has added into cart.',
+            }
+      });
+
       flatpickr('.timepicker', {
             enableTime: true,
             noCalendar: true,
