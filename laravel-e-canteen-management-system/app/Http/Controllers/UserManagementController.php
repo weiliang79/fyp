@@ -71,7 +71,7 @@ class UserManagementController extends Controller
     public function saveStudent(Request $request){
 
         $request->validate([
-            'student_id' => 'required',
+            'student_number' => 'required|numeric|gt:0',
             'first_name' => 'required',
             'last_name' => 'required',
             'username' => 'required',
@@ -80,13 +80,14 @@ class UserManagementController extends Controller
             'rest_id.*' => 'integer|gt:0',
         ],
         [
+            'student_number.gt' => 'The student number is invalid.',
             'rest_id.*.gt' => 'The rest time field need to choose a rest time.',
         ]);
 
         //dd($request);
 
         $student = Student::create([
-            'student_id' => $request->student_id,
+            'student_number' => $request->student_number,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'username' => $request->username,

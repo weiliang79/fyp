@@ -242,7 +242,7 @@
                                           <ul class="list-group">
                                                 <li class="list-group-item">
                                                       <h5 class="mb-0">Student Number</h5>
-                                                      <p class="mb-0">{{ auth()->guard('student')->user()->student_id }}</p>
+                                                      <p class="mb-0">{{ auth()->guard('student')->user()->student_number }}</p>
                                                 </li>
                                                 <li class="list-group-item">
                                                       <h5 class="mb-0">Full Name</h5>

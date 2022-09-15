@@ -24,7 +24,7 @@
                                     @csrf
 
                                     <div class="row mb-3">
-                                          <label for="" class="col-md-3 col-form-label text-md-end">{{ __('Student ID') }}</label>
+                                          <label for="" class="col-md-3 col-form-label text-md-end">{{ __('Student Number') }}</label>
 
                                           <div class="col-md-8">
                                                 <div class="input-group">
@@ -32,9 +32,9 @@
                                                             <i class="fa-solid fa-id-card fa-fw"></i>
                                                       </div>
 
-                                                      <input type="text" class="form-control @error('student_id') is-invalid @enderror" name="student_id" value="{{ old('student_id') }}" placeholder="Student ID">
+                                                      <input type="text" class="form-control @error('student_number') is-invalid @enderror" name="student_number" value="{{ old('student_number') }}" placeholder="Student Number">
 
-                                                      @error('student_id')
+                                                      @error('student_number')
                                                       <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
                                                       </span>

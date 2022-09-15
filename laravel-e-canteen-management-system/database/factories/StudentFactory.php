@@ -18,7 +18,7 @@ class StudentFactory extends Factory
     public function definition()
     {
         return [
-            'student_id' => fake()->randomNumber(5, true),
+            'student_number' => fake()->randomNumber(5, true),
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
             'username' => fake()->userName(),
