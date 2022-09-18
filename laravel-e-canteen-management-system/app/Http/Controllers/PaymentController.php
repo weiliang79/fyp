@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PaymentType;
 use Illuminate\Http\Request;
 use Jackiedo\DotenvEditor\Facades\DotenvEditor;
+use Session;
 
 class PaymentController extends Controller
 {
@@ -59,11 +60,13 @@ class PaymentController extends Controller
     //     return response()->json('Payment Type delete successful.');
     // }
 
-    public function index(){
+    public function index()
+    {
         return view('admin.payment.general.index');
     }
 
-    public function saveGeneral(Request $request){
+    public function saveGeneral(Request $request)
+    {
 
         $request->validate([
             'currency_symbol' => 'required',
@@ -84,27 +87,51 @@ class PaymentController extends Controller
         //dd($request);
 
         return redirect()->route('admin.payment.general')->with('swal-success', 'Payment Configuration has updated.');
-
     }
 
-    public function index2c2p(){
+    public function index2c2p()
+    {
 
-        if(config('payment.2c2p-status') == false){
+        if (config('payment.2c2p-status') == false) {
             return redirect()->route('admin.payment.general')->with('swal-warning', 'Please enable 2C2P payment at General page first.');
         }
 
-        return view('admin.payment.2c2p.index');
-    }
-
-    public function save2c2p(Request $request){
+        if (config('payment.2c2p-sandbox.status') == true) {
+            $url = config('payment.2c2p-sandbox.url') . 'Initialization';
+        } else {
+            $url = config('payment.2c2p.url') . 'Initialization';
+        }
         
-        dd($request);
+        $client = new \GuzzleHttp\Client();
 
+        $response = $client->request('POST', $url, [
+            'headers' => [
+                'Accept' => 'text/plain',
+                'Content-Type' => 'application/*+json',
+            ]
+        ]);
+
+        $decode = json_decode($response->getBody());
+
+        if($decode->respCode != 0000){
+            Session::flash('swal-warning', 'Unable to receive Locale info from 2C2P.');
+            return view('admin.payment.2c2p.index');
+        }
+
+        $locale = $decode->initialization->locale;
+
+        return view('admin.payment.2c2p.index', compact('locale'));
     }
 
-    public function indexStripe(){
+    public function save2c2p(Request $request)
+    {
+        dd($request);
+    }
 
-        if(config('payment.stripe-status') == false){
+    public function indexStripe()
+    {
+
+        if (config('payment.stripe-status') == false) {
             return redirect()->route('admin.payment.general')->with('swal-warning', 'Please enable Stripe payment at General page first.');
         }
 

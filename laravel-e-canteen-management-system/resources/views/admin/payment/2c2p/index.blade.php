@@ -67,7 +67,7 @@
                                                             <i class="fa-solid fa-cash-register fa-fw"></i>
                                                       </div>
 
-                                                      <input type="text" class="form-control" name="merchant_id" {{ config('payment.2c2p-sandbox.status') ? 'disabled' : '' }}>
+                                                      <input type="text" class="form-control" name="merchant_id" placeholder="Merchant ID" {{ config('payment.2c2p-sandbox.status') ? 'disabled' : '' }}>
                                                 </div>
                                                 <small class="form-text text-muted">*Merchant ID is provided by 2C2P</small>
                                           </div>
@@ -82,7 +82,7 @@
                                                             <i class="fa-solid fa-dollar-sign fa-fw"></i>
                                                       </div>
 
-                                                      <input type="text" class="form-control" {{ config('payment.2c2p-sandbox.status') ? 'disabled' : '' }}>
+                                                      <input type="text" class="form-control" name="currency_code" placeholder="Currency Code" {{ config('payment.2c2p-sandbox.status') ? 'disabled' : '' }}>
                                                 </div>
                                                 <small class="form-text text-muted">*Currency Code is provided by 2C2P</small>
                                           </div>
@@ -97,7 +97,7 @@
                                                             <i class="fa-solid fa-key fa-fw"></i>
                                                       </div>
 
-                                                      <input type="text" class="form-control" {{ config('payment.2c2p-sandbox.status') ? 'disabled' : '' }}>
+                                                      <input type="text" class="form-control" name="secret_code" placeholder="Secret Code" {{ config('payment.2c2p-sandbox.status') ? 'disabled' : '' }}>
                                                 </div>
                                                 <small class="form-text text-muted">*Secret Code is provided by 2C2P</small>
                                           </div>
@@ -112,7 +112,14 @@
                                                             <i class="fa-solid fa-earth-asia fa-fw"></i>
                                                       </div>
 
-                                                      <input type="text" class="form-control" {{ config('payment.2c2p-sandbox.status') ? 'disabled' : '' }}>
+                                                      <select class="form-control" name="locale" id="" {{ config('payment.2c2p-sandbox.status') ? 'disabled' : '' }}>
+                                                            @if($locale)
+                                                            @foreach($locale as $local)
+                                                            <option value="{{ $local->code }}">{{ $local->name }}</option>
+                                                            @endforeach
+                                                            @endif
+                                                      </select>
+
                                                 </div>
                                           </div>
                                     </div>
