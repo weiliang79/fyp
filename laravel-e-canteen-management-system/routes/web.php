@@ -157,10 +157,6 @@ Route::group(['middleware' => ['auth']], function () {
 
             // media manager
             Route::get('/admin/media_manager', [MediaController::class, 'index'])->name('admin.media_manager');
-
-            // settings
-            Route::get('/admin/settings', [SettingsController::class, 'index'])->name('admin.settings');
-            Route::post('/admin/settings/save', [SettingsController::class, 'save'])->name('admin.settings.save');
         });
     });
 

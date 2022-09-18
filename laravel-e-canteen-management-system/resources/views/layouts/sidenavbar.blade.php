@@ -83,12 +83,6 @@
                         Media Manager
                   </a>
             </li>
-            <li class="nav-item">
-                  <a href="{{ route('admin.settings') }}" class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'admin.settings') ? 'active' : 'link-dark' }}">
-                        <i class="fa-solid fa-sliders"></i>
-                        Settings
-                  </a>
-            </li>
             @endcan
 
             @can('isFoodSeller')
