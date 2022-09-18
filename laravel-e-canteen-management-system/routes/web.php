@@ -138,12 +138,22 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/admin/menus/category/delete', [MenuController::class, 'deleteCategory'])->name('admin.menus.category.delete');
 
             // payment
-            Route::get('/admin/payment', [PaymentController::class, 'index'])->name('admin.payment');
-            Route::get('/admin/payment/create', [PaymentController::class, 'showCreateForm'])->name('admin.payment.create');
-            Route::post('/admin/payment/save', [PaymentController::class, 'save'])->name('admin.payment.save');
-            Route::get('/admin/payment/{id}/edit', [PaymentController::class, 'showEditForm'])->name('admin.payment.edit');
-            Route::post('/admin/payment/update', [PaymentController::class, 'update'])->name('admin.payment.update');
-            Route::post('/admin/payment/delete', [PaymentController::class, 'delete'])->name('admin.payment.delete');
+            // Route::get('/admin/payment', [PaymentController::class, 'index'])->name('admin.payment');
+            // Route::get('/admin/payment/create', [PaymentController::class, 'showCreateForm'])->name('admin.payment.create');
+            // Route::post('/admin/payment/save', [PaymentController::class, 'save'])->name('admin.payment.save');
+            // Route::get('/admin/payment/{id}/edit', [PaymentController::class, 'showEditForm'])->name('admin.payment.edit');
+            // Route::post('/admin/payment/update', [PaymentController::class, 'update'])->name('admin.payment.update');
+            // Route::post('/admin/payment/delete', [PaymentController::class, 'delete'])->name('admin.payment.delete');
+
+            // payment - general
+            Route::get('/admin/payment/general', [PaymentController::class, 'index'])->name('admin.payment.general');
+            Route::post('/admin/payment/general/save', [PaymentController::class, 'saveGeneral'])->name('admin.payment.general.save');
+            
+            // payment - 2c2p
+            Route::get('/admin/payment/2c2p', [PaymentController::class, 'index2c2p'])->name('admin.payment.2c2p');
+
+            // payment - stripe
+            Route::get('/admin/payment/stripe', [PaymentController::class, 'indexStripe'])->name('admin.payment.stripe');
 
             // media manager
             Route::get('/admin/media_manager', [MediaController::class, 'index'])->name('admin.media_manager');
@@ -198,6 +208,5 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::get('/test', function () {
-    $user = User::find(1);
-    $user->emailVerify()->delete();
+    dd(config());
 });

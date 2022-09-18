@@ -42,11 +42,28 @@
                         </ul>
                   </div>
             </li>
-            <li class="nav-item">
-                  <a href="{{ route('admin.payment') }}" class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'admin.payment') ? 'active' : 'link-dark' }}">
+            <li class="nav-item dropdown">
+                  <a href="#" class="nav-link dropdown-toggle link-dark" id="paymentDropdown" data-bs-toggle="collapse" data-bs-target="#payment-collapse" aria-expanded="false">
                         <i class="fa-solid fa-credit-card"></i>
                         Payment
                   </a>
+                  <div class="collapse {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'admin.payment') ? 'show' : '' }}" id="payment-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                              <li>
+                                    <a class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'admin.payment.general') ? 'active' : 'link-dark' }} mx-4" href="{{ route('admin.payment.general') }}">General</a>
+                              </li>
+                              @if(config('payment.2c2p-status'))
+                              <li>
+                                    <a class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'admin.payment.2c2p') ? 'active' : 'link-dark' }} mx-4" href="{{ route('admin.payment.2c2p') }}">2C2P</a>
+                              </li>
+                              @endif
+                              @if(config('payment.stripe-status'))
+                              <li>
+                                    <a class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'admin.payment.stripe') ? 'active' : 'link-dark' }} mx-4" href="{{ route('admin.payment.stripe') }}">Stripe</a>
+                              </li>
+                              @endif
+                        </ul>
+                  </div>
             </li>
             <li class="nav-item">
                   <a href="#" class="nav-link link-dark">
