@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
@@ -17,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if($this->app->isLocal()){
+        if(App::environment('local')){
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
     }
@@ -31,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        if (!$this->app->runningInConsole()) {
+        /*if (!$this->app->runningInConsole()) {
             $settings = Setting::all('key', 'value')
                 ->keyBy('key')
                 ->transform(function ($setting) {
@@ -41,6 +42,6 @@ class AppServiceProvider extends ServiceProvider
             config([
                 'settings' => $settings
             ]);
-        }
+        }*/
     }
 }
