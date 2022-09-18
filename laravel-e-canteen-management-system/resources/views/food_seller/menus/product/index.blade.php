@@ -28,7 +28,7 @@
                                           <tr>
                                                 <td>{{ $product->name }}</td>
                                                 <td>{{ $product->productCategory->name }}</td>
-                                                <td>{{ config('settings.currency_symbol') }}{{ $product->price }}</td>
+                                                <td>{{ $product->price }}</td>
                                                 <td>{{ $product->status ? 'Available' : 'Not Available' }}</td>
                                                 <td>
                                                       <a class="btn btn-primary" href="{{ route('food_seller.menus.product.edit', ['id' => $product->id]) }}">Edit</a>

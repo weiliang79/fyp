@@ -31,17 +31,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
-
-        /*if (!$this->app->runningInConsole()) {
-            $settings = Setting::all('key', 'value')
-                ->keyBy('key')
-                ->transform(function ($setting) {
-                    return $setting->value;
-                })
-                ->toArray();
-            config([
-                'settings' => $settings
-            ]);
-        }*/
     }
 }

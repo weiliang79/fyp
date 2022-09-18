@@ -13,7 +13,6 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestTimeController;
-use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\studentAuth\StudentLoginController;
 use App\Http\Controllers\UserManagementController;
