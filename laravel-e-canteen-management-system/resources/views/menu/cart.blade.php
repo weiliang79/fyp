@@ -56,7 +56,7 @@
                               Summary
                         </div>
 
-                        <form action="" method="post">
+                        <form action="{{ route('student.menus.create_order') }}" method="post">
                               @csrf
 
                               <div class="card-body">

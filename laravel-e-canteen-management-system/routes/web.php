@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\MediaController;
@@ -92,6 +93,11 @@ Route::group(['middleware' => ['auth:student']], function () {
     Route::post('/menus/add_cart', [StudentMenuController::class, 'addCart'])->name('student.menus.add_cart');
     Route::get('/menus/carts', [StudentMenuController::class, 'cartIndex'])->name('student.menus.cart');
     Route::post('/menus/carts/delete', [StudentMenuController::class, 'deleteCartItem'])->name('student.menus.cart.delete');
+    Route::post('/menus/carts/create_order', [StudentMenuController::class, 'createOrder'])->name('student.menus.create_order');
+
+    //checkout
+    Route::get('/checkout/{order_id}', [CheckoutController::class, 'index'])->name('student.checkout');
+    Route::post('/checkout/{order_id}/process', [CheckoutController::class, 'process'])->name('student.checkout.process');
 
     // student logout routes
 Route::get('/student/logout', [StudentLoginController::class, 'logout'])->name('student.logout');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\OptionDetail;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Store;
@@ -135,6 +136,45 @@ class StudentMenuController extends Controller
             ->delete();
 
         return response()->json('The product has successful removed from cart.');
+    }
+
+    public function createOrder(Request $request){
+
+        $request->validate([
+            'restTime' => 'required',
+        ]);
+
+        $restTimes = explode('->', $request->restTime);
+
+        
+
+        $carts = Cart::where('student_id', Auth::guard('student')->user()->id)->get();
+
+        //dd($request, $restTimes, $carts, $carts->sum('price'));
+
+        $order = Order::create([
+            'student_id' => Auth::guard('student')->user()->id,
+            'pick_up_start' => $restTimes[0],
+            'pick_up_end' => $restTimes[1],
+            'total_price' => $carts->sum('price'),
+            'status' => Order::PAYMENT_PENDING,
+        ]);
+
+        foreach($carts as $cart){
+            $order->orderDetails()->create([
+                'product_id' => $cart->product_id,
+                'product_options' => $cart->product_options,
+                'price' => $cart->price,
+                'notes' => $cart->notes,
+            ]);
+
+            Cart::where('student_id', $cart->student_id)
+                ->where('product_id', $cart->product_id)
+                ->where('created_at', $cart->created_at)
+                ->delete();
+        }
+
+        return redirect()->route('student.checkout', ['order_id' => $order->id]);
     }
 
 }
