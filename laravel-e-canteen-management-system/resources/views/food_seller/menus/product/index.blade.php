@@ -18,7 +18,7 @@
                                           <tr>
                                                 <th>Name</th>
                                                 <th>Category</th>
-                                                <th>Price</th>
+                                                <th>Price ({{ config('payment.currency_symbol') }})</th>
                                                 <th>Status</th>
                                                 <th style="width: 20%;">Action</th>
                                           </tr>

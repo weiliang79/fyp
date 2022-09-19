@@ -18,7 +18,7 @@
                                                 <th>Product</th>
                                                 <th>Option</th>
                                                 <th>Notes</th>
-                                                <th>Price</th>
+                                                <th>Price({{ config('payment.currency_symbol') }})</th>
                                                 <th>Action</th>
                                           </tr>
                                     </thead>
@@ -37,7 +37,7 @@
                                                       @endforeach
                                                       @endforeach
                                                 </td>
-                                                <td>{{ $cart->notes }}</td>
+                                                <td>{{ $cart->notes ? $cart->notes : 'None' }}</td>
                                                 <td>{{ $cart->price }}</td>
                                                 <td><button type="button" class="btn btn-danger" onclick="promptDeleteCart(this);" data-product-id="{{ $cart->product_id }}" data-time-created="{{ $cart->created_at }}"><i class="fa-solid fa-trash"></i></button></td>
                                           </tr>
@@ -73,14 +73,19 @@
 
                                           <div class="list-group-item">
                                                 Price
-                                                <h4>Total: {{ 10 }}</h4>
+                                                <h4>Total: {{ config('payment.currency_symbol') }}{{ $carts->sum('price') }}</h4>
                                           </div>
                                     </div>
 
                               </div>
 
                               <div class="card-footer">
-                                    <button class="btn btn-primary">Procced to Checkout</button>
+                                    <button class="btn btn-primary" @if($carts->count() == 0) disabled @endif>Procced to Checkout</button>
+                                    @if($carts->count() == 0)
+                                    <div class="text-danger mt-2">
+                                          <i class="fa-solid fa-circle-exclamation fa-lg"></i> The cart was empty.
+                                    </div>
+                                    @endif
                               </div>
 
                         </form>

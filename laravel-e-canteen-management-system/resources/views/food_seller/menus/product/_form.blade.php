@@ -81,7 +81,7 @@
             </div>
 
             <div class="row mb-3">
-                  <label for="" class="col-md-3 col-form-label text-md-end">{{ __('Price') }}</label>
+                  <label for="" class="col-md-3 col-form-label text-md-end">{{ __('Price') }}({{ config('payment.currency_symbol') }})</label>
 
                   <div class="col-md-8">
                         <div class="input-group">
@@ -251,7 +251,7 @@
                                                                               </div>
                   
                                                                               <div class="row mb-3">
-                                                                                    <label for="" class=" col-md-3 col-form-label text-md-end">Additional Price</label>
+                                                                                    <label for="" class=" col-md-3 col-form-label text-md-end">Additional Price(' . Config::get('payment.currency_symbol') . ')</label>
                   
                                                                                     <div class="col-md-8">
                                                                                           <div class="input-group">
@@ -291,7 +291,7 @@
                                                             </div>
                               
                                                             <div class="row mb-3">
-                                                                  <label for="" class=" col-md-3 col-form-label text-md-end">Additional Price</label>
+                                                                  <label for="" class=" col-md-3 col-form-label text-md-end">Additional Price(' . Config::get('payment.currency_symbol') . ')</label>
                               
                                                                   <div class="col-md-8">
                                                                         <div class="input-group">
@@ -427,7 +427,7 @@
                                                                   </div>
       
                                                                   <div class="row mb-3">
-                                                                        <label for="" class=" col-md-3 col-form-label text-md-end">Additional Price</label>
+                                                                        <label for="" class=" col-md-3 col-form-label text-md-end">Additional Price(' . Config::get('payment.currency_symbol') . ')</label>
       
                                                                         <div class="col-md-8">
                                                                               <div class="input-group">
@@ -481,7 +481,7 @@
                                                             </div>
                               
                                                             <div class="row mb-3">
-                                                                  <label for="" class=" col-md-3 col-form-label text-md-end">Additional Price</label>
+                                                                  <label for="" class=" col-md-3 col-form-label text-md-end">Additional Price(' . Config::get('payment.currency_symbol') . ')</label>
                               
                                                                   <div class="col-md-8">
                                                                         <div class="input-group">
@@ -607,7 +607,7 @@
                                                             </div>
 
                                                             <div class="row mb-3">
-                                                                  <label for="" class=" col-md-3 col-form-label text-md-end">Additional Price</label>
+                                                                  <label for="" class=" col-md-3 col-form-label text-md-end">Additional Price({{ config('payment.currency_symbol') }})</label>
 
                                                                   <div class="col-md-8">
                                                                         <div class="input-group">
@@ -660,7 +660,7 @@
                               </div>
 
                               <div class="row mb-3">
-                                    <label for="" class=" col-md-3 col-form-label text-md-end">Additional Price</label>
+                                    <label for="" class=" col-md-3 col-form-label text-md-end">Additional Price({{ config('payment.currency_symbol') }})</label>
 
                                     <div class="col-md-8">
                                           <div class="input-group">

@@ -74,8 +74,9 @@
                                                       <div class="menu-card-img-border">
                                                             <img class="card-img-top menu-card-img" src="{{ $product->media_path ? asset($product->media_path) : asset('storage/defaults/product.png') }}" alt="{{ $product->name }}" title="{{ $product->description }}">
                                                       </div>
-                                                      <div class="card-body d-flex flex-column justify-content-between">
-                                                            <h5 class="card-title">{{ $product->name }}</h5>
+                                                      <div class="card-body d-flex flex-column">
+                                                            <h6 class="card-title mb-1">{{ $product->name }}</h6>
+                                                            <p class="mb-1 flex-grow-1">Start at: {{ config('payment.currency_symbol') }}{{ $product->price }}</p>
                                                             <button type="button" class="btn btn-primary" onclick="foodButtonClicked(this);" data-id="{{ $product->id }}">Show Details</button>
                                                       </div>
                                                 </div>
@@ -252,7 +253,7 @@
                                           detailHtml = detailHtml.replace('id="id"', 'id="option' + result.options[i].id + '"');
                                           detailHtml = detailHtml.replace('name="name"', 'name="' + result.options[i].id + '"');
                                           detailHtml = detailHtml.replace('value="value"', 'value="' + result.details[j].id + '"');
-                                          detailHtml = detailHtml.replace('detail_name', result.details[j].name);
+                                          detailHtml = detailHtml.replace('detail_name', result.details[j].name + ' +{{ config("payment.currency_symbol") }}' + result.details[j].extra_price);
 
                                           if (result.details[j].name !== 'None') {
                                                 detailHtml = detailHtml.replace('checked', '');
@@ -271,7 +272,7 @@
                               imageWidth: 300,
                               imageHeight: 200,
                               imageUrl: result.product.media_path === null ? '{{ asset("storage/defaults/product.png") }}' : '{{ Request::root() }}/' + result.product.media_path,
-                              html: '<p>' + result.product.description + '</p>' + htmlResult + noteHtml,
+                              html: '<p>' + result.product.description + '</p><p>{{ config("payment.currency_symbol") }}' + result.product.price + '</p>' + htmlResult + noteHtml,
                               showCancelButton: true,
                               reverseButtons: true,
                               confirmButtonText: 'Add to cart',
