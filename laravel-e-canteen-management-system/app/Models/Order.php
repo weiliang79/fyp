@@ -17,8 +17,20 @@ class Order extends Model
      */
     protected $fillable = [
         'student_id',
-        'notes',
+        'pick_up_start',
+        'pick_up_end',
+        'total_price',
         'status',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'pick_up_start' => 'datetime',
+        'pick_up_end' => 'datetime',
     ];
 
     public function student(){

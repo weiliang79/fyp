@@ -18,7 +18,8 @@ return new class extends Migration
             $table->foreignId('order_id');
             $table->foreignId('product_id');
             $table->json('product_options');
-            $table->integer('quantity');
+            $table->decimal('price');
+            $table->text('notes')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

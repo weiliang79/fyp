@@ -16,8 +16,10 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id');
-            $table->text('notes')->nullable();
-            $table->integer('status');
+            $table->timestamp('pick_up_start');
+            $table->timestamp('pick_up_end');
+            $table->decimal('total_price');
+            $table->tinyInteger('status');
             $table->timestamps();
             $table->softDeletes();
 
