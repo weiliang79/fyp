@@ -42,7 +42,7 @@ class Product extends Model
         return $this->hasMany(Cart::class);
     }
 
-    public function orderDetail(){
-        return $this->belongsTo(OrderDetail::class);
+    public function orderDetails(){
+        return $this->hasMany(OrderDetail::class);
     }
 }
