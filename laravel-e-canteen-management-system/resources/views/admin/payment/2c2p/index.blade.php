@@ -119,7 +119,6 @@
                                                             @endforeach
                                                             @endif
                                                       </select>
-
                                                 </div>
                                           </div>
                                     </div>
@@ -129,6 +128,9 @@
                                                 <button type="submit" class="btn btn-primary">
                                                       {{ __('Submit') }}
                                                 </button>
+                                          </div>
+                                          <div class="col-md-8 offset-md-3">
+                                                <small class="form-text text-muted">*If nothing changes after submission, please restart the server.</small>
                                           </div>
                                     </div>
 
