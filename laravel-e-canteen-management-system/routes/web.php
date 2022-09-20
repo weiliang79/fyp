@@ -23,7 +23,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\controllers\studentAuth;
 use App\Http\Controllers\StudentMenuController;
 use App\Http\Controllers\StudentProfileController;
+use App\Models\PaymentDetail2c2p;
 use App\Models\User;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,9 +100,12 @@ Route::group(['middleware' => ['auth:student']], function () {
     //checkout
     Route::get('/checkout/{order_id}', [CheckoutController::class, 'index'])->name('student.checkout');
     Route::post('/checkout/{order_id}/process', [CheckoutController::class, 'process'])->name('student.checkout.process');
+    Route::match(['get', 'post'], '/checkout/{order_id}/receive_payment_info', [CheckoutController::class, 'receivePaymentInfo'])->name('student.checkout.receive_payment_info');
+    Route::get('/checkout/{order_id}/success', [CheckoutController::class, 'paymentSuccess'])->name('student.checkout.success');
+    Route::get('/checkout/{order_id}/failure', [CheckoutController::class, 'paymentFailure'])->name('student.checkout.failure');
 
     // student logout routes
-Route::get('/student/logout', [StudentLoginController::class, 'logout'])->name('student.logout');
+    Route::get('/student/logout', [StudentLoginController::class, 'logout'])->name('student.logout');
 });
 
 Route::group(['middleware' => ['auth']], function () {
@@ -153,7 +158,7 @@ Route::group(['middleware' => ['auth']], function () {
             // payment - general
             Route::get('/admin/payment/general', [PaymentController::class, 'index'])->name('admin.payment.general');
             Route::post('/admin/payment/general/save', [PaymentController::class, 'saveGeneral'])->name('admin.payment.general.save');
-            
+
             // payment - 2c2p
             Route::get('/admin/payment/2c2p', [PaymentController::class, 'index2c2p'])->name('admin.payment.2c2p');
 
@@ -209,5 +214,7 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::get('/test', function () {
-    dd(config());
+    $detail2c2p = PaymentDetail2c2p::where('invoice_no', '202209200004')->first();
+
+    dd($detail2c2p->payment->order);
 });
