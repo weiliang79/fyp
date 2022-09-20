@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             StudentSeeder::class,
             ProductCategorySeeder::class,
             ProductSeeder::class,
+            PaymentTypeSeeder::class,
         ]);
     }
 }

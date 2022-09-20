@@ -10,6 +10,8 @@ class Payment extends Model
 {
     use HasFactory, SoftDeletes;
 
+    const STATUS_PENDING = 1, STATUS_IN_TRANSACTION = 2, STATUS_SUCCESS = 3, STATUS_FAILURE = 4;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -18,8 +20,10 @@ class Payment extends Model
     protected $fillable = [
         'order_id',
         'payment_type_id',
+        'payment_detail_2c2p_id',
+        'payment_detail_stripe_id',
         'amount',
-        'reference',
+        'status',
     ];
 
     public function order(){
@@ -28,5 +32,13 @@ class Payment extends Model
 
     public function paymentType(){
         return $this->belongsTo(PaymentType::class);
+    }
+
+    public function paymentDetail2c2p(){
+        return $this->belongsTo(PaymentDetail2c2p::class, 'payment_detail_2c2p_id');
+    }
+
+    public function paymentDetailStripe(){
+        return $this->belongsTo(PaymentDetailStripe::class);
     }
 }

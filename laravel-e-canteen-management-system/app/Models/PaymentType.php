@@ -10,6 +10,8 @@ class PaymentType extends Model
 {
     use HasFactory, SoftDeletes;
 
+    const PAYMENT_2C2P = 1, PAYMENT_STRIPE = 2, PAYMENT_CASH = 3;
+
     /**
      * The attributes that are mass assignable.
      *
