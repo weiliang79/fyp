@@ -8,6 +8,8 @@ return [
 
       '2c2p-status' => env('2C2P_ENABLE'),
 
+      '2c2p-algorithm' => 'HS256',
+
       '2c2p-sandbox' => [
             'status' => env('2C2P_SANDBOX_ENABLE'),
             'url' => 'https://sandbox-pgw.2c2p.com/payment/4.1/',
