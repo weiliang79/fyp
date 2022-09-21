@@ -214,7 +214,5 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::get('/test', function () {
-    $detail2c2p = PaymentDetail2c2p::where('invoice_no', '202209200004')->first();
-
-    dd($detail2c2p->payment->order);
+    return view('checkout.failure');
 });

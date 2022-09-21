@@ -95,7 +95,7 @@ class CheckoutController extends Controller
                     }
                 } else {
                     // error
-                    return redirect()->route('student.checkout.failure');
+                    return redirect()->route('student.checkout.failure', ['order_id' => $order->id, 'payment_type' => '2c2p', 'resp_code' => $decode['respCode']]);
                 }
             }
 
@@ -103,7 +103,7 @@ class CheckoutController extends Controller
 
             if ($decodedPayload['respCode'] !== '0000') {
                 // error
-                return redirect()->route('student.checkout.failure');
+                return redirect()->route('student.checkout.failure', ['order_id' => $order->id, 'payment_type' => '2c2p', 'resp_code' => $decodedPayload['respCode']]);
             }
 
             $payment2c2p = PaymentDetail2c2p::create([
@@ -122,10 +122,8 @@ class CheckoutController extends Controller
 
             return redirect()->to($decodedPayload['webPaymentUrl']);
         } else if ($request->payment == 'stripe') {
+            // TODO: for stripe payment
         }
-
-        //dd($request, $order, Carbon::now()->format('Ymd'), $payload, $jwt, $url, config('payment.2c2p-algorithm'));
-
     }
 
     public function receivePaymentInfo(Request $request)
@@ -210,18 +208,28 @@ class CheckoutController extends Controller
         if ($inquiryPayload['respCode'] == '0000') {
             return redirect()->route('student.checkout.success', ['order_id' => $detail2c2p->payment->order->id]);
         } else {
-            return redirect()->route('student.checkout.failure', ['order_id' => $detail2c2p->payment->order->id]);
+            return redirect()->route('student.checkout.failure', ['order_id' => $detail2c2p->payment->order->id, 'payment_type' => '2c2p', 'resp_code' => $inquiryPayload['respCode']]);
         }
     }
 
     public function paymentSuccess(Request $request)
     {
-        dd('payment success', $request);
+        $order = Order::find($request->order_id);
+        return view('checkout.success', compact('order'));
     }
 
     public function paymentFailure(Request $request)
     {
-        dd('payment fail', $request);
+        $paymentType = $request->payment_type;
+        $order = Order::find($request->order_id);
+
+        if($paymentType == '2c2p'){
+            $respCode = $request->resp_code;
+            return view('checkout.failure', compact('order', 'paymentType', 'respCode'));
+        } else {
+            // for stripe transaction error
+            dd('stripe error');
+        }
     }
 
     function getTokenRequestPayload(array $info2c2p, string $invoiceNo, Order $order)
