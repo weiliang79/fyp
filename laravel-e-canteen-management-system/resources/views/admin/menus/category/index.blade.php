@@ -53,35 +53,33 @@
                   reverseButtons: true
             }).then((result) => {
                   if (result.isConfirmed) {
-                        console.log($(item).data('id'));
 
-                        $.ajaxSetup({
-                              headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                              }
-                        });
+                        axios.post(
+                            '{{ route("admin.menus.category.delete") }}',
+                            {
+                                id: $(item).data('id'),
+                            }
+                            )
+                            .then(function (response) {
+                                SwalWithBootstrap.fire({
+                                    title: 'Success',
+                                    html: response.data,
+                                    icon: 'success',
+                                }).then((result) => {
+                                    window.location.reload();
+                                });
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                                SwalWithBootstrap.fire({
+                                    title: 'Error',
+                                    html: error.message,
+                                    icon: 'error',
+                                }).then((result) => {
+                                    window.location.reload();
+                                });
+                            });
 
-                        $.ajax({
-                              url: '{{ route("admin.menus.category.delete") }}',
-                              method: 'POST',
-                              dataType: 'json',
-                              data: {
-                                    id: $(item).data('id'),
-                              },
-                              success: function(result) {
-                                    SwalWithBootstrap.fire({
-                                          title: 'Success',
-                                          html: result,
-                                          icon: 'success',
-                                    }).then((result) => {
-                                          window.location.reload();
-                                    });
-                              },
-                              error: function(error) {
-                                    console.log(error);
-                              }
-
-                        });
                   } else if (result.dismiss === Swal.DismissReason.cancel) {
 
                   }

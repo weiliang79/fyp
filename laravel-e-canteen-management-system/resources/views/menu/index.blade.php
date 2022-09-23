@@ -226,109 +226,106 @@
             });
             SwalWithBootstrap.showLoading();
 
-            $.ajaxSetup({
-                  headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                  },
-            });
+            axios.post(
+                '{{ route("student.menus.get_food_options") }}',
+                {
+                    id: $(item).data('id'),
+                })
+                .then(function (response) {
+                    console.log(response.data);
 
-            $.ajax({
-                  url: '{{ route("student.menus.get_food_options") }}',
-                  method: 'POST',
-                  dataType: 'json',
-                  data: {
-                        id: $(item).data('id'),
-                  },
-                  success: function(result) {
-                        console.log(result);
+                    let htmlResult = '';
+                    let html = $('#options_templates').html();
 
-                        var htmlResult = '';
-                        var html = $('#options_templates').html();
-                        for (i = 0; i < result.options.length; i++) {
-                              htmlResult = htmlResult + html.replace('option_name', result.options[i].name);
-                              var temp = '';
-                              for (j = 0; j < result.details.length; j++) {
-                                    if (result.details[j].product_option_id == result.options[i].id) {
-                                          var detailHtml = $('#details_templates').html();
-                                          detailHtml = detailHtml.replace('id="id"', 'id="option' + result.options[i].id + '"');
-                                          detailHtml = detailHtml.replace('name="name"', 'name="' + result.options[i].id + '"');
-                                          detailHtml = detailHtml.replace('value="value"', 'value="' + result.details[j].id + '"');
-                                          detailHtml = detailHtml.replace('detail_name', result.details[j].name + ' +{{ config("payment.currency_symbol") }}' + result.details[j].extra_price);
+                    for (let i = 0; i < response.data.options.length; i++) {
+                        htmlResult = htmlResult + html.replace('option_name', response.data.options[i].name);
+                        let temp = '';
+                        for (let j = 0; j < response.data.details.length; j++) {
+                            if (response.data.details[j].product_option_id === response.data.options[i].id) {
+                                let detailHtml = $('#details_templates').html();
+                                detailHtml = detailHtml.replace('id="id"', 'id="option' + response.data.options[i].id + '"');
+                                detailHtml = detailHtml.replace('name="name"', 'name="' + response.data.options[i].id + '"');
+                                detailHtml = detailHtml.replace('value="value"', 'value="' + response.data.details[j].id + '"');
+                                detailHtml = detailHtml.replace('detail_name', response.data.details[j].name + ' +{{ config("payment.currency_symbol") }}' + response.data.details[j].extra_price);
 
-                                          if (result.details[j].name !== 'None') {
-                                                detailHtml = detailHtml.replace('checked', '');
-                                          }
+                                if (response.data.details[j].name !== 'None') {
+                                    detailHtml = detailHtml.replace('checked', '');
+                                }
 
-                                          temp = temp + detailHtml;
-                                    }
-                              }
-                              htmlResult = htmlResult.replace('option_field', temp);
+                                temp = temp + detailHtml;
+                            }
                         }
+                        htmlResult = htmlResult.replace('option_field', temp);
+                    }
 
-                        var noteHtml = $('#note_template').html();
+                    let noteHtml = $('#note_template').html();
 
-                        SwalWithBootstrap.fire({
-                              title: result.product.name,
-                              imageWidth: 300,
-                              imageHeight: 200,
-                              imageUrl: result.product.media_path === null ? '{{ asset("storage/defaults/product.png") }}' : '{{ Request::root() }}/' + result.product.media_path,
-                              html: '<p>' + result.product.description + '</p><p>{{ config("payment.currency_symbol") }}' + result.product.price + '</p>' + htmlResult + noteHtml,
-                              showCancelButton: true,
-                              reverseButtons: true,
-                              confirmButtonText: 'Add to cart',
-                              cancelButtonText: 'Cancel',
-                              preConfirm: () => {
-                                    var note = SwalWithBootstrap.getPopup().querySelector('#note').value;
-                                    var data = {
-                                          product_id: result.product.id,
-                                          note: note,
-                                          options: [],
-                                    };
+                    SwalWithBootstrap.fire({
+                        title: response.data.product.name,
+                        imageWidth: 300,
+                        imageHeight: 200,
+                        imageUrl: response.data.product.media_path === null ? '{{ asset("storage/defaults/product.png") }}' : '{{ Request::root() }}/' + response.data.product.media_path,
+                        html: '<p>' + response.data.product.description + '</p><p>{{ config("payment.currency_symbol") }}' + response.data.product.price + '</p>' + htmlResult + noteHtml,
+                        showCancelButton: true,
+                        reverseButtons: true,
+                        confirmButtonText: 'Add to cart',
+                        cancelButtonText: 'Cancel',
+                        preConfirm: () => {
+                            let note = SwalWithBootstrap.getPopup().querySelector('#note').value;
+                            let data = {
+                                product_id: response.data.product.id,
+                                note: note,
+                                options: [],
+                            };
 
-                                    for (i = 0; i < result.options.length; i++) {
-                                          input = SwalWithBootstrap.getPopup().querySelector('#option' + result.options[i].id + ':checked').value;
-                                          data.options.push({
-                                                [result.options[i].id]: input,
-                                          });
-                                    }
-                                    return data;
-                              },
-                        }).then((swalResult) => {
-                              console.log(swalResult.value);
+                            for (i = 0; i < response.data.options.length; i++) {
+                                let input = SwalWithBootstrap.getPopup().querySelector('#option' + response.data.options[i].id + ':checked').value;
+                                data.options.push({
+                                    [response.data.options[i].id]: input,
+                                });
+                            }
+                            return data;
+                        },
+                    }).then((swalResult) => {
+                        console.log(swalResult.value);
 
-                              $.ajax({
-                                    url: '{{ route("student.menus.add_cart") }}',
-                                    method: 'POST',
-                                    dataType: 'json',
-                                    data: swalResult.value,
-                                    success: function (successResult) {
-                                          console.log(successResult);
+                        axios.post(
+                            '{{ route("student.menus.add_cart") }}',
+                            swalResult.value
+                            )
+                            .then(function (response1) {
+                                SwalWithBootstrap.fire({
+                                    title: 'Success',
+                                    html: response1.data,
+                                    icon: 'success',
+                                }).then((result) => {
+                                    window.location.reload();
+                                });
+                            })
+                            .catch(function (error1) {
+                                console.log(error1);
+                                SwalWithBootstrap.fire({
+                                    title: 'Error',
+                                    html: error1.message,
+                                    icon: 'error',
+                                }).then((result) => {
+                                    window.location.reload();
+                                });
+                            });
 
-                                          SwalWithBootstrap.fire({
-                                                title: 'Success',
-                                                html: successResult,
-                                                icon: 'success',
-                                          }).then(() => {
-                                                window.location.reload();
-                                          });
-                                    }, 
-                                    error: function (error) {
-                                          console.log(error);
-                                    }
-                              });
-                        });
-                  },
-                  error: function(error) {
-                        console.log(error);
-                  }
-            });
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    SwalWithBootstrap.fire({
+                        title: 'Error',
+                        html: error.message,
+                        icon: 'error',
+                    }).then((result) => {
+                        window.location.reload();
+                    });
+                });
 
-            setTimeout(
-                  function() {
-
-                  },
-                  1000
-            );
       }
 </script>
 

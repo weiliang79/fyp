@@ -109,33 +109,32 @@
             }).then((result) => {
                   if (result.isConfirmed) {
 
-                        $.ajaxSetup({
-                              headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                              }
-                        });
-
-                        $.ajax({
-                              url: '{{ route("student.menus.cart.delete") }}',
-                              method: 'POST',
-                              dataType: 'json',
-                              data: {
-                                    product_id: $(item).data('product-id'),
-                                    time_created: $(item).data('time-created'),
-                              },
-                              success: function(result) {
-                                    SwalWithBootstrap.fire({
-                                          title: 'Success',
-                                          html: result,
-                                          icon: 'success',
-                                    }).then((result) => {
-                                          window.location.reload();
-                                    });
-                              },
-                              error: function(error) {
-                                    console.log(error);
-                              }
-                        });
+                      axios.post(
+                          '{{ route('student.menus.cart.delete') }}',
+                          {
+                              product_id: $(item).data('product-id'),
+                              time_created: $(item).data('time-created'),
+                          }
+                          )
+                          .then(function (response) {
+                              SwalWithBootstrap.fire({
+                                  title: 'Success',
+                                  html: response.data,
+                                  icon: 'success',
+                              }).then((result) => {
+                                  window.location.reload();
+                              });
+                          })
+                          .catch(function (error) {
+                              console.log(error);
+                              SwalWithBootstrap.fire({
+                                  title: 'Error',
+                                  html: error.message,
+                                  icon: 'error',
+                              }).then((result) => {
+                                  window.location.reload();
+                              });
+                          });
 
                   } else if (result.dismiss === Swal.DismissReason.cancel) {
 

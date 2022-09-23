@@ -112,33 +112,31 @@
             }).then((result) => {
                   if (result.isConfirmed) {
 
-                        $.ajaxSetup({
-                              headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                              }
-                        });
+                      axios.post(
+                          '{{ route("admin.user_management.delete") }}',
+                          {
+                              user_id: $(item).data('user_id'),
+                          })
+                          .then(function (response) {
+                              SwalWithBootstrap.fire({
+                                  title: 'Success',
+                                  html: response.data,
+                                  icon: 'success',
+                              }).then((result) => {
+                                  window.location.reload();
+                              });
+                          })
+                          .catch(function (error) {
+                              console.log(error);
+                              SwalWithBootstrap.fire({
+                                  title: 'Error',
+                                  html: error.message,
+                                  icon: 'error',
+                              }).then((result) => {
+                                  window.location.reload();
+                              });
+                          });
 
-                        $.ajax({
-                              url: '{{ route("admin.user_management.delete") }}',
-                              method: 'POST',
-                              dataType: 'json',
-                              data: {
-                                    user_id: $(item).data('user-id'),
-                              },
-                              success: function(result) {
-                                    SwalWithBootstrap.fire({
-                                          title: 'Success',
-                                          html: result,
-                                          icon: 'success',
-                                    }).then((result) => {
-                                          window.location.reload();
-                                    });
-                              },
-                              error: function(error) {
-                                    console.log(error);
-                              }
-
-                        });
                   } else if (result.dismiss === Swal.DismissReason.cancel) {
 
                   }
@@ -157,32 +155,31 @@
             }).then((result) => {
                   if (result.isConfirmed) {
 
-                        $.ajaxSetup({
-                              headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                              }
-                        });
-
-                        $.ajax({
-                              url: '{{ route("admin.user_management.student.delete") }}',
-                              method: 'POST',
-                              dataType: 'json',
-                              data: {
-                                    student_id: $(item).data('id'),
-                              },
-                              success: function (result) {
-                                    SwalWithBootstrap.fire({
-                                          title: 'Success',
-                                          html: result,
-                                          icon: 'success',
-                                    }).then((result) => {
-                                          window.location.reload();
-                                    });
-                              },
-                              error: function (error) {
-                                    console.log(error);
-                              }
-                        });
+                      axios.post(
+                          '{{  route("admin.user_management.student.delete") }}',
+                          {
+                              student_id: $(item).data('id'),
+                          }
+                          )
+                          .then(function (response) {
+                              SwalWithBootstrap.fire({
+                                  title: 'Success',
+                                  html: response.data,
+                                  icon: 'success',
+                              }).then((result) => {
+                                  window.location.reload();
+                              });
+                          })
+                          .catch(function (error) {
+                              console.log(error);
+                              SwalWithBootstrap.fire({
+                                  title: 'Error',
+                                  html: error.message,
+                                  icon: 'error',
+                              }).then((result) => {
+                                  window.location.reload();
+                              });
+                          });
 
                   } else if (result.dismiss === Swal.DismissReason.cancel) {
 
