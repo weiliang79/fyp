@@ -161,9 +161,11 @@ Route::group(['middleware' => ['auth']], function () {
 
             // payment - 2c2p
             Route::get('/admin/payment/2c2p', [PaymentController::class, 'index2c2p'])->name('admin.payment.2c2p');
+            Route::post('/admin/payment/2c2p/save', [PaymentController::class, 'save2c2p'])->name('admin.payment.2c2p.save');
 
             // payment - stripe
             Route::get('/admin/payment/stripe', [PaymentController::class, 'indexStripe'])->name('admin.payment.stripe');
+            Route::post('/admin/payment/stripe/save', [PaymentController::class, 'saveStripe'])->name('admin.payment.stripe.save');
 
             // media manager
             Route::get('/admin/media_manager', [MediaController::class, 'index'])->name('admin.media_manager');

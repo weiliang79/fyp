@@ -101,7 +101,7 @@ class PaymentController extends Controller
         } else {
             $url = config('payment.2c2p.url') . 'Initialization';
         }
-        
+
         $client = new \GuzzleHttp\Client();
 
         $response = $client->request('POST', $url, [
@@ -136,5 +136,23 @@ class PaymentController extends Controller
         }
 
         return view('admin.payment.stripe.index');
+    }
+
+    public function saveStripe(Request $request)
+    {
+        $request->validate([
+            'stripe_key' => 'required',
+            'stripe_secret' => 'required',
+            'currency_code' => 'required',
+        ]);
+
+        DotenvEditor::setKeys([
+            'STRIPE_SANDBOX' => $request->sandbox ? 'true' : 'false',
+            'STRIPE_KEY' => $request->stripe_key,
+            'STRIPE_SECRET' => $request->stripe_secret,
+            'CASHIER_CURRENCY' => $request->currency_code,
+        ])->save();
+
+        return redirect()->route('admin.payment.stripe')->with('swal-success', 'Stripe Payment Configuration has updated.');
     }
 }

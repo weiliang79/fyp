@@ -28,7 +28,7 @@ return [
       ],
 
       'stripe-status' => env('STRIPE_ENABLE'),
-
+      'stripe-sandbox' => env('STRIPE_SANDBOX'),
 ];
 
 ?>
