@@ -6,10 +6,13 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\PaymentDetail2c2p;
 use App\Models\PaymentType;
+use App\Models\Student;
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Cashier\Cashier;
 
 class CheckoutController extends Controller
 {
@@ -78,7 +81,7 @@ class CheckoutController extends Controller
                         $payload = CheckoutController::getTokenRequestPayload($info2c2p, Carbon::now()->format('Ymd') . str_pad($invoiceCount, 4, 0, STR_PAD_LEFT), $order);
                         $jwt = JWT::encode($payload, $info2c2p['secretCode'], config('payment.2c2p-algorithm'));
                         $requestData = '{"payload": "' . $jwt . '"}';
-    
+
                         $response = $client->request('POST', $url, [
                             'body' => $requestData,
                             'headers' => [
@@ -86,7 +89,7 @@ class CheckoutController extends Controller
                                 'Content-Type' => 'application/*+json',
                             ],
                         ]);
-    
+
                         $decode = json_decode($response->getBody(), true);
 
                         if(array_key_exists('payload', $decode)){
@@ -123,6 +126,9 @@ class CheckoutController extends Controller
             return redirect()->to($decodedPayload['webPaymentUrl']);
         } else if ($request->payment == 'stripe') {
             // TODO: for stripe payment
+            return redirect()->route('student.checkout.stripe', [
+                'order_id' => $request->order_id,
+            ]);
         }
     }
 
@@ -210,6 +216,21 @@ class CheckoutController extends Controller
         } else {
             return redirect()->route('student.checkout.failure', ['order_id' => $detail2c2p->payment->order->id, 'payment_type' => '2c2p', 'resp_code' => $inquiryPayload['respCode']]);
         }
+    }
+
+    public function stripeCharge(Request $request){
+
+        $student = Student::find(Auth::guard('student')->user()->id);
+        $order = Order::find($request->order_id);
+        //dd($order);
+
+        $paymentIntent = $student->pay($order->total_price * 100);
+
+        return view('checkout.stripe.payment', [
+            'clientSecret' => $paymentIntent->clientSecret(),
+            'order' => $order,
+        ]);
+
     }
 
     public function paymentSuccess(Request $request)
