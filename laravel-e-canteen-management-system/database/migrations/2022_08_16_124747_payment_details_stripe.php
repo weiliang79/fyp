@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('payment_details_stripe', function (Blueprint $table) {
             $table->id();
+            $table->decimal('amount');
+            $table->json('payment_method_types')->nullable();
+            $table->timestamp('transaction_time')->nullable();
+            $table->string('status');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -39,6 +39,6 @@ class Payment extends Model
     }
 
     public function paymentDetailStripe(){
-        return $this->belongsTo(PaymentDetailStripe::class);
+        return $this->belongsTo(PaymentDetailStripe::class, 'payment_detail_stripe_id');
     }
 }
