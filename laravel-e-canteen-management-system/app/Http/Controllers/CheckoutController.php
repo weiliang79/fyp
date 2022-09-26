@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\PaymentDetail2c2p;
+use App\Models\PaymentDetailStripe;
 use App\Models\PaymentType;
 use App\Models\Student;
 use Carbon\Carbon;
@@ -18,7 +19,13 @@ class CheckoutController extends Controller
 {
     public function index(Request $request)
     {
+        $student = Auth::guard('student')->user();
         $order = Order::find($request->order_id);
+
+        if($order->student_id !== $student->id){
+            abort(403);
+        }
+
         return view('checkout.index', compact('order'));
     }
 
@@ -224,13 +231,63 @@ class CheckoutController extends Controller
         $order = Order::find($request->order_id);
         //dd($order);
 
-        $paymentIntent = $student->pay($order->total_price * 100);
+        $paymentIntent = $student->pay($order->total_price * 100, [
+            'setup_future_usage' => 'off_session',
+        ]);
+
+        $paymentDetail = PaymentDetailStripe::create([
+            'amount' => $order->total_price,
+            'status' => $paymentIntent->status,
+        ]);
+
+        $payment = $order->payments()->create([
+            'payment_type_id' => PaymentType::PAYMENT_STRIPE,
+            'payment_detail_stripe_id' => $paymentDetail->id,
+            'amount' => $order->total_price,
+            'status' => Payment::STATUS_IN_TRANSACTION,
+        ]);
 
         return view('checkout.stripe.payment', [
             'clientSecret' => $paymentIntent->clientSecret(),
             'order' => $order,
         ]);
 
+    }
+
+    public function stripeProcess(Request $request){
+        //dd($request);
+
+        $student = Student::find(Auth::guard('student')->user()->id);
+        $order = Order::find($request->order_id);
+
+        $student->createOrGetStripeCustomer();
+        $student->addPaymentMethod($request->payment_method);
+
+        try {
+            $student->updateDefaultPaymentMethod($request->payment_method);
+            $payment = $student->charge($order->total_price * 100, $request->payment_method);
+
+            $order->update([
+                'status' => Order::PAYMENT_SUCCESS,
+            ]);
+
+            $orderPayment = $order->payments()->orderBy('created_at', 'DESC')->first();
+            $orderPayment->update([
+                'status' => Payment::STATUS_SUCCESS,
+            ]);
+
+            $detailStripe = $orderPayment->paymentDetailStripe()->orderBy('created_at', 'DESC')->first();
+            $detailStripe->update([
+                'payment_method_types' => $payment->payment_method_types,
+                'transaction_time' => Carbon::createFromTimestamp($payment->created),
+                'status' => $payment->status,
+            ]);
+
+        } catch (\Exception $e) {
+            return back()->withErrors(['message' => 'Error creating payment. ' . $e->getMessage()]);
+        }
+
+        return redirect()->route('student.checkout.success', ['order_id' => $order->id]);
     }
 
     public function paymentSuccess(Request $request)

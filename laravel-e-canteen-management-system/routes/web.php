@@ -110,6 +110,7 @@ Route::group(['middleware' => ['auth:student']], function () {
 
         // checkout - stripe
         Route::get('/checkout/{order_id}/stripe_payment', [CheckoutController::class, 'stripeCharge'])->name('student.checkout.stripe');
+        Route::post('/checkout/{order_id}/stripe_payment/process', [CheckoutController::class, 'stripeProcess'])->name('student.checkout.stripe.process');
     });
 
     // student logout routes
@@ -224,5 +225,11 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::get('/test', function () {
-    return view('checkout.failure');
+    $payment = \App\Models\Payment::find(6);
+    $detail = $payment->paymentDetailStripe()->create([
+        'amount' => 10,
+        'status' => 'test',
+    ]);
+
+    dd($payment, $detail);
 });
