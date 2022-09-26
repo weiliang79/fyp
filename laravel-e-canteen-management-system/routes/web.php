@@ -97,17 +97,20 @@ Route::group(['middleware' => ['auth:student']], function () {
     Route::post('/menus/carts/delete', [StudentMenuController::class, 'deleteCartItem'])->name('student.menus.cart.delete');
     Route::post('/menus/carts/create_order', [StudentMenuController::class, 'createOrder'])->name('student.menus.create_order');
 
-    // checkout
-    Route::get('/checkout/{order_id}', [CheckoutController::class, 'index'])->name('student.checkout');
-    Route::get('/checkout/{order_id}/success', [CheckoutController::class, 'paymentSuccess'])->name('student.checkout.success');
-    Route::get('/checkout/{order_id}/failure', [CheckoutController::class, 'paymentFailure'])->name('student.checkout.failure');
+    Route::group(['middleware' => ['isPaymentMaintenance']], function () {
 
-    // checkout - 2c2p
-    Route::post('/checkout/{order_id}/process', [CheckoutController::class, 'process'])->name('student.checkout.process');
-    Route::match(['get', 'post'], '/checkout/{order_id}/receive_payment_info', [CheckoutController::class, 'receivePaymentInfo'])->name('student.checkout.receive_payment_info');
+        // checkout
+        Route::get('/checkout/{order_id}', [CheckoutController::class, 'index'])->name('student.checkout');
+        Route::get('/checkout/{order_id}/success', [CheckoutController::class, 'paymentSuccess'])->name('student.checkout.success');
+        Route::get('/checkout/{order_id}/failure', [CheckoutController::class, 'paymentFailure'])->name('student.checkout.failure');
 
-    // checkout - stripe
-    Route::get('/checkout/{order_id}/stripe_payment', [CheckoutController::class, 'stripeCharge'])->name('student.checkout.stripe');
+        // checkout - 2c2p
+        Route::post('/checkout/{order_id}/process', [CheckoutController::class, 'process'])->name('student.checkout.process');
+        Route::match(['get', 'post'], '/checkout/{order_id}/receive_payment_info', [CheckoutController::class, 'receivePaymentInfo'])->name('student.checkout.receive_payment_info');
+
+        // checkout - stripe
+        Route::get('/checkout/{order_id}/stripe_payment', [CheckoutController::class, 'stripeCharge'])->name('student.checkout.stripe');
+    });
 
     // student logout routes
     Route::get('/student/logout', [StudentLoginController::class, 'logout'])->name('student.logout');

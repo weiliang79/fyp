@@ -73,17 +73,21 @@
 
                                           <div class="list-group-item">
                                                 Price
-                                                <h4>Total: {{ config('payment.currency_symbol') }}{{ $carts->sum('price') }}</h4>
+                                                <h4>Total: {{ config('payment.currency_symbol') }}{{ number_format((float) $carts->sum('price'), 2, '.', '') }}</h4>
                                           </div>
                                     </div>
 
                               </div>
 
                               <div class="card-footer">
-                                    <button class="btn btn-primary" @if($carts->count() == 0) disabled @endif>Procced to Checkout</button>
+                                    <button class="btn btn-primary" @if($carts->count() == 0 || config('payment.maintenance_mode')) disabled @endif>Procced to Checkout</button>
                                     @if($carts->count() == 0)
                                     <div class="text-danger mt-2">
                                           <i class="fa-solid fa-circle-exclamation fa-lg"></i> The cart was empty.
+                                    </div>
+                                    @elseif(config('payment.maintenance_mode'))
+                                    <div class="text-danger mt-2">
+                                          <i class="fa-solid fa-circle-exclamation fa-lg"></i> Currently checkout services are unavailable.
                                     </div>
                                     @endif
                               </div>
@@ -110,7 +114,7 @@
                   if (result.isConfirmed) {
 
                       axios.post(
-                          '{{ route('student.menus.cart.delete') }}',
+                          '{{ route("student.menus.cart.delete") }}',
                           {
                               product_id: $(item).data('product-id'),
                               time_created: $(item).data('time-created'),
