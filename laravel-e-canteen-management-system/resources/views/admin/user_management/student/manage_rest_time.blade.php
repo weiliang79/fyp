@@ -29,7 +29,7 @@
                                           <div class="card mb-4 day_group">
                                                 <div class="card-body">
                                                       <div class="row mb-3 justify-content-center">
-                                                            <div class="form-group col-md-4">
+                                                            <div class="col-md-4">
                                                                   <label for="">Day</label>
 
                                                                   <div class="input-group">
@@ -45,7 +45,7 @@
                                                                   </div>
                                                             </div>
 
-                                                            <div class="from=group col-md-4">
+                                                            <div class="col-md-4">
                                                                   <label for="">Start Time</label>
 
                                                                   <div class="input-group">
@@ -58,7 +58,7 @@
                                                       </div>
 
                                                       <div class="row mb-3 justify-content-center">
-                                                            <div class="form-group col-md-4">
+                                                            <div class="col-md-4">
                                                                   <label for="">End Time</label>
 
                                                                   <div class="input-group">
@@ -69,7 +69,7 @@
                                                                   </div>
                                                             </div>
 
-                                                            <div class="form-group col-md-4">
+                                                            <div class="col-md-4">
                                                                   <label for="">Description</label>
 
                                                                   <div class="input-group">
@@ -119,7 +119,7 @@
       <div class="card mb-4 day_group">
             <div class="card-body">
                   <div class="row mb-3 justify-content-center">
-                        <div class="form-group col-md-4">
+                        <div class="col-md-4">
                               <label for="">Day</label>
 
                               <div class="input-group">
@@ -148,7 +148,7 @@
                   </div>
 
                   <div class="row mb-3 justify-content-center">
-                        <div class="form-group col-md-4">
+                        <div class="col-md-4">
                               <label for="">End Time</label>
 
                               <div class="input-group">
@@ -159,7 +159,7 @@
                               </div>
                         </div>
 
-                        <div class="form-group col-md-4">
+                        <div class="col-md-4">
                               <label for="">Description</label>
 
                               <div class="input-group">
