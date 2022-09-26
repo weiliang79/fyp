@@ -97,12 +97,11 @@
 
         $(document).ready(async () => {
 
-            stripe = await loadStripe('{{ config('cashier.key') }}');
+            stripe = await loadStripe('{{ config("cashier.key") }}');
             let elements = stripe.elements({
                 clientSecret: "{{ $clientSecret }}",
             });
 
-            console.log(elements);
             const paymentElement = elements.create('payment');
             paymentElement.mount('#payment-element');
 
