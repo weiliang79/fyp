@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Auth;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -14,12 +15,14 @@ class CheckForPaymentMaintenanceMode
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, ...$guards)
     {
         $guards = empty($guards) ? [null] : $guards;
 
-        if(config('payment.maintenance_mode')){
-            abort(503);
+        foreach ($guards as $guard) {
+            if (config('payment.maintenance_mode') && !Auth::guard($guard)->user()->is_a_sandbox_student) {
+                abort(503);
+            }
         }
 
         return $next($request);

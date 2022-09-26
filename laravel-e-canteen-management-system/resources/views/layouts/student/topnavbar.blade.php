@@ -40,6 +40,15 @@
                               </div>
                         </li>
                         @elseif(Auth::guard('student')->check())
+
+                        @if(auth()->guard('student')->user()->is_a_sandbox_student)
+                        <li class="nav-item">
+                              <div class="nav-link">
+                                    <i class="fa-solid fa-flask fa-fw"></i> This is a sandbox student account. <i class="fa-solid fa-flask fa-fw"></i>
+                              </div>
+                        </li>
+                        @endif
+
                         <li class="nav-item">
                               <a class="nav-link" href="{{ route('student.menus.cart') }}">
                                     Carts
@@ -50,7 +59,7 @@
                                     @endif
                               </a>
                         </li>
-                        
+
                         <li class="nav-item dropdown">
                               <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ auth('student')->user()->first_name }} {{ auth('student')->user()->last_name }}

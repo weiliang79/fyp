@@ -29,6 +29,7 @@ class Student extends Authenticatable
         'password',
         'phone',
         'address',
+        'is_a_sandbox_student',
     ];
 
     /**

@@ -16,6 +16,16 @@ class StudentSeeder extends Seeder
      */
     public function run()
     {
+        // sandbox student
+        $student = Student::factory()->create([
+            'username' => 'sandbox_student',
+            'email' => 'sandbox_student@isp.com',
+            'email_verified_at' => Carbon::now(),
+            'is_a_sandbox_student' => true,
+        ]);
+
+        $student->restTimes()->attach(1);
+
         // student1
         $student = Student::factory()->create([
             'username' => 'student1',
