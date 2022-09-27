@@ -11,6 +11,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestTimeController;
@@ -86,7 +87,7 @@ Route::group(['middleware' => ['auth:student']], function () {
     Route::get('/student/profile', [StudentProfileController::class, 'index'])->name('student.profile');
     Route::post('/student/profile/update_profile', [StudentProfileController::class, 'updateProfile'])->name('student.profile.update_profile');
     Route::post('/student/profile/email_verify', [StudentProfileController::class, 'verifyEmail'])->name('student.profile.email_verify');
-    Route::post('student/profile/update_email', [StudentProfileController::class, 'updateEmail'])->name('student.profile.update_email');
+    Route::post('/student/profile/update_email', [StudentProfileController::class, 'updateEmail'])->name('student.profile.update_email');
     Route::post('/student/profile/update_password', [StudentProfileController::class, 'updatePassword'])->name('student.profile.update_password');
 
     // menus
@@ -97,7 +98,7 @@ Route::group(['middleware' => ['auth:student']], function () {
     Route::post('/menus/carts/delete', [StudentMenuController::class, 'deleteCartItem'])->name('student.menus.cart.delete');
     Route::post('/menus/carts/create_order', [StudentMenuController::class, 'createOrder'])->name('student.menus.create_order');
 
-    Route::group(['middleware' => ['isPaymentMaintenance']], function () {
+    Route::group(['middleware' => ['isPaymentMaintenance', 'isOrderMatchStudent:student']], function () {
 
         // checkout
         Route::get('/checkout/{order_id}', [CheckoutController::class, 'index'])->name('student.checkout');
