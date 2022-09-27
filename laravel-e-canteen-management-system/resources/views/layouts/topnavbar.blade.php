@@ -38,20 +38,20 @@
                               <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     @can('isAdmin')
                                     <a class="dropdown-item" href="{{ route('admin.profile') }}">
-                                          {{ __('Profile') }}
+                                          <i class="fa-solid fa-user"></i> {{ __('Profile') }}
                                     </a>
                                     @endcan
 
                                     @can('isFoodSeller')
                                     <a class="dropdown-item" href="{{ route('food_seller.profile') }}">
-                                          {{ __('Profile') }}
+                                          <i class="fa-solid fa-user"></i> {{ __('Profile') }}
                                     </a>
                                     @endcan
 
                                     <hr class="dropdown-divider">
 
                                     <a class="dropdown-item" href="{{ route('logout') }}">
-                                          {{ __('Logout') }}
+                                          <i class="fa-solid fa-right-from-bracket"></i> {{ __('Logout') }}
                                     </a>
 
                                     {{--

@@ -67,13 +67,17 @@
 
                               <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('student.profile') }}">
-                                          {{ __('Profile') }}
+                                          <i class="fa-solid fa-user"></i> {{ __('Profile') }}
+                                    </a>
+
+                                    <a class="dropdown-item" href="{{ route('student.order') }}">
+                                          <i class="fa-solid fa-utensils"></i> {{ __('Order') }}
                                     </a>
 
                                     <hr class="dropdown-divider">
 
                                     <a class="dropdown-item" href="{{ route('student.logout') }}">
-                                          {{ __('Logout') }}
+                                          <i class="fa-solid fa-right-from-bracket"></i> {{ __('Logout') }}
                                     </a>
 
                                     {{--
