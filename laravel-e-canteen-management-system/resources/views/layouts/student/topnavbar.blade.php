@@ -73,7 +73,7 @@
                                     </a>
 
                                     <a class="dropdown-item" href="{{ route('student.order') }}">
-                                          <i class="fa-solid fa-utensils"></i> {{ __('Order') }}
+                                          <i class="fa-solid fa-utensils"></i> {{ __('Order History') }}
                                     </a>
 
                                     <hr class="dropdown-divider">
