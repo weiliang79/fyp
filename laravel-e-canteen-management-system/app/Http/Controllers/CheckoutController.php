@@ -235,14 +235,8 @@ class CheckoutController extends Controller
             'setup_future_usage' => 'off_session',
         ]);
 
-        $paymentDetail = PaymentDetailStripe::create([
-            'amount' => $order->total_price,
-            'status' => $paymentIntent->status,
-        ]);
-
         $payment = $order->payments()->create([
             'payment_type_id' => PaymentType::PAYMENT_STRIPE,
-            'payment_detail_stripe_id' => $paymentDetail->id,
             'amount' => $order->total_price,
             'status' => Payment::STATUS_IN_TRANSACTION,
         ]);
@@ -255,37 +249,23 @@ class CheckoutController extends Controller
     }
 
     public function stripeProcess(Request $request){
-        //dd($request);
 
         $student = Student::find(Auth::guard('student')->user()->id);
         $order = Order::find($request->order_id);
 
         $student->createOrGetStripeCustomer();
         $student->addPaymentMethod($request->payment_method);
+        $student->updateDefaultPaymentMethod($request->payment_method);
 
-        try {
-            $student->updateDefaultPaymentMethod($request->payment_method);
-            $payment = $student->charge($order->total_price * 100, $request->payment_method);
+        $order->update([
+            'status' => Order::PAYMENT_SUCCESS,
+        ]);
 
-            $order->update([
-                'status' => Order::PAYMENT_SUCCESS,
-            ]);
-
-            $orderPayment = $order->payments()->orderBy('created_at', 'DESC')->first();
-            $orderPayment->update([
-                'status' => Payment::STATUS_SUCCESS,
-            ]);
-
-            $detailStripe = $orderPayment->paymentDetailStripe()->orderBy('created_at', 'DESC')->first();
-            $detailStripe->update([
-                'payment_method_types' => $payment->payment_method_types,
-                'transaction_time' => Carbon::createFromTimestamp($payment->created),
-                'status' => $payment->status,
-            ]);
-
-        } catch (\Exception $e) {
-            return back()->withErrors(['message' => 'Error creating payment. ' . $e->getMessage()]);
-        }
+        $payment = $order->payments()->orderBy('created_at', 'DESC')->first();
+        $payment->update([
+            'stripe_payment_method_id' => $request->payment_method,
+            'status' => Payment::STATUS_SUCCESS,
+        ]);
 
         return redirect()->route('student.checkout.success', ['order_id' => $order->id]);
     }

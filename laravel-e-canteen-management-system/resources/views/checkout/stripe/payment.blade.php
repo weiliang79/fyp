@@ -185,7 +185,6 @@
                 cardholderName.classList.remove('is-invalid');
             }
 
-
             const { paymentIntent, error } = await stripe.confirmPayment({
                 elements: elements,
                 confirmParams: {
