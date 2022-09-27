@@ -21,7 +21,7 @@ class Payment extends Model
         'order_id',
         'payment_type_id',
         'payment_detail_2c2p_id',
-        'payment_detail_stripe_id',
+        'stripe_payment_method_id',
         'amount',
         'status',
     ];
@@ -38,7 +38,4 @@ class Payment extends Model
         return $this->belongsTo(PaymentDetail2c2p::class, 'payment_detail_2c2p_id');
     }
 
-    public function paymentDetailStripe(){
-        return $this->belongsTo(PaymentDetailStripe::class, 'payment_detail_stripe_id');
-    }
 }

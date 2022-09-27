@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('order_id');
             $table->foreignId('payment_type_id');
             $table->foreignId('payment_detail_2c2p_id')->nullable();
-            $table->foreignId('payment_detail_stripe_id')->nullable();
+            $table->string('stripe_payment_method_id')->nullable();
             $table->decimal('amount');
             $table->tinyInteger('status');
             $table->timestamps();
@@ -27,7 +27,6 @@ return new class extends Migration
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->foreign('payment_type_id')->references('id')->on('payment_types')->onDelete('cascade');
             $table->foreign('payment_detail_2c2p_id')->references('id')->on('payment_details_2c2p')->onDelete('cascade');
-            $table->foreign('payment_detail_stripe_id')->references('id')->on('payment_details_stripe')->onDelete('cascade');
         });
     }
 
