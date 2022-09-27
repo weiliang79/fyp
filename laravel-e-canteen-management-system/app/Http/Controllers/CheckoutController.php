@@ -127,7 +127,7 @@ class CheckoutController extends Controller
                 'payment_type_id' => PaymentType::PAYMENT_2C2P,
                 'payment_detail_2c2p_id' => $payment2c2p->id,
                 'amount' => $order->total_price,
-                'status' => Payment::STATUS_IN_TRANSACTION,
+                'status' => Payment::STATUS_PENDING,
             ]);
 
             return redirect()->to($decodedPayload['webPaymentUrl']);
@@ -211,7 +211,7 @@ class CheckoutController extends Controller
         ]);
 
         $detail2c2p->payment->update([
-            'status' => $inquiryPayload['respCode'] == '0000' ? Payment::STATUS_PENDING : Payment::STATUS_FAILURE,
+            'status' => $inquiryPayload['respCode'] == '0000' ? Payment::STATUS_SUCCESS : Payment::STATUS_FAILURE,
         ]);
 
         $detail2c2p->payment->order->update([
@@ -238,7 +238,7 @@ class CheckoutController extends Controller
         $payment = $order->payments()->create([
             'payment_type_id' => PaymentType::PAYMENT_STRIPE,
             'amount' => $order->total_price,
-            'status' => Payment::STATUS_IN_TRANSACTION,
+            'status' => Payment::STATUS_PENDING,
         ]);
 
         return view('checkout.stripe.payment', [

@@ -10,7 +10,7 @@ class Order extends Model
 {
     use HasFactory, SoftDeletes;
 
-    const PAYMENT_PENDING = 1, PAYMENT_IN_PROGRESS = 2, PAYMENT_SUCCESS = 3, PAYMENT_FAILURE = 4;
+    const PAYMENT_PENDING = 1, PAYMENT_SUCCESS = 2, PAYMENT_FAILURE = 3;
 
     /**
      * The attributes that are mass assignable.

@@ -10,7 +10,7 @@ class Payment extends Model
 {
     use HasFactory, SoftDeletes;
 
-    const STATUS_PENDING = 1, STATUS_IN_TRANSACTION = 2, STATUS_SUCCESS = 3, STATUS_FAILURE = 4;
+    const STATUS_PENDING = 1, STATUS_SUCCESS = 2, STATUS_FAILURE = 3;
 
     /**
      * The attributes that are mass assignable.
