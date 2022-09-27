@@ -114,6 +114,9 @@ Route::group(['middleware' => ['auth:student']], function () {
         Route::post('/checkout/{order_id}/stripe_payment/process', [CheckoutController::class, 'stripeProcess'])->name('student.checkout.stripe.process');
     });
 
+    // order
+    Route::get('/student/order', [OrderController::class, 'index'])->name('student.order');
+
     // student logout routes
     Route::get('/student/logout', [StudentLoginController::class, 'logout'])->name('student.logout');
 });
