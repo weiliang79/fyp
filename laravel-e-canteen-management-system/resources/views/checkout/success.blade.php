@@ -101,7 +101,7 @@
 
                               <div class="row justify-content-center">
                                     <div class="col-md-auto">
-                                          <a class="btn btn-primary" href="{{ route('student.order') }}">Order</a>
+                                          <a class="btn btn-primary" href="{{ route('student.order') }}">Order History</a>
                                           <a class="btn btn-primary" href="{{ route('student.menus') }}">Menu</a>
                                     </div>
                               </div>
