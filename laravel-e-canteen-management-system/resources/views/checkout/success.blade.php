@@ -24,14 +24,16 @@
                                                 <li class="list-group-item d-flex justify-content-between">
                                                       <p class="mb-1">Payment Type</p>
                                                       <p class="mb-1">
-                                                            {{ $order->payments()->orderBy('updated_at', 'desc')->first()->payment_type_id == \App\Models\PaymentType::PAYMENT_2C2P ? '2C2P' : 'Stripe' }}
+                                                            {{ $payment->payment_type_id == \App\Models\PaymentType::PAYMENT_2C2P ? '2C2P' : 'Stripe' }}
                                                       </p>
                                                 </li>
                                                 <li class="list-group-item d-flex justify-content-between">
-                                                      <p class="mb-1">Payment Channel</p>
+                                                      <p class="mb-1">Payment Processing Method</p>
                                                       <p class="mb-1">
-                                                            @if($order->payments()->orderBy('updated_at', 'desc')->first()->payment_type_id == \App\Models\PaymentType::PAYMENT_2C2P)
-                                                                  {{ $order->payments()->orderBy('updated_at', 'desc')->first()->paymentDetail2c2p->channel_code }}
+                                                            @if($payment->payment_type_id == \App\Models\PaymentType::PAYMENT_2C2P)
+                                                                  {{ $payment->paymentDetail2c2p->channel_code }}
+                                                            @elseif($payment->payment_type_id == \App\Models\PaymentType::PAYMENT_STRIPE)
+                                                                  {{ Auth::guard('student')->user()->findPaymentMethod($payment->stripe_payment_method_id)->card->brand }}
                                                             @endif
                                                       </p>
                                                 </li>
@@ -50,46 +52,46 @@
                                                 <li class="list-group-item d-flex justify-content-between">
                                                       <p class="fw-bold mb-1">Amount Paid</p>
                                                       <p class="fw-bold mb-1">
-                                                      {{ config('payment.currency_symbol') }}{{ $order->payments()->orderBy('updated_at', 'desc')->first()->amount }}
+                                                      {{ config('payment.currency_symbol') }}{{ $payment->amount }}
                                                       </p>
                                                 </li>
 
-                                                @if($order->payments()->orderBy('updated_at', 'desc')->first()->payment_type_id == \App\Models\PaymentType::PAYMENT_2C2P)
+                                                @if($payment->payment_type_id == \App\Models\PaymentType::PAYMENT_2C2P)
                                                 <li class="list-group-item d-flex justify-content-between">
                                                       
                                                       <p class="mb-1">Invoice No</p>
                                                       <p class="mb-1">
-                                                            {{ $order->payments()->orderBy('updated_at', 'desc')->first()->paymentDetail2c2p->invoice_no }}
+                                                            {{ $payment->paymentDetail2c2p->invoice_no }}
                                                       </p>
                                                 </li>
                                                 <li class="list-group-item d-flex justify-content-between">
                                                       <p class="mb-1">Transaction Time</p>
                                                       <p class="mb-1">
-                                                            {{ $order->payments()->orderBy('updated_at', 'desc')->first()->paymentDetail2c2p->transaction_time->format('Y-m-d h:ia') }}
+                                                            {{ $payment->paymentDetail2c2p->transaction_time->format('Y-m-d h:ia') }}
                                                       </p>
                                                 </li>
                                                 <li class="list-group-item d-flex justify-content-between">
                                                       <p class="mb-1">Agent Code</p>
                                                       <p class="mb-1">
-                                                            {{ $order->payments()->orderBy('updated_at', 'desc')->first()->paymentDetail2c2p->agent_code }}
+                                                            {{ $payment->paymentDetail2c2p->agent_code }}
                                                       </p>
                                                 </li>
                                                 <li class="list-group-item d-flex justify-content-between">
                                                       <p class="mb-1">Channel Code</p>
                                                       <p class="mb-1">
-                                                            {{ $order->payments()->orderBy('updated_at', 'desc')->first()->paymentDetail2c2p->channel_code }}
+                                                            {{ $payment->paymentDetail2c2p->channel_code }}
                                                       </p>
                                                 </li>
                                                 <li class="list-group-item d-flex justify-content-between">
                                                       <p class="mb-1">Reference No</p>
                                                       <p class="mb-1">
-                                                            {{ $order->payments()->orderBy('updated_at', 'desc')->first()->paymentDetail2c2p->reference_no }}
+                                                            {{ $payment->paymentDetail2c2p->reference_no }}
                                                       </p>
                                                 </li>
                                                 <li class="list-group-item d-flex justify-content-between">
                                                       <p class="mb-1">Transaction Reference</p>
                                                       <p class="mb-1">
-                                                            {{ $order->payments()->orderBy('updated_at', 'desc')->first()->paymentDetail2c2p->tran_ref }}
+                                                            {{ $payment->paymentDetail2c2p->tran_ref }}
                                                       </p>
                                                 </li>
                                                 @endif
@@ -99,8 +101,8 @@
 
                               <div class="row justify-content-center">
                                     <div class="col-md-auto">
-                                          <a class="btn btn-primary" href="#">Order</a>
-                                          <a class="btn btn-primary" href="#">Menu</a>
+                                          <a class="btn btn-primary" href="{{ route('student.order') }}">Order</a>
+                                          <a class="btn btn-primary" href="{{ route('student.menus') }}">Menu</a>
                                     </div>
                               </div>
                         </div>

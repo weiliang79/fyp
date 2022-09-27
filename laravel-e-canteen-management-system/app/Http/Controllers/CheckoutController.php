@@ -273,7 +273,8 @@ class CheckoutController extends Controller
     public function paymentSuccess(Request $request)
     {
         $order = Order::find($request->order_id);
-        return view('checkout.success', compact('order'));
+        $payment = $order->payments()->orderBy('updated_at', 'desc')->first();
+        return view('checkout.success', compact('order', 'payment'));
     }
 
     public function paymentFailure(Request $request)
