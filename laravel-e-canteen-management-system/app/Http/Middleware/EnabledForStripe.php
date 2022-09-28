@@ -16,7 +16,7 @@ class EnabledForStripe
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!config('payment.stripe_status')){
+        if(!config('payment.stripe-status')){
             abort(503);
         }
         return $next($request);
