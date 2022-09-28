@@ -83,7 +83,7 @@
                                                   <i class="fa-solid fa-dollar-sign fa-fw"></i>
                                               </div>
 
-                                              <input type="text" class="form-control @error('currency_code') is-invalid @enderror" name="currency_code" value="{{ old('currency_code') }}" placeholder="Currency Code">
+                                              <input type="text" class="form-control @error('currency_code') is-invalid @enderror" name="currency_code" value="{{ old('currency_code', config('cashier.currency')) }}" placeholder="Currency Code">
                                               @error('currency_code')
                                               <span class="invalid-feedback" role="alert">
                                                   <strong>{{ $message }}</strong>

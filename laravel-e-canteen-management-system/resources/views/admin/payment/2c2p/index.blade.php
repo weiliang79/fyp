@@ -12,7 +12,15 @@
 
                         <div class="card-body">
 
-                              <form action="" method="post">
+                            @if($errors->any())
+                                <div class="row my-4">
+                                    <div class="col-md-8 offset-md-3 text-danger">
+                                        <i class="fa-solid fa-circle-exclamation fa-lg"></i> The form has some error, please refill and submit again.
+                                    </div>
+                                </div>
+                            @endif
+
+                              <form action="{{  route('admin.payment.2c2p.save') }}" method="post">
                                     @csrf
 
                                     <div class="row mb-3">
@@ -67,7 +75,12 @@
                                                             <i class="fa-solid fa-cash-register fa-fw"></i>
                                                       </div>
 
-                                                      <input type="text" class="form-control" name="merchant_id" placeholder="Merchant ID" {{ config('payment.2c2p-sandbox.status') ? 'disabled' : '' }}>
+                                                      <input type="text" class="form-control @error('merchant_id') is-invalid @enderror" name="merchant_id" placeholder="Merchant ID" value="{{ old('merchant_id', config('payment.2c2p.merchantID')) }}" {{ config('payment.2c2p-sandbox.status') ? 'disabled' : '' }}>
+                                                        @error('merchant_id')
+                                                        <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                          </span>
+                                                        @enderror
                                                 </div>
                                                 <small class="form-text text-muted">*Merchant ID is provided by 2C2P</small>
                                           </div>
@@ -82,7 +95,12 @@
                                                             <i class="fa-solid fa-dollar-sign fa-fw"></i>
                                                       </div>
 
-                                                      <input type="text" class="form-control" name="currency_code" placeholder="Currency Code" {{ config('payment.2c2p-sandbox.status') ? 'disabled' : '' }}>
+                                                      <input type="text" class="form-control @error('currency_code') is-invalid @enderror" name="currency_code" placeholder="Currency Code" value="{{ old('currency_code', config('payment.2c2p.currencyCode')) }}" {{ config('payment.2c2p-sandbox.status') ? 'disabled' : '' }}>
+                                                    @error('currency_code')
+                                                    <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                      </span>
+                                                    @enderror
                                                 </div>
                                                 <small class="form-text text-muted">*Currency Code is provided by 2C2P</small>
                                           </div>
@@ -97,7 +115,12 @@
                                                             <i class="fa-solid fa-key fa-fw"></i>
                                                       </div>
 
-                                                      <input type="text" class="form-control" name="secret_code" placeholder="Secret Code" {{ config('payment.2c2p-sandbox.status') ? 'disabled' : '' }}>
+                                                      <input type="text" class="form-control @error('secret_code') is-invalid @enderror" name="secret_code" placeholder="Secret Code" value="{{ old('secret_code', config('payment.2c2p.secretCode')) }}" {{ config('payment.2c2p-sandbox.status') ? 'disabled' : '' }}>
+                                                    @error('secret_code')
+                                                    <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                      </span>
+                                                    @enderror
                                                 </div>
                                                 <small class="form-text text-muted">*Secret Code is provided by 2C2P</small>
                                           </div>
@@ -112,13 +135,19 @@
                                                             <i class="fa-solid fa-earth-asia fa-fw"></i>
                                                       </div>
 
-                                                      <select class="form-control" name="locale" id="" {{ config('payment.2c2p-sandbox.status') ? 'disabled' : '' }}>
+                                                      <select class="form-control @error('locale_code') is-invalid @enderror" name="locale_code" id="" {{ config('payment.2c2p-sandbox.status') ? 'disabled' : '' }}>
                                                             @if($locale)
                                                             @foreach($locale as $local)
                                                             <option value="{{ $local->code }}">{{ $local->name }}</option>
                                                             @endforeach
                                                             @endif
                                                       </select>
+
+                                                    @error('locale_code')
+                                                    <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                      </span>
+                                                    @enderror
                                                 </div>
                                           </div>
                                     </div>

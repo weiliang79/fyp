@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PaymentType;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Jackiedo\DotenvEditor\Facades\DotenvEditor;
 use Session;
 
@@ -125,7 +126,29 @@ class PaymentController extends Controller
 
     public function save2c2p(Request $request)
     {
-        dd($request);
+
+        if(!config('payment.maintenance_mode') && $request->sandbox){
+            return redirect()->back()->with('swal-warning', 'Please enable maintenance mode before enabling the sandbox mode.');
+        }
+
+        $request->validate([
+            'merchant_id' => Rule::requiredIf(!config('payment.2c2p-sandbox.status') && $request->sandbox != 'on'),
+            'currency_code' => Rule::requiredIf(!config('payment.2c2p-sandbox.status') && $request->sandbox != 'on'),
+            'secret_code' => Rule::requiredIf(!config('payment.2c2p-sandbox.status') && $request->sandbox != 'on'),
+            'locale_code' => Rule::requiredIf(!config('payment.2c2p-sandbox.status') && $request->sandbox != 'on'),
+        ]);
+
+        //dd($request->sandbox);
+
+        DotenvEditor::setKeys([
+            '2C2P_SANDBOX_ENABLE' => $request->sandbox !== null ? 'true' : 'false',
+            '2C2P_MERCHANT_ID' => ($request->merchant_id && $request->sandbox == null) ? $request->merchant_id : '',
+            '2C2P_CURRENCY_CODE' => ($request->currency_code && $request->sandbox == null) ? $request->currency_code : '',
+            '2C2P_SECRET_CODE' => ($request->secret_code && $request->sandbox == null) ? $request->secret_code : '',
+            '2C2P_LOCALE_CODE' => ($request->locale_code && $request->sandbox == null) ? $request->locale_code : '',
+        ])->save();
+
+        return redirect()->route('admin.payment.2c2p')->with('swal-success', '2C2P Payment Configuration has updated.');
     }
 
     public function indexStripe()
@@ -141,15 +164,17 @@ class PaymentController extends Controller
     public function saveStripe(Request $request)
     {
         $request->validate([
-            'stripe_key' => 'required',
-            'stripe_secret' => 'required',
             'currency_code' => 'required',
         ]);
 
+        if(!config('payment.maintenance_mode') && $request->sandbox){
+            return redirect()->back()->with('swal-warning', 'Please enable maintenance mode before enabling the sandbox mode.');
+        }
+
         DotenvEditor::setKeys([
             'STRIPE_SANDBOX' => $request->sandbox ? 'true' : 'false',
-            'STRIPE_KEY' => $request->stripe_key,
-            'STRIPE_SECRET' => $request->stripe_secret,
+            'STRIPE_KEY' => $request->stripe_key ?: config('cashier.key'),
+            'STRIPE_SECRET' => $request->stripe_secret?: config('cashier.secret'),
             'CASHIER_CURRENCY' => $request->currency_code,
         ])->save();
 
