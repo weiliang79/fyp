@@ -106,12 +106,17 @@ Route::group(['middleware' => ['auth:student']], function () {
         Route::get('/checkout/{order_id}/failure', [CheckoutController::class, 'paymentFailure'])->name('student.checkout.failure');
 
         // checkout - 2c2p
-        Route::post('/checkout/{order_id}/process', [CheckoutController::class, 'process'])->name('student.checkout.process');
-        Route::match(['get', 'post'], '/checkout/{order_id}/receive_payment_info', [CheckoutController::class, 'receivePaymentInfo'])->name('student.checkout.receive_payment_info');
+        Route::group(['middleware' => ['is2c2pEnabled']], function () {
+            Route::post('/checkout/{order_id}/process', [CheckoutController::class, 'process'])->name('student.checkout.process');
+            Route::match(['get', 'post'], '/checkout/{order_id}/receive_payment_info', [CheckoutController::class, 'receivePaymentInfo'])->name('student.checkout.receive_payment_info');
+        });
 
         // checkout - stripe
-        Route::get('/checkout/{order_id}/stripe_payment', [CheckoutController::class, 'stripeCharge'])->name('student.checkout.stripe');
-        Route::post('/checkout/{order_id}/stripe_payment/process', [CheckoutController::class, 'stripeProcess'])->name('student.checkout.stripe.process');
+        Route::group(['middleware' => ['isStripeEnabled']], function () {
+            Route::get('/checkout/{order_id}/stripe_payment', [CheckoutController::class, 'stripeCharge'])->name('student.checkout.stripe');
+            Route::post('/checkout/{order_id}/stripe_payment/process', [CheckoutController::class, 'stripeProcess'])->name('student.checkout.stripe.process');
+        });
+        
     });
 
     // order

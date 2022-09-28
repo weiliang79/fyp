@@ -55,6 +55,7 @@
                                           <form action="{{ route('student.checkout.process', ['order_id' => $order->id]) }}" method="post">
                                                 @csrf
 
+                                                @if(config('payment.2c2p-status'))
                                                 <div class="row mb-3">
                                                       <div class="col-md-3">
                                                             <div class="form-check">
@@ -66,7 +67,9 @@
                                                             </div>
                                                       </div>
                                                 </div>
+                                                @endif
 
+                                                @if(config('payment.stripe-status'))
                                                 <div class="row mb-3">
                                                       <div class="col-md-3">
                                                             <div class="form-check">
@@ -78,6 +81,7 @@
                                                             </div>
                                                       </div>
                                                 </div>
+                                                @endif
 
                                                 <div class="row mb-0">
                                                       <div class="col-md-8 offset-md-1">
