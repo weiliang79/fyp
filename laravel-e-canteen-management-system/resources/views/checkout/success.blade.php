@@ -33,7 +33,7 @@
                                                             @if($payment->payment_type_id == \App\Models\PaymentType::PAYMENT_2C2P)
                                                                   {{ $payment->paymentDetail2c2p->channel_code }}
                                                             @elseif($payment->payment_type_id == \App\Models\PaymentType::PAYMENT_STRIPE)
-                                                                  {{ Auth::guard('student')->user()->findPaymentMethod($payment->stripe_payment_method_id)->card->brand }}
+                                                                  {{ Auth::guard('student')->user()->findPaymentMethod($payment->paymentDetailStripe->payment_method_id)->card->brand }}
                                                             @endif
                                                       </p>
                                                 </li>
@@ -58,7 +58,7 @@
 
                                                 @if($payment->payment_type_id == \App\Models\PaymentType::PAYMENT_2C2P)
                                                 <li class="list-group-item d-flex justify-content-between">
-                                                      
+
                                                       <p class="mb-1">Invoice No</p>
                                                       <p class="mb-1">
                                                             {{ $payment->paymentDetail2c2p->invoice_no }}

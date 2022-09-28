@@ -14,6 +14,7 @@ use Firebase\JWT\Key;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Cashier\Cashier;
+use Stripe\Exception\ApiErrorException;
 
 class CheckoutController extends Controller
 {
@@ -129,7 +130,7 @@ class CheckoutController extends Controller
                 'payment_detail_2c2p_id' => $payment2c2p->id,
                 'amount' => $order->total_price,
                 'status' => Payment::STATUS_PENDING,
-                'is_sandbox_payment' => $student->is_a_sandbox_student,
+                'is_sandbox_payment' => config('payment.2c2p-sandbox.status'),
             ]);
 
             return redirect()->to($decodedPayload['webPaymentUrl']);
@@ -212,16 +213,38 @@ class CheckoutController extends Controller
             'status' => $inquiryPayload['respCode'] == '0000' ? PaymentDetail2c2p::STATUS_SUCCESS : PaymentDetail2c2p::STATUS_FAILURE,
         ]);
 
-        $detail2c2p->payment->update([
+        $payment = $detail2c2p->payment->update([
             'status' => $inquiryPayload['respCode'] == '0000' ? Payment::STATUS_SUCCESS : Payment::STATUS_FAILURE,
         ]);
 
-        $detail2c2p->payment->order->update([
+        $order = $detail2c2p->payment->order;
+        $order->update([
             'status' => $inquiryPayload['respCode'] == '0000' ? Order::PAYMENT_SUCCESS : Order::PAYMENT_FAILURE,
         ]);
+        $stripePayments = $order->payments()->where('payment_type_id', PaymentType::PAYMENT_STRIPE)->get();
+
+        if($stripePayments->count() !== 0){
+            $stripe = new \Stripe\StripeClient(config('cashier.secret'));
+            foreach($stripePayments as $stripePayment){
+                $stripePayment->update([
+                    'status' => Payment::STATUS_ABORT,
+                ]);
+
+                $stripePayment->paymentDetailStripe->update([
+                    'status' => PaymentDetailStripe::STATUS_ABORT,
+                ]);
+                try {
+                    $stripe->paymentIntents->cancel($stripePayment->paymentDetailStripe->payment_intent_id, [
+                        'cancellation_reason' => 'requested_by_customer',
+                    ]);
+                } catch (ApiErrorException $e) {
+                    abort(502);
+                }
+            }
+        }
 
         if ($inquiryPayload['respCode'] == '0000') {
-            return redirect()->route('student.checkout.success', ['order_id' => $detail2c2p->payment->order->id]);
+            return redirect()->route('student.checkout.success', ['order_id' => $detail2c2p->payment->order->id, 'payment_id' => $detail2c2p->payment->id]);
         } else {
             return redirect()->route('student.checkout.failure', ['order_id' => $detail2c2p->payment->order->id, 'payment_type' => '2c2p', 'resp_code' => $inquiryPayload['respCode']]);
         }
@@ -231,21 +254,41 @@ class CheckoutController extends Controller
 
         $student = Student::find(Auth::guard('student')->user()->id);
         $order = Order::find($request->order_id);
-        //dd($order);
+        $payment = $order->payments()->where('payment_type_id', PaymentType::PAYMENT_STRIPE)->orderBy('created_at', 'desc')->first();
+        $clientSecret = null;
 
-        $paymentIntent = $student->pay($order->total_price * 100, [
-            'setup_future_usage' => 'off_session',
-        ]);
+        if($payment !== null){
+            if($payment->status === Payment::STATUS_PENDING || $payment->status === Payment::STATUS_FAILURE){
+                if($payment->paymentDetailStripe->client_secret !== null){
+                    $clientSecret = $payment->paymentDetailStripe->client_secret;
+                } else {
+                    abort(500);
+                }
+            }
+        } else {
+            $paymentIntent = $student->pay($order->total_price * 100, [
+                'setup_future_usage' => 'off_session',
+            ]);
+            $clientSecret = $paymentIntent->clientSecret();
 
-        $payment = $order->payments()->create([
-            'payment_type_id' => PaymentType::PAYMENT_STRIPE,
-            'amount' => $order->total_price,
-            'status' => Payment::STATUS_PENDING,
-            'is_sandbox_payment' => $student->is_a_sandbox_student,
-        ]);
+            $stripeDetail = PaymentDetailStripe::create([
+                'payment_intent_id' => $paymentIntent->id,
+                'client_secret' => $clientSecret,
+                'status' => PaymentDetailStripe::STATUS_PENDING,
+            ]);
+
+            $payment = $order->payments()->create([
+                'payment_type_id' => PaymentType::PAYMENT_STRIPE,
+                'payment_detail_stripe_id' => $stripeDetail->id,
+                'amount' => $order->total_price,
+                'status' => Payment::STATUS_PENDING,
+                'is_sandbox_payment' => config('payment.stripe-sandbox'),
+            ]);
+
+        }
 
         return view('checkout.stripe.payment', [
-            'clientSecret' => $paymentIntent->clientSecret(),
+            'clientSecret' => $clientSecret,
             'order' => $order,
         ]);
 
@@ -264,19 +307,27 @@ class CheckoutController extends Controller
             'status' => Order::PAYMENT_SUCCESS,
         ]);
 
-        $payment = $order->payments()->orderBy('created_at', 'DESC')->first();
+        $payment = $order->payments()->where('payment_type_id', PaymentType::PAYMENT_STRIPE)->orderBy('created_at', 'DESC')->first();
         $payment->update([
-            'stripe_payment_method_id' => $request->payment_method,
             'status' => Payment::STATUS_SUCCESS,
         ]);
 
-        return redirect()->route('student.checkout.success', ['order_id' => $order->id]);
+        $payment->paymentDetailStripe->update([
+            'payment_method_id' => $request->payment_method,
+            'status' => PaymentDetailStripe::STATUS_SUCCESS,
+        ]);
+
+        return redirect()->route('student.checkout.success', ['order_id' => $order->id, 'payment_id' => $payment->id]);
     }
 
     public function paymentSuccess(Request $request)
     {
+        $request->validate([
+           'order_id' => 'required',
+           'payment_id' => 'required',
+        ]);
         $order = Order::find($request->order_id);
-        $payment = $order->payments()->orderBy('updated_at', 'desc')->first();
+        $payment = Payment::find($request->payment_id);
         return view('checkout.success', compact('order', 'payment'));
     }
 

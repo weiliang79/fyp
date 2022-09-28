@@ -102,8 +102,6 @@ Route::group(['middleware' => ['auth:student']], function () {
 
         // checkout
         Route::get('/checkout/{order_id}', [CheckoutController::class, 'index'])->name('student.checkout');
-        Route::get('/checkout/{order_id}/success', [CheckoutController::class, 'paymentSuccess'])->name('student.checkout.success');
-        Route::get('/checkout/{order_id}/failure', [CheckoutController::class, 'paymentFailure'])->name('student.checkout.failure');
 
         // checkout - 2c2p
         Route::group(['middleware' => ['is2c2pEnabled']], function () {
@@ -116,8 +114,12 @@ Route::group(['middleware' => ['auth:student']], function () {
             Route::get('/checkout/{order_id}/stripe_payment', [CheckoutController::class, 'stripeCharge'])->name('student.checkout.stripe');
             Route::post('/checkout/{order_id}/stripe_payment/process', [CheckoutController::class, 'stripeProcess'])->name('student.checkout.stripe.process');
         });
-        
+
     });
+
+    // checkout - result
+    Route::get('/checkout/{order_id}/success', [CheckoutController::class, 'paymentSuccess'])->name('student.checkout.success');
+    Route::get('/checkout/{order_id}/failure', [CheckoutController::class, 'paymentFailure'])->name('student.checkout.failure');
 
     // order
     Route::get('/student/order', [OrderController::class, 'index'])->name('student.order');
@@ -234,11 +236,9 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::get('/test', function () {
-    $payment = \App\Models\Payment::find(6);
-    $detail = $payment->paymentDetailStripe()->create([
-        'amount' => 10,
-        'status' => 'test',
+    $stripe = new \Stripe\StripeClient(config('cashier.secret'));
+    $paymentIntent = $stripe->paymentIntents->cancel('pi_3Lmw6bBQr69PVibX1UH9f7ZT', [
+        'cancellation_reason' => 'requested_by_customer',
     ]);
-
-    dd($payment, $detail);
+    dd($paymentIntent);
 });
