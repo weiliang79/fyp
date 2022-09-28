@@ -24,6 +24,7 @@ class Payment extends Model
         'stripe_payment_method_id',
         'amount',
         'status',
+        'is_sandbox_payment',
     ];
 
     public function order(){

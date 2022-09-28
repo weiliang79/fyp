@@ -36,6 +36,7 @@ class CheckoutController extends Controller
         ]);
 
         $order = Order::find($request->order_id);
+        $student = Student::find($order->student_id);
 
         if ($request->payment == '2c2p') {
 
@@ -128,6 +129,7 @@ class CheckoutController extends Controller
                 'payment_detail_2c2p_id' => $payment2c2p->id,
                 'amount' => $order->total_price,
                 'status' => Payment::STATUS_PENDING,
+                'is_sandbox_payment' => $student->is_a_sandbox_student,
             ]);
 
             return redirect()->to($decodedPayload['webPaymentUrl']);
@@ -239,6 +241,7 @@ class CheckoutController extends Controller
             'payment_type_id' => PaymentType::PAYMENT_STRIPE,
             'amount' => $order->total_price,
             'status' => Payment::STATUS_PENDING,
+            'is_sandbox_payment' => $student->is_a_sandbox_student,
         ]);
 
         return view('checkout.stripe.payment', [

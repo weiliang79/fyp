@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('stripe_payment_method_id')->nullable();
             $table->decimal('amount');
             $table->tinyInteger('status');
+            $table->boolean('is_sandbox_payment')->default(false);
             $table->timestamps();
             $table->softDeletes();
 

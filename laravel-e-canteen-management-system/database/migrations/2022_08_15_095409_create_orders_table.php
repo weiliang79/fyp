@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('pick_up_end');
             $table->decimal('total_price');
             $table->tinyInteger('status');
+            $table->boolean('is_sandbox_order')->default(false);
             $table->timestamps();
             $table->softDeletes();
 

@@ -145,10 +145,8 @@ class StudentMenuController extends Controller
         ]);
 
         $restTimes = explode('->', $request->restTime);
-
-        
-
-        $carts = Cart::where('student_id', Auth::guard('student')->user()->id)->get();
+        $student = Student::find(Auth::guard('student')->user()->id);
+        $carts = Cart::where('student_id', $student->id)->get();
 
         //dd($request, $restTimes, $carts, $carts->sum('price'));
 
@@ -158,6 +156,7 @@ class StudentMenuController extends Controller
             'pick_up_end' => $restTimes[1],
             'total_price' => $carts->sum('price'),
             'status' => Order::PAYMENT_PENDING,
+            'is_sandbox_order' => $student->is_a_sandbox_student,
         ]);
 
         foreach($carts as $cart){

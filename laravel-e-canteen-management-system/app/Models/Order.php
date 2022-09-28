@@ -23,6 +23,7 @@ class Order extends Model
         'pick_up_end',
         'total_price',
         'status',
+        'is_sandbox_order',
     ];
 
     /**
