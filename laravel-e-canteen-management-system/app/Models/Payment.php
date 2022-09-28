@@ -10,7 +10,7 @@ class Payment extends Model
 {
     use HasFactory, SoftDeletes;
 
-    const STATUS_PENDING = 1, STATUS_SUCCESS = 2, STATUS_FAILURE = 3;
+    const STATUS_PENDING = 1, STATUS_SUCCESS = 2, STATUS_FAILURE = 3, STATUS_ABORT = 4;
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +21,7 @@ class Payment extends Model
         'order_id',
         'payment_type_id',
         'payment_detail_2c2p_id',
-        'stripe_payment_method_id',
+        'payment_detail_stripe_id',
         'amount',
         'status',
         'is_sandbox_payment',
@@ -37,6 +37,10 @@ class Payment extends Model
 
     public function paymentDetail2c2p(){
         return $this->belongsTo(PaymentDetail2c2p::class, 'payment_detail_2c2p_id');
+    }
+
+    public function paymentDetailStripe(){
+        return $this->belongsTo(PaymentDetailStripe::class, 'payment_detail_stripe_id');
     }
 
 }
