@@ -98,7 +98,7 @@ Route::group(['middleware' => ['auth:student']], function () {
     Route::post('/menus/carts/delete', [StudentMenuController::class, 'deleteCartItem'])->name('student.menus.cart.delete');
     Route::post('/menus/carts/create_order', [StudentMenuController::class, 'createOrder'])->name('student.menus.create_order');
 
-    Route::group(['middleware' => ['isPaymentMaintenance', 'isOrderMatchStudent:student']], function () {
+    Route::group(['middleware' => ['isPaymentMaintenance', 'isOrderMatchStudent:student', 'isOrderCompleted']], function () {
 
         // checkout
         Route::get('/checkout/{order_id}', [CheckoutController::class, 'index'])->name('student.checkout');

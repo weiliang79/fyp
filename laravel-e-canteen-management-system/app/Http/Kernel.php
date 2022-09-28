@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'isOrderMatchStudent' => \App\Http\Middleware\OrderMatchedStudent::class,
         'is2c2pEnabled' => \App\Http\Middleware\EnabledFor2c2p::class,
         'isStripeEnabled' => \App\Http\Middleware\EnabledForStripe::class,
+        'isOrderCompleted' => \App\Http\Middleware\OrderIsCompleted::class,
     ];
 }

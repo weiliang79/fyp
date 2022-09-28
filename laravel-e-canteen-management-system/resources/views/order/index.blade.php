@@ -46,6 +46,12 @@
                                                       <div id="collapse{{ $i }}" class="accordion-collapse collapse" aria-labelledby="heading{{ $i }}" data-bs-parent="#orderAccordion">
                                                             <div class="accordion-body">
 
+                                                                  @if($orders[$i]->status === \App\Models\Order::PAYMENT_PENDING || $orders[$i]->status === \App\Models\Order::PAYMENT_FAILURE)
+                                                                        <div class="text-danger text-center mb-4">
+                                                                              <i class="fa-solid fa-circle-exclamation fa-lg"></i> The payment is not complete, please go to <a href="{{ route('student.checkout', ['order_id' => $orders[$i]]) }}">Checkout Page</a>.
+                                                                        </div>
+                                                                  @endif
+
                                                                   <div class="card mb-4">
                                                                         <div class="card-header">
                                                                               Order Details
