@@ -9,6 +9,42 @@ use Illuminate\Database\Seeder;
 
 class StudentSeeder extends Seeder
 {
+    const MORNING_CLASS_REST_TIME = [
+        1 => [
+            1, 2, 3
+        ],
+        2 => [
+            6, 7, 8
+        ],
+        3 => [
+            11, 12, 13
+        ], 
+        4 => [
+            16, 17, 18
+        ],
+        5 => [
+            21, 22, 23
+        ],
+    ];
+
+    const AFTERNOON_CLASS_REST_TIME = [
+        1 => [
+            4, 5
+        ],
+        2 => [
+            9, 10
+        ],
+        3 => [
+            14, 15
+        ], 
+        4 => [
+            19, 20
+        ],
+        5 => [
+            24, 25
+        ],
+    ];
+
     /**
      * Run the database seeds.
      *
@@ -24,7 +60,9 @@ class StudentSeeder extends Seeder
             'is_a_sandbox_student' => true,
         ]);
 
-        $student->restTimes()->attach(1);
+        foreach(StudentSeeder::MORNING_CLASS_REST_TIME as $restTimes){
+            $student->restTimes()->attach($restTimes);
+        }
 
         // student1
         $student = Student::factory()->create([
@@ -33,15 +71,19 @@ class StudentSeeder extends Seeder
             'email_verified_at' => Carbon::now(),
         ]);
 
-        $student->restTimes()->attach(1);
+        foreach(StudentSeeder::MORNING_CLASS_REST_TIME as $restTimes){
+            $student->restTimes()->attach($restTimes);
+        }
 
-        // student1
+        // student2
         $student = Student::factory()->create([
             'username' => 'student2',
             'email' => null,
             'email_verified_at' => null,
         ]);
 
-        $student->restTimes()->attach(1);
+        foreach(StudentSeeder::AFTERNOON_CLASS_REST_TIME as $restTimes){
+            $student->restTimes()->attach($restTimes);
+        }
     }
 }
