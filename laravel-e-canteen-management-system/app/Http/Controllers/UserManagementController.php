@@ -26,7 +26,7 @@ class UserManagementController extends Controller
     }
 
     public function save(Request $request){
-        
+
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
@@ -104,6 +104,31 @@ class UserManagementController extends Controller
         }
 
         return redirect()->route('admin.user_management')->with('swal-success', 'New Student Details save successful.');
+    }
+
+    public function showStudentEditForm(Request $request){
+        $restTimes = RestTime::all();
+        $student = Student::find($request->id);
+
+        return view('admin.user_management.student.edit', compact('student', 'restTimes'));
+    }
+
+    public function updateStudent(Request $request){
+
+        $request->validate([
+            'rest_id.*' => 'integer|gt:0',
+        ],
+        [
+            'rest_id.*.gt' => 'The rest time field need to choose a rest time.',
+        ]);
+
+        $student = Student::find($request->id);
+
+        dd($request, $student);
+
+        $restIds = $request->rest_id;
+
+
     }
 
     public function deleteStudent(Request $request){

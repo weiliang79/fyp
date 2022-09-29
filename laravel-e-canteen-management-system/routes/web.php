@@ -130,6 +130,7 @@ Route::group(['middleware' => ['auth:student']], function () {
 
 Route::group(['middleware' => ['auth']], function () {
 
+    // admin route
     Route::group(['middleware' => ['can:isAdmin']], function () {
 
         // profile
@@ -153,6 +154,8 @@ Route::group(['middleware' => ['auth']], function () {
             // user management - student
             Route::get('/admin/user_management/student/create', [UserManagementController::class, 'showStudentCreateForm'])->name('admin.user_management.student.create');
             Route::post('admin/user_management/student/save', [UserManagementController::class, 'saveStudent'])->name('admin.user_management.student.save');
+            Route::get('/admin/user_management/student/{id}/edit', [UserManagementController::class, 'showStudentEditForm'])->name('admin.user_management.student.edit');
+            Route::post('/admin/user_management/student/{id}/update', [UserManagementController::class, 'updateStudent'])->name('admin.user_management.student.update');
             Route::post('/admin/user_management/student/delete', [UserManagementController::class, 'deleteStudent'])->name('admin.user_management.student.delete');
 
             // user management - student - rest time
@@ -192,6 +195,7 @@ Route::group(['middleware' => ['auth']], function () {
         });
     });
 
+    // food seller route
     Route::group(['middleware' => ['can:isFoodSeller']], function () {
 
         // profile

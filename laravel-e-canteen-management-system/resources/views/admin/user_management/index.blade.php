@@ -87,6 +87,7 @@
                                                 <td>{{ $student->created_at }}</td>
                                                 <td>{{ $student->updated_at }}</td>
                                                 <td>
+                                                      <a class="btn btn-primary" href="{{ route('admin.user_management.student.edit', ['id' => $student->id]) }}">Edit</a>
                                                       <button type="button" class="btn btn-danger" onclick="promptDeleteStudentWarning(this)" data-id="{{ $student->id }}">Delete</button>
                                                 </td>
                                           </tr>
