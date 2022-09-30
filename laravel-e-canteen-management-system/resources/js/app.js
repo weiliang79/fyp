@@ -26,8 +26,13 @@ window.SwalWithBootstrap = Swal.mixin({
 import flatpickr from 'flatpickr';
 window.flatpickr = flatpickr;
 
+// stripe js
 import {loadStripe} from "@stripe/stripe-js";
 window.loadStripe = loadStripe;
+
+//dateFormat
+import dateFormat from 'dateformat';
+window.dateFormat = dateFormat;
 
 window.addEventListener('DOMContentLoaded', event => {
 
