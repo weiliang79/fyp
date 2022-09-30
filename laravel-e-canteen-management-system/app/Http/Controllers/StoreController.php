@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Session;
 
 class StoreController extends Controller
 {
+    public function adminIndex(){
+        $stores = Store::all();
+        return view('admin.store.index', compact('stores'));
+    }
+
     public function index(){
         $user = User::find(Auth::user()->id);
         if($user->isAdmin()){

@@ -21,7 +21,7 @@
                   </a>
             </li>
             <li class="nav-item">
-                  <a href="#" class="nav-link link-dark">
+                  <a href="{{ route('admin.store') }}" class="nav-link link-dark">
                         <i class="fa-solid fa-shop"></i>
                         Store
                   </a>

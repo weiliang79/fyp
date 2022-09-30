@@ -163,6 +163,9 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/admin/user_management/student/rest_time', [RestTimeController::class, 'index'])->name('admin.user_management.student.rest_time');
             Route::post('/admin/user_management/student/rest_time/update', [RestTimeController::class, 'update'])->name('admin.user_management.student.rest_time.update');
 
+            // store
+            Route::get('/admin/store', [StoreController::class, 'adminIndex'])->name('admin.store');
+            
             // menus - category
             Route::get('/admin/menus/category', [MenuController::class, 'categoryIndex'])->name('admin.menus.category');
             Route::get('/admin/menus/category/create', [MenuController::class, 'showCategoryCreateForm'])->name('admin.menus.category.create');
