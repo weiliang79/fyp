@@ -124,9 +124,20 @@ class UserManagementController extends Controller
 
         $student = Student::find($request->id);
 
-        dd($request, $student);
+        //dd($request, $student);
 
         $restIds = $request->rest_id;
+
+        foreach($restIds as $id){
+            if($student->restTimes()->wherePivot('rest_time_id', $id)->count() == 0){
+                $student->restTimes()->attach($id);
+            }
+        }
+
+        $needDelete = $student->restTimes()->wherePivotNotIn('rest_time_id', $restIds)->pluck('id')->toArray();
+        $student->restTimes()->detach($needDelete);
+
+        return redirect()->route('admin.user_management')->with('swal-success', 'Student info update successful.');
 
 
     }

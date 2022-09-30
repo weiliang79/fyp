@@ -25,6 +25,7 @@ use App\Http\controllers\studentAuth;
 use App\Http\Controllers\StudentMenuController;
 use App\Http\Controllers\StudentProfileController;
 use App\Models\PaymentDetail2c2p;
+use App\Models\Student;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -240,9 +241,9 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::get('/test', function () {
-    $stripe = new \Stripe\StripeClient(config('cashier.secret'));
-    $paymentIntent = $stripe->paymentIntents->cancel('pi_3Lmw6bBQr69PVibX1UH9f7ZT', [
-        'cancellation_reason' => 'requested_by_customer',
-    ]);
-    dd($paymentIntent);
+    $student = Student::find(1);
+
+    //$student->restTimes()->detach([1]);
+
+    dd($student->restTimes()->wherePivotNotIn('rest_time_id', [1, 2, 3, 6, 7, 8])->pluck('id')->toArray());
 });
