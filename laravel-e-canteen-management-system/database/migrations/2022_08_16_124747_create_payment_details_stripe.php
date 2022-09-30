@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('payment_intent_id')->nullable();
             $table->string('client_secret')->nullable();
             $table->string('payment_method_id')->nullable();
-            $table->integer('status');
+            $table->tinyInteger('status');
             $table->timestamps();
             $table->softDeletes();
         });
