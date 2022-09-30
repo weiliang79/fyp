@@ -10,7 +10,7 @@ class Payment extends Model
 {
     use HasFactory, SoftDeletes;
 
-    const STATUS_PENDING = 1, STATUS_SUCCESS = 2, STATUS_FAILURE = 3, STATUS_ABORT = 4;
+    const STATUS_PENDING = 1, STATUS_FAILURE = 2, STATUS_ABORT = 3, STATUS_SUCCESS = 4;
 
     /**
      * The attributes that are mass assignable.
@@ -41,6 +41,15 @@ class Payment extends Model
 
     public function paymentDetailStripe(){
         return $this->belongsTo(PaymentDetailStripe::class, 'payment_detail_stripe_id');
+    }
+
+    public function getStatusString(){
+        switch($this->status){
+            case Payment::STATUS_PENDING: return 'Payment Pending';
+            case Payment::STATUS_FAILURE: return 'Payment Failure';
+            case Payment::STATUS_ABORT: return 'Payment Abort';
+            case Payment::STATUS_SUCCESS: return 'Payment Success';
+        }
     }
 
 }

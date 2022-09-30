@@ -33,18 +33,8 @@
                                                                 Time: {{ $orders[$i]->pick_up_start->format('Y-m-d H:i A') }}
                                                                 to {{ $orders[$i]->pick_up_end->format('Y-m-d H:i A') }}</div>
                                                             <div>{{ config('payment.currency_symbol') }}{{ $orders[$i]->total_price }}</div>
-                                                            <div>
-                                                                @switch($orders[$i]->status)
-                                                                    @case(\App\Models\Order::PAYMENT_PENDING)
-                                                                        <p class="mb-0">Payment Pending</p>
-                                                                        @break
-                                                                    @case(\App\Models\Order::PAYMENT_SUCCESS)
-                                                                        <p class="mb-0 text-success">Payment Success</p>
-                                                                        @break
-                                                                    @case(\App\Models\Order::PAYMENT_FAILURE)
-                                                                        <p class="mb-0 text-danger">Payment Failure</p>
-                                                                        @break
-                                                                @endswitch
+                                                            <div class="{{ $orders[$i]->status == \App\Models\Order::PAYMENT_FAILURE ? 'text-danger' : '' }}{{ $orders[$i]->status == \App\Models\Order::PAYMENT_SUCCESS ? 'text-success' : '' }}">
+                                                                {{ $orders[$i]->getStatusString() }}
                                                             </div>
                                                         </div>
 
@@ -128,20 +118,7 @@
                                                                                 <li class="list-group-item d-flex justify-content-between">
                                                                                     <p class="mb-1">Status</p>
                                                                                     <p class="mb-1">
-                                                                                        @switch($payment->status)
-                                                                                            @case(\App\Models\Payment::STATUS_PENDING)
-                                                                                                Payment Pending
-                                                                                                @break
-                                                                                            @case(\App\Models\Payment::STATUS_SUCCESS)
-                                                                                                Payment Success
-                                                                                                @break
-                                                                                            @case(\App\Models\Payment::STATUS_FAILURE)
-                                                                                                Payment Failure
-                                                                                                @break
-                                                                                            @case(\App\Models\Payment::STATUS_ABORT)
-                                                                                                Payment Abort
-                                                                                                @break
-                                                                                        @endswitch
+                                                                                        {{ $payment->getStatusString() }}
                                                                                     </p>
                                                                                 </li>
                                                                             </ul>
@@ -158,8 +135,7 @@
                                                                                         </p>
                                                                                     </li>
                                                                                     <li class="list-group-item d-flex justify-content-between">
-                                                                                        <p class="mb-1">Transaction
-                                                                                            Time</p>
+                                                                                        <p class="mb-1">Transaction Time</p>
                                                                                         <p class="mb-1">
                                                                                             {{ $payment->paymentDetail2c2p->transaction_time->format('Y-m-d H:i A') }}
                                                                                         </p>
@@ -167,38 +143,36 @@
                                                                                     <li class="list-group-item d-flex justify-content-between">
                                                                                         <p class="mb-1">Agent Code</p>
                                                                                         <p class="mb-1">
-                                                                                            {{ $payment->paymentDetail2c2p->agent_code }}
+                                                                                            {{ $payment->paymentDetail2c2p->agent_code ?: 'None' }}
                                                                                         </p>
                                                                                     </li>
                                                                                     <li class="list-group-item d-flex justify-content-between">
                                                                                         <p class="mb-1">Channel Code</p>
                                                                                         <p class="mb-1">
-                                                                                            {{ $payment->paymentDetail2c2p->channel_code }}
+                                                                                            {{ $payment->paymentDetail2c2p->channel_code ?: 'None' }}
                                                                                         </p>
                                                                                     </li>
                                                                                     <li class="list-group-item d-flex justify-content-between">
                                                                                         <p class="mb-1">Reference No</p>
                                                                                         <p class="mb-1">
-                                                                                            {{ $payment->paymentDetail2c2p->reference_no }}
+                                                                                            {{ $payment->paymentDetail2c2p->reference_no ?: 'None' }}
                                                                                         </p>
                                                                                     </li>
                                                                                     <li class="list-group-item d-flex justify-content-between">
-                                                                                        <p class="mb-1">Transaction
-                                                                                            Reference</p>
+                                                                                        <p class="mb-1">Transaction Reference</p>
                                                                                         <p class="mb-1">
-                                                                                            {{ $payment->paymentDetail2c2p->tran_ref }}
+                                                                                            {{ $payment->paymentDetail2c2p->tran_ref ?: 'None' }}
                                                                                         </p>
                                                                                     </li>
                                                                                 @else
 
                                                                                     @if($payment->status === \App\Models\Payment::STATUS_SUCCESS)
-                                                                                            <?php $paymentMethod = auth()->guard('student')->user()->findPaymentMethod($payment->paymentDetailStripe->payment_method_id) ?>
+                                                                                        @php $paymentMethod = auth()->guard('student')->user()->findPaymentMethod($payment->paymentDetailStripe->payment_method_id) @endphp
 
                                                                                         <li class="list-group-item d-flex justify-content-between">
                                                                                             <p class="mb-1">Payment
                                                                                                 Processing Method</p>
-                                                                                            <p class="mb-1">{{ $paymentMethod->type }}
-                                                                                                - {{ $paymentMethod->card->brand }}</p>
+                                                                                            <p class="mb-1">{{ $paymentMethod->type }} - {{ $paymentMethod->card->brand }}</p>
                                                                                         </li>
                                                                                         <li class="list-group-item d-flex justify-content-between">
                                                                                             <p class="mb-1">Transaction Time</p>
