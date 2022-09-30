@@ -43,7 +43,7 @@
                   </div>
             </li>
             <li class="nav-item">
-                  <a href="{{ route('admin.order') }}" class="nav-link link-dark">
+                  <a href="{{ route('admin.order') }}" class="nav-link {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'admin.order') ? 'active' : 'link-dark' }}">
                         <i class="fa-solid fa-list-check"></i>
                         Order
                   </a>
