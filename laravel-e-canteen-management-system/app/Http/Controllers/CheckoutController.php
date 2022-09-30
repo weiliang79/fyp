@@ -323,7 +323,6 @@ class CheckoutController extends Controller
     public function paymentSuccess(Request $request)
     {
         $request->validate([
-           'order_id' => 'required',
            'payment_id' => 'required',
         ]);
         $order = Order::find($request->order_id);
