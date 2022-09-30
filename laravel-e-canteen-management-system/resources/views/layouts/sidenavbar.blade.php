@@ -42,6 +42,12 @@
                         </ul>
                   </div>
             </li>
+            <li class="nav-item">
+                  <a href="{{ route('admin.order') }}" class="nav-link link-dark">
+                        <i class="fa-solid fa-list-check"></i>
+                        Order
+                  </a>
+            </li>
             <li class="nav-item dropdown">
                   <a href="#" class="nav-link dropdown-toggle link-dark" id="paymentDropdown" data-bs-toggle="collapse" data-bs-target="#payment-collapse" aria-expanded="false">
                         <i class="fa-solid fa-credit-card"></i>

@@ -97,8 +97,7 @@
                                                         @foreach($orders[$i]->payments()->orderBy('created_at', 'desc')->get() as $payment)
                                                             <div class="card @if(!$loop->last) mb-4 @endif">
                                                                 <div class="card-header">
-                                                                    Payment
-                                                                    # {{ $payment->created_at->format('Y-m-d H:i A') }}
+                                                                    Payment # {{ $payment->created_at->format('Y-m-d h:i A') }}
                                                                 </div>
 
                                                                 <div class="card-body">

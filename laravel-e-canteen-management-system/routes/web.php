@@ -174,13 +174,9 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/admin/menus/category/update', [MenuController::class, 'updateCategory'])->name('admin.menus.category.update');
             Route::post('/admin/menus/category/delete', [MenuController::class, 'deleteCategory'])->name('admin.menus.category.delete');
 
-            // payment
-            // Route::get('/admin/payment', [PaymentController::class, 'index'])->name('admin.payment');
-            // Route::get('/admin/payment/create', [PaymentController::class, 'showCreateForm'])->name('admin.payment.create');
-            // Route::post('/admin/payment/save', [PaymentController::class, 'save'])->name('admin.payment.save');
-            // Route::get('/admin/payment/{id}/edit', [PaymentController::class, 'showEditForm'])->name('admin.payment.edit');
-            // Route::post('/admin/payment/update', [PaymentController::class, 'update'])->name('admin.payment.update');
-            // Route::post('/admin/payment/delete', [PaymentController::class, 'delete'])->name('admin.payment.delete');
+            // order
+            Route::get('/admin/order', [OrderController::class, 'adminIndex'])->name('admin.order');
+            Route::get('/admin/order/{order_id}', [OrderController::class, 'adminOrderDetails'])->name('admin.order.details');
 
             // payment - general
             Route::get('/admin/payment/general', [PaymentController::class, 'index'])->name('admin.payment.general');
@@ -244,9 +240,7 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::get('/test', function () {
-    $student = Student::find(1);
-
-    //$student->restTimes()->detach([1]);
-
-    dd($student->restTimes()->wherePivotNotIn('rest_time_id', [1, 2, 3, 6, 7, 8])->pluck('id')->toArray());
+    $now = Carbon::now();
+    $test = Carbon::now()->addHours(2);
+    dd($now, $test, $test->gt($now));
 });
