@@ -110,9 +110,11 @@ class StudentMenuController extends Controller
                     $startTime = Carbon::createFromFormat('Y-m-d H:i A', $startDate->format('Y-m-d') . $rest->start_time);
                     $endTime = Carbon::createFromFormat('Y-m-d H:i A', $startDate->format('Y-m-d') . $rest->end_time);
 
-                    $string = $startTime->format('Y-m-d') . ' ' . $rest->start_time . ' to ' . $rest->end_time;
+                    if($startTime->gt(Carbon::now())){
+                        $string = $startTime->format('Y-m-d h:ia') . ' to ' . $endTime->format('h:ia');
 
-                    $restDates[$startTime->timestamp . '->' . $endTime->timestamp] = $string;
+                        $restDates[$startTime->timestamp . '->' . $endTime->timestamp] = $string;
+                    }
 
                 }
             }
